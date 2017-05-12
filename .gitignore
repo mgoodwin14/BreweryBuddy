@@ -50,3 +50,10 @@ captures/
 # Keystore files
 *.jks
 >>>>>>> bc091b922951a501e1b72b3462d5f758ec4b0f98
+.idea/compiler.xml
+.idea/copyright/profiles_settings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
