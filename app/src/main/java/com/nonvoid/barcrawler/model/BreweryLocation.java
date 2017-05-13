@@ -3,6 +3,7 @@ package com.nonvoid.barcrawler.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 import com.nonvoid.barcrawler.util.StringUtils;
 
@@ -70,6 +71,10 @@ public class BreweryLocation implements Parcelable {
 
     public double getLng() {
         return lng;
+    }
+
+    public LatLng getLatLng(){
+        return new LatLng(lat, lng);
     }
 
     @Override
