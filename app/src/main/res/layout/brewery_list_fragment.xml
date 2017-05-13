@@ -6,7 +6,6 @@
         android:id="@+id/brewery_list_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/search_cardview"
         android:layout_marginTop="5dp"
         />
 

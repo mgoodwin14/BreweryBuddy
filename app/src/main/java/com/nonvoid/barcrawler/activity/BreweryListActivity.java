@@ -29,15 +29,12 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Matt on 5/3/2017.
  */
 
-public class BreweryListActivity extends FragmentActivity {
+public class BreweryListActivity extends BaseActivity {
 
     private static final String TAG = BreweryListActivity.class.getSimpleName();
 
     private BreweryAPI client;
     private final CompositeDisposable subscriptions = new CompositeDisposable();
-
-    @BindView(R.id.search_edittext)
-    EditText searchEditText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,17 +80,5 @@ public class BreweryListActivity extends FragmentActivity {
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 //        builder.setMessage(throwable.getMessage());
 //        builder.show();
-    }
-
-    @OnClick(R.id.search_button)
-    void onSearch(){
-        Log.d(TAG, "MPG onSearch");
-        String searchTerm = searchEditText.getText().toString();
-        if(StringUtils.isNotNullOrEmpty(searchTerm)){
-            subscriptions.add(client.getLocationsInCity(searchTerm)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::displayBreweries, this::handleThrowable));
-        }
     }
 }
