@@ -86,8 +86,17 @@ public class BreweryLocation implements Parcelable {
         dest.writeDouble(lng);
     }
 
+    public String getDescription() {
+        if(breweryData!=null){
+            return breweryData.description;
+        }
+        return "No description";
+    }
+
     public class BreweryData{
         @SerializedName("name")
         String name;
+        @SerializedName("description")
+        String description;
     }
 }

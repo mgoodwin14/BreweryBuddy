@@ -45,7 +45,9 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
 
     class BreweryListViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.brewery_list_name_textview)
-        TextView name;
+        TextView nameTextView;
+        @BindView(R.id.brewery_list_description_textview)
+        TextView descriptionTextView;
 
         BreweryListViewHolder(View itemView) {
             super(itemView);
@@ -53,7 +55,8 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
         }
 
         void setView(BreweryLocation breweryLocation) {
-            name.setText(breweryLocation.getName());
+            nameTextView.setText(breweryLocation.getName());
+            descriptionTextView.setText(breweryLocation.getDescription());
         }
     }
 }
