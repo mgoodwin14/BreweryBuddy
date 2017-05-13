@@ -73,7 +73,7 @@ public class BreweryListActivity extends FragmentActivity {
         BreweryListFragment fragment = BreweryListFragment.newInstance(breweryLocations);
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.brewery_list_frame, fragment)
+                .replace(R.id.brewery_list_frame, fragment)
                 .show(fragment)
                 .commit();
     }
