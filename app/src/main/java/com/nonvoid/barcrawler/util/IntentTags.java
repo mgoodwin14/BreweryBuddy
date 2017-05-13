@@ -5,4 +5,6 @@ package com.nonvoid.barcrawler.util;
  */
 
 public class IntentTags {
+
+    public static final String BREWERY_ITEM = "breweryItem";
 }
