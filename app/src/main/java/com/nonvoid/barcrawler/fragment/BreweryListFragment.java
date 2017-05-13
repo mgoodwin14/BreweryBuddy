@@ -4,8 +4,12 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.activity.BreweryListActivity;
@@ -16,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Matt on 5/11/2017.
@@ -29,6 +34,8 @@ public class BreweryListFragment extends Fragment {
     @BindView(R.id.brewery_list_recyclerview)
     RecyclerView breweryListRecyclerView;
 
+    private final List<BreweryLocation> breweryLocations = new ArrayList<>();
+
     public static BreweryListFragment newInstance(List<BreweryLocation> locations){
         BreweryListFragment fragment = new BreweryListFragment();
         Bundle args = new Bundle();
@@ -41,11 +48,19 @@ public class BreweryListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "MPG onCreate");
-        List<BreweryLocation> args = getArguments().getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
 
-        if(args!=null) {
-            breweryListRecyclerView.setAdapter(new BreweryListAdapter(args));
-        }
+        breweryLocations.addAll( getArguments().getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY) );
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.brewery_list_fragment, container, false);
+        ButterKnife.bind(this, view);
+        breweryListRecyclerView.setHasFixedSize(true);
+        breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        breweryListRecyclerView.setAdapter(new BreweryListAdapter(breweryLocations));
+        return view;
     }
 
     @Override

@@ -20,7 +20,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.subscriptions.CompositeSubscription;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Matt on 5/3/2017.
@@ -31,7 +34,7 @@ public class BreweryListActivity extends FragmentActivity {
     private static final String TAG = BreweryListActivity.class.getSimpleName();
 
     private BreweryAPI client;
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final CompositeDisposable subscriptions = new CompositeDisposable();
 
     @BindView(R.id.search_edittext)
     EditText searchEditText;
@@ -53,7 +56,15 @@ public class BreweryListActivity extends FragmentActivity {
         Log.d(TAG, "MPG onResume");
         subscriptions.add(
                 client.getLocationsInCity("Columbus")
-                        .subscribe(this::displayBreweries, this::handleThrowable));
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::displayBreweries, this::handleThrowable));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        subscriptions.clear();
     }
 
     private void displayBreweries(List<BreweryLocation> breweryLocations) {
@@ -80,6 +91,8 @@ public class BreweryListActivity extends FragmentActivity {
         String searchTerm = searchEditText.getText().toString();
         if(StringUtils.isNotNullOrEmpty(searchTerm)){
             subscriptions.add(client.getLocationsInCity(searchTerm)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::displayBreweries, this::handleThrowable));
         }
     }

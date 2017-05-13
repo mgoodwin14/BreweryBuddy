@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import rx.observers.TestSubscriber;
+import io.reactivex.observers.TestObserver;
 
 /**
  * Created by Matt on 5/12/2017.
@@ -23,14 +23,13 @@ public class BreweryTest {
 
         Assert.assertNotNull(client);
 
-        TestSubscriber testSubscriber = new TestSubscriber<List<BreweryLocation>>();
+        TestObserver<List<BreweryLocation>> testSubscriber = client.getLocationsInCity("Columbus").test();
 
-        client.getLocationsInCity("Columbus").subscribe(testSubscriber);
-
-        testSubscriber.assertCompleted();
+        testSubscriber.assertSubscribed();
+        testSubscriber.assertComplete();
         testSubscriber.assertNoErrors();
 
-        List list = testSubscriber.getOnNextEvents();
+        List list = testSubscriber.getEvents();
         Assert.assertFalse(list.isEmpty());
     }
 }

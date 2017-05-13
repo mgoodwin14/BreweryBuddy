@@ -4,7 +4,8 @@ import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 /**
  * Created by Matt on 5/5/2017.

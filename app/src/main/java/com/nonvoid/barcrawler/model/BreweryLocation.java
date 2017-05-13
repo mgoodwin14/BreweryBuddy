@@ -4,6 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+import com.nonvoid.barcrawler.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Matt on 5/5/2017.
@@ -20,6 +24,8 @@ public class BreweryLocation implements Parcelable {
     double lat;
     @SerializedName("longitude")
     double lng;
+    @SerializedName("brewery")
+    BreweryData breweryData;
 
     protected BreweryLocation(Parcel in) {
         id = in.readString();
@@ -50,7 +56,12 @@ public class BreweryLocation implements Parcelable {
     }
 
     public String getName() {
-        return name;
+        if(breweryData!= null){
+            if(StringUtils.isNotNullOrEmpty(breweryData.name)){
+                return breweryData.name;
+            }
+        }
+        return this.name;
     }
 
     public double getLat() {
@@ -73,5 +84,10 @@ public class BreweryLocation implements Parcelable {
         dest.writeString(name);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
+    }
+
+    public class BreweryData{
+        @SerializedName("name")
+        String name;
     }
 }

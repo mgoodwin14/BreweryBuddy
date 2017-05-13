@@ -12,6 +12,7 @@ import com.nonvoid.barcrawler.model.BreweryLocation;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Matt on 5/3/2017.
@@ -27,7 +28,7 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
 
     @Override
     public BreweryListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brewery_list_row, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brewery_list_row, parent, false);
         BreweryListViewHolder viewHolder = new BreweryListViewHolder(view);
         return viewHolder;
     }
@@ -48,6 +49,7 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
 
         BreweryListViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         void setView(BreweryLocation breweryLocation) {
