@@ -48,7 +48,6 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         location = (BreweryLocation) getArguments().get(IntentTags.BREWERY_ITEM);
     }
 
@@ -66,11 +65,9 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location.getLatLng());
-
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_location));
-
-        markerOptions.snippet(location.getDescription());
-        markerOptions.title(location.getName());
+//        markerOptions.snippet(location.getDescription());
+//        markerOptions.title(location.getName());
 
         marker = googleMap.addMarker(markerOptions);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14));
