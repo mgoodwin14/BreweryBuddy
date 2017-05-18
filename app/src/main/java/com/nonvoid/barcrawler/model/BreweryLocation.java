@@ -34,6 +34,9 @@ public class BreweryLocation implements Parcelable {
         name = in.readString();
         lat = in.readDouble();
         lng = in.readDouble();
+        breweryData=new BreweryData();
+        breweryData.name = in.readString();
+        breweryData.description = in.readString();
     }
 
     public static final Creator<BreweryLocation> CREATOR = new Creator<BreweryLocation>() {
@@ -89,6 +92,8 @@ public class BreweryLocation implements Parcelable {
         dest.writeString(name);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
+        dest.writeString(breweryData.name);
+        dest.writeString(breweryData.description);
     }
 
     public String getDescription() {

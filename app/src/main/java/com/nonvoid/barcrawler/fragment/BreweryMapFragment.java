@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nonvoid.barcrawler.R;
@@ -36,28 +37,38 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     private BreweryLocation location;
     private Marker marker;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.brewery_map_fragment, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    public static BreweryMapFragment newInstance(BreweryLocation location){
+        BreweryMapFragment fragment = new BreweryMapFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(IntentTags.BREWERY_ITEM, location);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
 
         location = (BreweryLocation) getArguments().get(IntentTags.BREWERY_ITEM);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.brewery_map_fragment, container, false);
+        ButterKnife.bind(this, view);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+        return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location.getLatLng());
+
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_location));
+
         markerOptions.snippet(location.getDescription());
         markerOptions.title(location.getName());
 
@@ -94,6 +105,5 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
 
 }

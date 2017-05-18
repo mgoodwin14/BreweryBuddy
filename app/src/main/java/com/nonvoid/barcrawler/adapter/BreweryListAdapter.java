@@ -65,12 +65,6 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
         BreweryListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    callback.onBrewerySelected(location);
-                }
-            });
         }
 
         void setView(BreweryLocation breweryLocation) {

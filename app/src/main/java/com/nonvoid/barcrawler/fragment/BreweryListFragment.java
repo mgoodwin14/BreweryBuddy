@@ -77,7 +77,9 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
     @Override
     public void onBrewerySelected(BreweryLocation location) {
         Intent intent = new Intent(getContext(), BreweryDetailsActivity.class);
-        intent.putExtra(IntentTags.BREWERY_ITEM, location);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(IntentTags.BREWERY_ITEM, location);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }
