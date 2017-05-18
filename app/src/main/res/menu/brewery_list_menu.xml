@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/favorite_button"
-        android:title="Favoirte"
-        android:icon="@drawable/ic_favorite_unchecked"
+        android:id="@+id/map_button"
+        android:title="view on map"
+        android:icon="@drawable/ic_view_on_map"
         app:showAsAction="always"
         />
 </menu>
