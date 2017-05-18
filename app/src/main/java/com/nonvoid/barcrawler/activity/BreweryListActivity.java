@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -45,6 +47,24 @@ public class BreweryListActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         client = new BreweryClient();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.brewery_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.map_button:
+                //show list on map
+
+                return true;
+        }
+
+        return false;
     }
 
     @Override
