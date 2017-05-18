@@ -7,9 +7,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 import com.nonvoid.barcrawler.util.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by Matt on 5/5/2017.
  */
@@ -66,14 +63,6 @@ public class BreweryLocation implements Parcelable {
             }
         }
         return this.name;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public double getLng() {
-        return lng;
     }
 
     public LatLng getLatLng(){
