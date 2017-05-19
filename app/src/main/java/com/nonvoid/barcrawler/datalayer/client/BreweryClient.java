@@ -5,6 +5,7 @@ import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
 import com.nonvoid.barcrawler.datalayer.service.BeerService;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,7 +36,7 @@ public class BreweryClient implements BreweryAPI {
     }
 
     @Override
-    public Observable<List<BreweryLocation>> getLocationsInCity(String city) {
+    public Observable<ArrayList<BreweryLocation>> getLocationsInCity(String city) {
         return service.getBrewery(city)
                 //.subscribeOn(Schedulers.io())
                 //.observeOn(AndroidSchedulers.mainThread())

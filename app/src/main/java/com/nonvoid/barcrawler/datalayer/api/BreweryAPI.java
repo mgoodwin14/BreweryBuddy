@@ -2,6 +2,7 @@ package com.nonvoid.barcrawler.datalayer.api;
 
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -13,5 +14,5 @@ import io.reactivex.Observable;
  */
 
 public interface BreweryAPI {
-    Observable<List<BreweryLocation>> getLocationsInCity(String city);
+    Observable<ArrayList<BreweryLocation>> getLocationsInCity(String city);
 }

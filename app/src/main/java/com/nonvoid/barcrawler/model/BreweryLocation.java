@@ -24,6 +24,10 @@ public class BreweryLocation implements Parcelable {
     double lng;
     @SerializedName("brewery")
     BreweryData breweryData;
+    @SerializedName("locality")
+    String locality;
+    @SerializedName("region")
+    String region;
 
     protected BreweryLocation(Parcel in) {
         id = in.readString();
@@ -31,6 +35,8 @@ public class BreweryLocation implements Parcelable {
         name = in.readString();
         lat = in.readDouble();
         lng = in.readDouble();
+        locality = in.readString();
+        region = in.readString();
         breweryData=new BreweryData();
         breweryData.name = in.readString();
         breweryData.description = in.readString();
@@ -69,6 +75,14 @@ public class BreweryLocation implements Parcelable {
         return new LatLng(lat, lng);
     }
 
+    public String getLocality() {
+        return locality;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -81,6 +95,8 @@ public class BreweryLocation implements Parcelable {
         dest.writeString(name);
         dest.writeDouble(lat);
         dest.writeDouble(lng);
+        dest.writeString(locality);
+        dest.writeString(region);
         dest.writeString(breweryData.name);
         dest.writeString(breweryData.description);
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nonvoid.barcrawler.R;
@@ -21,6 +23,9 @@ import com.nonvoid.barcrawler.adapter.BreweryListAdapter;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.util.IntentTags;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,13 +39,20 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.brewery_mapview)
     MapView mapView;
 
-    private BreweryLocation location;
-    private Marker marker;
+//    private BreweryLocation location;
+    private List<BreweryLocation> locationList;
+    private List<Marker> markerList = new ArrayList<>();
 
     public static BreweryMapFragment newInstance(BreweryLocation location){
+        ArrayList<BreweryLocation> list = new ArrayList<>();
+        list.add(location);
+        return newInstance(list);
+    }
+
+    public static BreweryMapFragment newInstance(ArrayList<BreweryLocation> breweryLocations) {
         BreweryMapFragment fragment = new BreweryMapFragment();
         Bundle args = new Bundle();
-        args.putParcelable(IntentTags.BREWERY_ITEM, location);
+        args.putParcelableArrayList(IntentTags.BREWERY_ITEM, breweryLocations);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +60,7 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        location = (BreweryLocation) getArguments().get(IntentTags.BREWERY_ITEM);
+        locationList = getArguments().getParcelableArrayList(IntentTags.BREWERY_ITEM);
     }
 
     @Nullable
@@ -63,14 +75,35 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(location.getLatLng());
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_location));
-//        markerOptions.snippet(location.getDescription());
-//        markerOptions.title(location.getName());
+        if(!locationList.isEmpty()){
+            if(locationList.size()==1){
+                //show details of one location
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(locationList.get(0).getLatLng());
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_location));
+//               markerOptions.snippet(location.getDescription());
+//               markerOptions.title(location.getName());
 
-        marker = googleMap.addMarker(markerOptions);
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14));
+                Marker marker = googleMap.addMarker(markerOptions);
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14));
+                markerList.add(marker);
+            }else {
+                //put all location marker on the map
+                LatLngBounds.Builder builder = LatLngBounds.builder();
+                for(BreweryLocation location : locationList){
+                    builder.include(location.getLatLng());
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(location.getLatLng());
+                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_location));
+                    markerOptions.title(location.getName());
+                    Marker marker = googleMap.addMarker(markerOptions);
+                    markerList.add(marker);
+                }
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
+            }
+        }
+
     }
 
     @Override
@@ -94,7 +127,9 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+        if(mapView!=null) {
+            mapView.onSaveInstanceState(outState);
+        }
     }
 
     @Override
@@ -102,5 +137,6 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
 
 }
