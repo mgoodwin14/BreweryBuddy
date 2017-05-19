@@ -27,6 +27,7 @@ public class BreweryDetailsActivity extends BaseActivity {
 
     @BindView(R.id.brewery_details_description_textview)
     TextView breweryDescriptionTextView;
+    private BreweryLocation location;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class BreweryDetailsActivity extends BaseActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            BreweryLocation location = bundle.getParcelable(IntentTags.BREWERY_ITEM);
+            this.location = bundle.getParcelable(IntentTags.BREWERY_ITEM);
             if (location != null) {
                 breweryNameTextView.setText(location.getName());
                 breweryDescriptionTextView.setText(location.getDescription());
@@ -59,6 +60,14 @@ public class BreweryDetailsActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.favorite_button:
+                toggleFavorite(location);
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void toggleFavorite(BreweryLocation location) {
+        getSharedPreferences()
     }
 }
