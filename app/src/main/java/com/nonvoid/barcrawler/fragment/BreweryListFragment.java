@@ -73,10 +73,7 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
         Bundle bundle = getArguments();
 
         if(bundle!= null) {
-            ArrayList<BreweryLocation> list = getArguments().getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
-            if(list!=null){
-                breweryLocations.addAll(list);
-            }
+            breweryLocations = getArguments().getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
         }
     }
 
