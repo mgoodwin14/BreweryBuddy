@@ -23,13 +23,13 @@ public class BreweryTest {
 
         Assert.assertNotNull(client);
 
-        TestObserver<List<BreweryLocation>> testSubscriber = client.getLocationsInCity("Columbus").test();
-
-        testSubscriber.assertSubscribed();
-        testSubscriber.assertComplete();
-        testSubscriber.assertNoErrors();
-
-        List list = testSubscriber.getEvents();
-        Assert.assertFalse(list.isEmpty());
+//        TestObserver<List<BreweryLocation>> testSubscriber = client.getLocationsInCity("Columbus").test();
+//
+//        testSubscriber.assertSubscribed();
+//        testSubscriber.assertComplete();
+//        testSubscriber.assertNoErrors();
+//
+//        List list = testSubscriber.getEvents();
+//        Assert.assertFalse(list.isEmpty());
     }
 }
