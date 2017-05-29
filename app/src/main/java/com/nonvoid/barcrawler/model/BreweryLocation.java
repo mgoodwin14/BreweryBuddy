@@ -18,6 +18,8 @@ public class BreweryLocation implements Parcelable {
     String breweryId;
     @SerializedName("name")
     String name;
+    @SerializedName("streetAddress")
+    String streetAddress;
     @SerializedName("latitude")
     double lat;
     @SerializedName("longitude")
@@ -69,6 +71,10 @@ public class BreweryLocation implements Parcelable {
             }
         }
         return this.name;
+    }
+
+    public String getStreetAddress(){
+        return streetAddress;
     }
 
     public LatLng getLatLng(){

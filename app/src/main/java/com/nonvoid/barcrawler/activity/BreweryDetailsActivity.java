@@ -1,5 +1,7 @@
 package com.nonvoid.barcrawler.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
@@ -29,12 +31,15 @@ public class BreweryDetailsActivity extends BaseActivity {
     TextView breweryDescriptionTextView;
     private BreweryLocation location;
 
+    private SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brewery_details_activity);
         ButterKnife.bind(this);
 
+        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             this.location = bundle.getParcelable(IntentTags.BREWERY_ITEM);
@@ -55,6 +60,9 @@ public class BreweryDetailsActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.brewery_details_menu, menu);
+        if(sharedPref.getBoolean(location.getBreweryId(), false)) {
+            menu.getItem(0).setIcon(R.drawable.ic_favorite_checked);
+        }
         return true;
     }
 
@@ -68,6 +76,12 @@ public class BreweryDetailsActivity extends BaseActivity {
     }
 
     private void toggleFavorite(BreweryLocation location) {
-        getSharedPreferences()
+
+        Boolean fav = sharedPref.getBoolean(location.getBreweryId(), false);
+        sharedPref.edit()
+                .putBoolean(location.getBreweryId(), !fav)
+                .apply();
+
+        invalidateOptionsMenu();
     }
 }

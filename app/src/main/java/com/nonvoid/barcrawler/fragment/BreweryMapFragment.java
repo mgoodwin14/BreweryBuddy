@@ -1,5 +1,7 @@
 package com.nonvoid.barcrawler.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -138,5 +140,11 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onLowMemory();
     }
 
-
+    private void buildMapIntent(BreweryLocation location){
+        String formatted = String.format("geo:%s,%s?q=%s", String.valueOf( location.getLatLng().latitude), String.valueOf( location.getLatLng().longitude ), location.getStreetAddress());
+        Uri gmmIntentUri = Uri.parse(formatted);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
 }
