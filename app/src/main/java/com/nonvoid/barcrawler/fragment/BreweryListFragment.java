@@ -1,5 +1,6 @@
 package com.nonvoid.barcrawler.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,39 +89,40 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
         breweryListRecyclerView.setHasFixedSize(true);
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("MPG", "Trying to search");
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            Log.d("MPG", "Trying to search");
 
-                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-                Disposable disposable =  client.getLocationsInCity(v.getText().toString())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                list -> {
-                                    breweryLocations = list;
-                                    breweryListRecyclerView.setAdapter(new BreweryListAdapter(breweryLocations, BreweryListFragment.this));
-                                    Log.d("MPG", "successful search");
-                        },
-                                    throwable -> Log.d("MPG", "Failed to search")
-                        );
+            ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
+                    "Loading. Please wait...", true);
 
-                compositeDisposable.add(disposable);
-                return true;
-            }
+            Disposable disposable =  client.getLocationsInCity(v.getText().toString())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            list -> {
+                                breweryLocations = list;
+                                breweryListRecyclerView.setAdapter(new BreweryListAdapter(breweryLocations, BreweryListFragment.this));
+                                Log.d("MPG", "successful search");
+                                dialog.dismiss();
+                    },
+                            throwable -> {
+                                Log.d("MPG", "Failed to search");
+                                dialog.dismiss();}
+                    );
+
+            compositeDisposable.add(disposable);
+            return true;
         });
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "MPG onResume");
-
-//        breweryListRecyclerView.getAdapter().notifyDataSetChanged();
+    public void onPause() {
+        super.onPause();
+        compositeDisposable.clear();
     }
 
     @Override
