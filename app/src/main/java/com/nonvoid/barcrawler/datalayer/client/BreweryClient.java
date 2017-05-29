@@ -1,8 +1,10 @@
 package com.nonvoid.barcrawler.datalayer.client;
 
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
+import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
 import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
 import com.nonvoid.barcrawler.datalayer.service.BeerService;
+import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
@@ -42,5 +44,11 @@ public class BreweryClient implements BreweryAPI {
                 //.observeOn(AndroidSchedulers.mainThread())
                 //.unsubscribeOn(Schedulers.io())
                 .map(LocationResponse::getLocations);
+    }
+
+    @Override
+    public Observable<ArrayList<Beer>> getBeersForBrewery(String breweryId) {
+        return service.getBeersForBrewery(breweryId)
+                .map(BeerResponse::getBeers);
     }
 }

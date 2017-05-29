@@ -1,5 +1,6 @@
 package com.nonvoid.barcrawler.datalayer.api;
 
+import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
@@ -15,4 +16,5 @@ import io.reactivex.Observable;
 
 public interface BreweryAPI {
     Observable<ArrayList<BreweryLocation>> getLocationsInCity(String city);
+    Observable<ArrayList<Beer>> getBeersForBrewery(String breweryId);
 }
