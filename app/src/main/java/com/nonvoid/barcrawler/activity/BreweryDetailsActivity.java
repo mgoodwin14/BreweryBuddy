@@ -9,12 +9,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
+import com.nonvoid.barcrawler.fragment.BreweryBeerListFragment;
 import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.util.IntentTags;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Matt on 5/13/2017.
@@ -27,6 +29,7 @@ public class BreweryDetailsActivity extends BaseActivity {
 
     @BindView(R.id.brewery_details_description_textview)
     TextView breweryDescriptionTextView;
+    private BreweryLocation location;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class BreweryDetailsActivity extends BaseActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-            BreweryLocation location = bundle.getParcelable(IntentTags.BREWERY_ITEM);
+            location = bundle.getParcelable(IntentTags.BREWERY_ITEM);
             if (location != null) {
                 breweryNameTextView.setText(location.getName());
                 breweryDescriptionTextView.setText(location.getDescription());
@@ -45,6 +48,7 @@ public class BreweryDetailsActivity extends BaseActivity {
 
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.brewery_map_fragment_frame, fragment)
+                        .addToBackStack(null)
                         .commit();
             }
         }
@@ -60,5 +64,15 @@ public class BreweryDetailsActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.beer_list_button)
+    public void onShowBeerList(){
+        //TODO show beer list fragment
+        BreweryBeerListFragment fragment = BreweryBeerListFragment.newInstance(location);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.brewery_map_fragment_frame, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

@@ -1,27 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    >
 
-    <TextView
-        android:id="@+id/brewery_details_name_textview"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="17sp"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        tools:text="Test"
-        />
+        android:id="@+id/brewery_name_layout"
+        >
+
+        <TextView
+            android:id="@+id/brewery_details_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="10"
+            style="@style/PrimaryText"
+            tools:text="Brewery Name"
+            />
+
+        <Button
+            android:id="@+id/beer_list_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="Beers"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/brewery_details_description_textview"
-        android:layout_below="@id/brewery_details_name_textview"
+        android:layout_below="@id/brewery_name_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="17sp"
+        android:textSize="@dimen/primary_text_size"
         android:maxLines="10"
         android:scrollbars="vertical"
         />
@@ -31,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/brewery_details_description_textview"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/primary_margin"
         />
 
 </RelativeLayout>

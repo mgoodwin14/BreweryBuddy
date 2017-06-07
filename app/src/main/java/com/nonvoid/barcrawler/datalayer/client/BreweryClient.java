@@ -51,4 +51,9 @@ public class BreweryClient implements BreweryAPI {
         return service.getBeersForBrewery(breweryId)
                 .map(BeerResponse::getBeers);
     }
+
+    @Override
+    public Observable<ArrayList<Beer>> getBeersForBrewery(BreweryLocation location) {
+        return getBeersForBrewery(location.getBreweryId());
+    }
 }

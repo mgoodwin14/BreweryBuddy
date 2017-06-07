@@ -71,7 +71,6 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
         Log.d(TAG, "MPG onCreate");
 
         Bundle bundle = getArguments();
-
         if(bundle!= null) {
             breweryLocations = getArguments().getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
         }
@@ -106,7 +105,7 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
                                 dialog.dismiss();
                     },
                             throwable -> {
-                                Log.d("MPG", "Failed to search");
+                                Log.d("MPG", "Failed to search: " + throwable.getMessage());
                                 dialog.dismiss();}
                     );
 

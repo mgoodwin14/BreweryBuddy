@@ -1,6 +1,7 @@
 package com.nonvoid.barcrawler;
 
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
+import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
 import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
@@ -41,13 +42,15 @@ public class BreweryTest {
 
         Assert.assertNotNull(client);
 
-        TestObserver<ArrayList<Beer>> testSubscriber = client.getBeersForBrewery("rcu5uW").test();
+        TestObserver<ArrayList<Beer>> testSubscriber = client.getBeersForBrewery("DnuXce").test();
 
         testSubscriber.assertSubscribed();
         testSubscriber.assertComplete();
         testSubscriber.assertNoErrors();
 
         List list = testSubscriber.getEvents();
+
+        Assert.assertNotNull(list);
         Assert.assertFalse(list.isEmpty());
     }
 }

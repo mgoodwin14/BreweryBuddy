@@ -17,22 +17,25 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/brewery_list_name_textview"
-            android:layout_width="match_parent"
+            android:id="@+id/beer_list_name_textview"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            style="@style/PrimaryText"
-            tools:text="Brewery Name"
+            android:textSize="@dimen/primary_text_size"
+            android:gravity="left"
+            android:layout_weight="5"
+            tools:text="Beer Name"
             />
 
         <TextView
-            android:id="@+id/brewery_list_description_textview"
-            android:layout_width="match_parent"
+            android:id="@+id/beer_list_style_textview"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:maxLines="4"
+            android:maxLines="1"
             android:ellipsize="end"
-            tools:text="Brewery Description, up to 4 lines"
+            android:gravity="right"
+            android:layout_weight="1"
+            tools:text="IPA"
             />
     </LinearLayout>
 
