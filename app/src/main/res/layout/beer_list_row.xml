@@ -20,9 +20,9 @@
             android:id="@+id/beer_list_name_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/primary_text_size"
             android:gravity="left"
             android:layout_weight="5"
+            style="@style/PrimaryText"
             tools:text="Beer Name"
             />
 

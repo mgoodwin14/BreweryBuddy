@@ -20,14 +20,9 @@ import butterknife.ButterKnife;
 
 public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.BreweryListViewHolder> {
 
-    private final View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int position = ((RecyclerView) v.getParent()).getChildLayoutPosition(v);
-            callback.onBrewerySelected(breweryLocations.get(position));
-        }
-    };
+
     private final Callback callback;
+
     private List<BreweryLocation> breweryLocations;
 
     public BreweryListAdapter(List<BreweryLocation> breweryLocations, Callback callback) {
@@ -38,7 +33,10 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
     @Override
     public BreweryListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brewery_list_row, parent, false);
-        view.setOnClickListener(onClickListener);
+        view.setOnClickListener(v -> {
+            int position = ((RecyclerView) v.getParent()).getChildLayoutPosition(v);
+            callback.onBrewerySelected(breweryLocations.get(position));
+        });
         BreweryListViewHolder viewHolder = new BreweryListViewHolder(view);
         return viewHolder;
     }
@@ -74,6 +72,4 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
     public interface Callback{
         void onBrewerySelected(BreweryLocation location);
     }
-
-
 }

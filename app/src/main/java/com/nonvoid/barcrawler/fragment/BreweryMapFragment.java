@@ -81,8 +81,6 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(locationList.get(0).getLatLng());
                 markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_map_location));
-//               markerOptions.snippet(location.getDescription());
-//               markerOptions.title(location.getName());
 
                 Marker marker = googleMap.addMarker(markerOptions);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14));

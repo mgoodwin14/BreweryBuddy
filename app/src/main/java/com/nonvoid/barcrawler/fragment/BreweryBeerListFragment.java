@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.adapter.BeerListAdapter;
@@ -30,7 +31,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Matt on 5/30/2017.
  */
 
-public class BreweryBeerListFragment extends Fragment {
+public class BreweryBeerListFragment extends Fragment implements BeerListAdapter.Callback {
 
     private static final String BREWERY_BEER_LIST_BUNDLE_KEY = "brewery_location";
 
@@ -73,10 +74,22 @@ public class BreweryBeerListFragment extends Fragment {
                 .subscribe(
                         list -> {
                             beerList = list;
-                            recyclerView.setAdapter(new BeerListAdapter(beerList));
+                            recyclerView.setAdapter(new BeerListAdapter(beerList, this));
                             dialog.dismiss();
                         }
                 );
+        compositeDisposable.add(disposable);
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        compositeDisposable.clear();
+    }
+
+    @Override
+    public void onBeerSelected(Beer beer) {
+        Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
     }
 }

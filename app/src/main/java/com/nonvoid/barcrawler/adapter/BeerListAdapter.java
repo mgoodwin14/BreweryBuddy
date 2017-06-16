@@ -16,16 +16,22 @@ import butterknife.ButterKnife;
 
 public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerListViewHolder> {
 
+    private final Callback callback;
     private List<Beer> beerList;
 
-    public BeerListAdapter(List<Beer> beerList) {
+    public BeerListAdapter(List<Beer> beerList, Callback callback) {
         this.beerList = beerList;
+        this.callback = callback;
     }
 
     @Override
     public BeerListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.beer_list_row, parent, false);
-//        view.setOnClickListener(onClickListener);
+
+        view.setOnClickListener(v -> {
+            int position = ((RecyclerView) v.getParent()).getChildLayoutPosition(v);
+            callback.onBeerSelected(beerList.get(position));
+        });
         BeerListViewHolder viewHolder = new BeerListViewHolder(view);
         return viewHolder;
     }
@@ -56,5 +62,9 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
             nameTextView.setText(beer.getName());
             descriptionTextView.setText(beer.getDescription());
         }
+    }
+
+    public interface Callback{
+        void onBeerSelected(Beer beer);
     }
 }
