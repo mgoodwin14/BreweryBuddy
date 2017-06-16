@@ -76,8 +76,7 @@ public class BreweryListActivity extends BaseActivity {
 
                 return true;
         }
-
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

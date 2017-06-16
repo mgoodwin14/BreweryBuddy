@@ -1,5 +1,7 @@
 package com.nonvoid.barcrawler.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
@@ -31,15 +33,20 @@ public class BreweryDetailsActivity extends BaseActivity {
     TextView breweryDescriptionTextView;
     private BreweryLocation location;
 
+    private SharedPreferences sharedPref;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brewery_details_activity);
         ButterKnife.bind(this);
 
+        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
+
             location = bundle.getParcelable(IntentTags.BREWERY_ITEM);
+
             if (location != null) {
                 breweryNameTextView.setText(location.getName());
                 breweryDescriptionTextView.setText(location.getDescription());
@@ -58,11 +65,18 @@ public class BreweryDetailsActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.brewery_details_menu, menu);
+        if(sharedPref.getBoolean(location.getBreweryId(), false)) {
+            menu.getItem(0).setIcon(R.drawable.ic_favorite_checked);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.favorite_button:
+                toggleFavorite(location);
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -78,10 +92,20 @@ public class BreweryDetailsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
             finish();
-        }else {
+        } else {
             super.onBackPressed();
         }
+    }
+
+    private void toggleFavorite(BreweryLocation location) {
+
+        Boolean fav = sharedPref.getBoolean(location.getBreweryId(), false);
+        sharedPref.edit()
+                .putBoolean(location.getBreweryId(), !fav)
+                .apply();
+
+        invalidateOptionsMenu();
     }
 }
