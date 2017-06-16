@@ -32,8 +32,7 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
             int position = ((RecyclerView) v.getParent()).getChildLayoutPosition(v);
             callback.onBeerSelected(beerList.get(position));
         });
-        BeerListViewHolder viewHolder = new BeerListViewHolder(view);
-        return viewHolder;
+        return new BeerListViewHolder(view);
     }
 
     @Override
@@ -53,7 +52,7 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
         @BindView(R.id.beer_list_style_textview)
         TextView descriptionTextView;
 
-        public BeerListViewHolder(View itemView) {
+        BeerListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

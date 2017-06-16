@@ -37,8 +37,7 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
             int position = ((RecyclerView) v.getParent()).getChildLayoutPosition(v);
             callback.onBrewerySelected(breweryLocations.get(position));
         });
-        BreweryListViewHolder viewHolder = new BreweryListViewHolder(view);
-        return viewHolder;
+        return new BreweryListViewHolder(view);
     }
 
     @Override
