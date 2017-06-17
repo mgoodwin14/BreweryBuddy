@@ -11,10 +11,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
+import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.fragment.BreweryBeerListFragment;
 import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.util.IntentTags;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,15 +36,16 @@ public class BreweryDetailsActivity extends BaseActivity {
     TextView breweryDescriptionTextView;
     private BreweryLocation location;
 
-    private SharedPreferences sharedPref;
+    @Inject
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brewery_details_activity);
+        ((MyApp) getApplication()).getNetComponent().inject(this);
         ButterKnife.bind(this);
 
-        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
 

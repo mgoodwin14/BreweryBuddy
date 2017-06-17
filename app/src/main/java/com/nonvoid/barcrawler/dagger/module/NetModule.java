@@ -8,6 +8,9 @@ import android.util.Log;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
+import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
+import com.nonvoid.barcrawler.datalayer.service.BeerService;
 
 import java.io.IOException;
 
@@ -49,8 +52,7 @@ public class NetModule {
     @Singleton
     Cache provideOkHttpCache(Application application) {
         int cacheSize = 10 * 1024 * 1024; // 10 MiB
-        Cache cache = new Cache(application.getCacheDir(), cacheSize);
-        return cache;
+        return new Cache(application.getCacheDir(), cacheSize);
     }
 
     @Provides
@@ -64,9 +66,6 @@ public class NetModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient(Cache cache) {
-
-
-
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
 
@@ -84,5 +83,17 @@ public class NetModule {
                 .client(okHttpClient)
                 .build();
         return retrofit;
+    }
+
+    @Provides
+    @Singleton
+    BeerService provideBeerService(Retrofit retrofit){
+        return retrofit.create(BeerService.class);
+    }
+
+    @Provides
+    @Singleton
+    BreweryAPI provideBreweryClient(BeerService service){
+        return new BreweryClient(service);
     }
 }

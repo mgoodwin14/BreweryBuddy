@@ -22,6 +22,7 @@ import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
 import com.nonvoid.barcrawler.activity.BreweryListActivity;
 import com.nonvoid.barcrawler.adapter.BreweryListAdapter;
+import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
 import com.nonvoid.barcrawler.model.BreweryLocation;
@@ -29,6 +30,8 @@ import com.nonvoid.barcrawler.util.IntentTags;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,7 +46,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BreweryListFragment extends Fragment implements BreweryListAdapter.Callback {
 
-    private static final String TAG = BreweryListActivity.class.getSimpleName();
+    private static final String TAG = BreweryListFragment.class.getSimpleName();
     private static final String BREWERY_LOCTION_LIST_BUNDLE_KEY = "brewery_locations";
 
     @BindView(R.id.brewery_list_recyclerview)
@@ -51,9 +54,10 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
     @BindView(R.id.search_edit_text)
     EditText searchEditText;
 
-    private BreweryAPI client = new BreweryClient();
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    @Inject
+    BreweryAPI client;
 
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private List<BreweryLocation> breweryLocations;
 
 
@@ -69,7 +73,7 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "MPG onCreate");
-
+        ((MyApp) getActivity().getApplication()).getNetComponent().inject(this);
         Bundle bundle = getArguments();
         if(bundle!= null) {
             breweryLocations = getArguments().getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);

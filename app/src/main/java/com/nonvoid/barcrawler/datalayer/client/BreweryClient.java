@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 
@@ -35,6 +37,10 @@ public class BreweryClient implements BreweryAPI {
                 .baseUrl("http://api.brewerydb.com/v2/")
                 .build();
         service = retrofit.create(BeerService.class);
+    }
+
+    public BreweryClient(BeerService service) {
+        this.service = service;
     }
 
     @Override
