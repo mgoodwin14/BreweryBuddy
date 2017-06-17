@@ -1,5 +1,7 @@
 package com.nonvoid.barcrawler.activity;
 
+import android.app.Application;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -7,13 +9,20 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
+import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.fragment.BreweryListFragment;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+
+    @Inject
+    SharedPreferences sharedPreferences;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ((MyApp) getApplication()).getNetComponent().inject(this);
+
+        if(sharedPreferences != null){
+            Toast.makeText(this, "Dagger is working", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, "Dagger is NOT working", Toast.LENGTH_LONG).show();
+        }
 
 //        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
