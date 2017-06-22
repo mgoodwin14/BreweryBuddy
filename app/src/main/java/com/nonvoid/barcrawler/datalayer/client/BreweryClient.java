@@ -5,15 +5,17 @@ import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
 import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
 import com.nonvoid.barcrawler.datalayer.service.BeerService;
 import com.nonvoid.barcrawler.model.Beer;
+import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -46,20 +48,24 @@ public class BreweryClient implements BreweryAPI {
     @Override
     public Observable<ArrayList<BreweryLocation>> getLocationsInCity(String city) {
         return service.getBrewery(city)
-                //.subscribeOn(Schedulers.io())
-                //.observeOn(AndroidSchedulers.mainThread())
-                //.unsubscribeOn(Schedulers.io())
+                .compose(applySchedulers())
                 .map(LocationResponse::getLocations);
     }
 
     @Override
     public Observable<ArrayList<Beer>> getBeersForBrewery(String breweryId) {
         return service.getBeersForBrewery(breweryId)
+                .compose(applySchedulers())
                 .map(BeerResponse::getBeers);
     }
 
     @Override
     public Observable<ArrayList<Beer>> getBeersForBrewery(BreweryLocation location) {
         return getBeersForBrewery(location.getBreweryId());
+    }
+
+    private <T> ObservableTransformer<T, T> applySchedulers() {
+        return observable -> observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }
