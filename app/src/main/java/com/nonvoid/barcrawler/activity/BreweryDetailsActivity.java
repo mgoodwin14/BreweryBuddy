@@ -15,6 +15,7 @@ import com.nonvoid.barcrawler.fragment.BeerListFragment;
 import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.util.IntentTags;
+import com.nonvoid.barcrawler.util.StringUtils;
 
 import javax.inject.Inject;
 
@@ -52,8 +53,13 @@ public class BreweryDetailsActivity extends BaseActivity {
 
             if (location != null) {
                 breweryNameTextView.setText(location.getName());
-                breweryDescriptionTextView.setText(location.getDescription());
-                breweryDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
+                if(StringUtils.isNotNullOrEmpty( location.getDescription() )) {
+                    breweryDescriptionTextView.setText(location.getDescription());
+                    breweryDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
+                } else {
+                    breweryDescriptionTextView.setText("Sorry, no description at this time");
+                }
+
                 BreweryMapFragment fragment = BreweryMapFragment.newInstance(location);
 
                 getSupportFragmentManager().beginTransaction()
