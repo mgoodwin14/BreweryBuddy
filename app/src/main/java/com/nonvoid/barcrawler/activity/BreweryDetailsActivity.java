@@ -79,6 +79,7 @@ public class BreweryDetailsActivity extends BaseActivity {
         switch (item.getItemId()){
             case R.id.favorite_button:
                 toggleFavorite(location);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
