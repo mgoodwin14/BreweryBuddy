@@ -10,21 +10,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
-import com.nonvoid.barcrawler.activity.BreweryListActivity;
 import com.nonvoid.barcrawler.adapter.BreweryListAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
-import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.util.IntentTags;
 
