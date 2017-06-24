@@ -13,12 +13,14 @@ import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.adapter.BeerListAdapter;
+import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
-import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
 import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,20 +33,23 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Matt on 5/30/2017.
  */
 
-public class BreweryBeerListFragment extends Fragment implements BeerListAdapter.Callback {
+public class BeerListFragment extends Fragment implements BeerListAdapter.Callback {
 
     private static final String BREWERY_BEER_LIST_BUNDLE_KEY = "brewery_location";
+
+    @Inject
+    BreweryAPI client;
 
     @BindView(R.id.beer_list_recyclerview)
     RecyclerView recyclerView;
 
     private BreweryLocation location;
-    private BreweryAPI client = new BreweryClient();
+
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ArrayList<Beer> beerList;
 
-    public static BreweryBeerListFragment newInstance(BreweryLocation location){
-        BreweryBeerListFragment fragment = new BreweryBeerListFragment();
+    public static BeerListFragment newInstance(BreweryLocation location){
+        BeerListFragment fragment = new BeerListFragment();
         Bundle args = new Bundle();
         args.putParcelable(BREWERY_BEER_LIST_BUNDLE_KEY, location);
         fragment.setArguments(args);
@@ -55,6 +60,7 @@ public class BreweryBeerListFragment extends Fragment implements BeerListAdapter
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         location = getArguments().getParcelable(BREWERY_BEER_LIST_BUNDLE_KEY);
+        ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
     }
 
     @Nullable
