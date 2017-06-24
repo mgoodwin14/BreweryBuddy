@@ -8,6 +8,7 @@ import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,8 +24,12 @@ import io.reactivex.observers.TestObserver;
 
 public class BreweryTest {
 
-    @Inject
-    BreweryAPI client;
+    BreweryAPI client = new BreweryClient();
+
+    @Before
+    public void setUp(){
+
+    }
 
     @Test
     public void testLocationService(){
@@ -43,7 +48,6 @@ public class BreweryTest {
 
     @Test
     public void testBeerService(){
-        BreweryClient client = new BreweryClient();
 
         Assert.assertNotNull(client);
 
