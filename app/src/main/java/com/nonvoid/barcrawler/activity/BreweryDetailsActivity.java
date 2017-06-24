@@ -1,6 +1,5 @@
 package com.nonvoid.barcrawler.activity;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.fragment.BreweryBeerListFragment;
+import com.nonvoid.barcrawler.fragment.BeerListFragment;
 import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.util.IntentTags;
@@ -87,7 +86,7 @@ public class BreweryDetailsActivity extends BaseActivity {
     @OnClick(R.id.beer_list_button)
     public void onShowBeerList(){
         //TODO show beer list fragment
-        BreweryBeerListFragment fragment = BreweryBeerListFragment.newInstance(location);
+        BeerListFragment fragment = BeerListFragment.newInstance(location);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.brewery_map_fragment_frame, fragment)
                 .addToBackStack(null)

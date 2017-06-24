@@ -5,6 +5,7 @@ import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
 import com.nonvoid.barcrawler.activity.MainActivity;
 import com.nonvoid.barcrawler.dagger.module.AppModule;
 import com.nonvoid.barcrawler.dagger.module.NetModule;
+import com.nonvoid.barcrawler.fragment.BeerListFragment;
 import com.nonvoid.barcrawler.fragment.BreweryListFragment;
 
 import javax.inject.Singleton;
@@ -17,5 +18,6 @@ public interface NetComponent {
     void inject(MainActivity activity);
     void inject(BreweryDetailsActivity activity);
     void inject(BreweryListFragment fragment);
+    void inject(BeerListFragment fragment);
 
 }
