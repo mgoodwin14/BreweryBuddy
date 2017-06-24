@@ -15,12 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.BreweryListActivity"
-            android:label="Brewery List"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
             android:name=".activity.BreweryDetailsActivity"
             android:label="Brewery Details" />
 
