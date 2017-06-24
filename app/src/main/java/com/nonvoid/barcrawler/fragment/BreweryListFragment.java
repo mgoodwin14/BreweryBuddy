@@ -95,8 +95,6 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
                     "Loading. Please wait...", true);
 
             Disposable disposable =  client.getLocationsInCity(v.getText().toString())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                             list -> {
                                 breweryLocations = list;

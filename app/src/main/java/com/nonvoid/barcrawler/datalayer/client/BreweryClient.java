@@ -61,7 +61,8 @@ public class BreweryClient implements BreweryAPI {
 
     @Override
     public Observable<ArrayList<Beer>> getBeersForBrewery(BreweryLocation location) {
-        return getBeersForBrewery(location.getBreweryId());
+        return getBeersForBrewery(location.getBreweryId())
+                .compose(applySchedulers());
     }
 
     private <T> ObservableTransformer<T, T> applySchedulers() {

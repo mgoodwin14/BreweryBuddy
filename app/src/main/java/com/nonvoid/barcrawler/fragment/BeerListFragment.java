@@ -75,8 +75,6 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
                 "Loading. Please wait...", true);
 
         Disposable disposable = client.getBeersForBrewery(location)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         list -> {
                             beerList = list;
