@@ -1,5 +1,6 @@
 package com.nonvoid.barcrawler;
 
+import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
 import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
 import com.nonvoid.barcrawler.model.Beer;
@@ -12,6 +13,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.observers.TestObserver;
 
 /**
@@ -20,9 +23,11 @@ import io.reactivex.observers.TestObserver;
 
 public class BreweryTest {
 
+    @Inject
+    BreweryAPI client;
+
     @Test
     public void testLocationService(){
-        BreweryClient client = new BreweryClient();
 
         Assert.assertNotNull(client);
 
