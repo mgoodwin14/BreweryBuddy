@@ -30,6 +30,8 @@ public class BreweryLocation implements Parcelable {
     String locality;
     @SerializedName("region")
     String region;
+    @SerializedName("locationTypeDisplay")
+    String locationType;
 
     protected BreweryLocation(Parcel in) {
         id = in.readString();
@@ -87,6 +89,10 @@ public class BreweryLocation implements Parcelable {
 
     public String getRegion() {
         return region;
+    }
+
+    public String getLocationType(){
+        return locationType;
     }
 
     @Override

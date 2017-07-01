@@ -64,7 +64,7 @@ public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.
 
         void setView(BreweryLocation breweryLocation) {
             nameTextView.setText(breweryLocation.getName());
-            descriptionTextView.setText(breweryLocation.getDescription());
+            descriptionTextView.setText(breweryLocation.getLocationType());
         }
     }
 
