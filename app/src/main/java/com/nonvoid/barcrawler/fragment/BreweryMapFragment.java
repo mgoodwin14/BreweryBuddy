@@ -127,9 +127,9 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(mapView!=null) {
-            mapView.onSaveInstanceState(outState);
-        }
+//        if(mapView!=null && outState != null) {
+//            mapView.onSaveInstanceState(outState);
+//        }
     }
 
     @Override
