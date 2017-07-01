@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -22,6 +25,7 @@ import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.inject.Inject;
 
@@ -68,6 +72,30 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
             location = getArguments().getParcelable(BREWERY_BEER_LIST_BUNDLE_KEY);
         }
         ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        Menu sub = menu.addSubMenu(69,69,69, "Sort");
+        sub.add(69,69,69, "abc");
+        sub.add(69,69,69, "type");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getTitle().toString().equalsIgnoreCase("type")){
+            beerList.sort((o1, o2) -> o1.getShortName().compareTo(o2.getShortName()));
+            recyclerView.getAdapter().notifyDataSetChanged();
+            return true;
+        }else if (item.getTitle().toString().equalsIgnoreCase("abc")){
+            beerList.sort((o1, o2) -> o1.getName().compareTo(o2.getName()));
+            recyclerView.getAdapter().notifyDataSetChanged();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
     }
 
     @Nullable
