@@ -7,6 +7,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
@@ -31,10 +32,14 @@ public class BreweryDetailsActivity extends BaseActivity {
 
     @BindView(R.id.brewery_details_name_textview)
     TextView breweryNameTextView;
-
     @BindView(R.id.brewery_details_description_textview)
     TextView breweryDescriptionTextView;
+    @BindView(R.id.beer_list_button)
+    Button button;
+
+
     private BreweryLocation location;
+    private BeerListFragment fragment;
 
     @Inject
     SharedPreferences sharedPref;
@@ -56,8 +61,6 @@ public class BreweryDetailsActivity extends BaseActivity {
                 if(StringUtils.isNotNullOrEmpty( location.getDescription() )) {
                     breweryDescriptionTextView.setText(location.getDescription());
                     breweryDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
-                } else {
-                    breweryDescriptionTextView.setText("Sorry, no description at this time");
                 }
 
                 BreweryMapFragment fragment = BreweryMapFragment.newInstance(location);
@@ -92,12 +95,22 @@ public class BreweryDetailsActivity extends BaseActivity {
 
     @OnClick(R.id.beer_list_button)
     public void onShowBeerList(){
-        //TODO show beer list fragment
-        BeerListFragment fragment = BeerListFragment.newInstance(location);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.brewery_map_fragment_frame, fragment)
-                .addToBackStack(null)
-                .commit();
+        if(button.getText().toString().equalsIgnoreCase("beers")){
+
+            if(fragment == null){
+                fragment = BeerListFragment.newInstance(location);
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.brewery_map_fragment_frame, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
+            button.setText("Map");
+        }else {
+            onBackPressed();
+            button.setText("Beers");
+        }
     }
 
     @Override
