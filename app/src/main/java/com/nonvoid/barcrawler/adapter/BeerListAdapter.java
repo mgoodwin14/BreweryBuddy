@@ -59,7 +59,7 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
 
         public void setView(Beer beer) {
             nameTextView.setText(beer.getName());
-            descriptionTextView.setText(beer.getDescription());
+            descriptionTextView.setText(beer.getShortName());
         }
     }
 

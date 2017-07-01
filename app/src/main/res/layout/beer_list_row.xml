@@ -10,11 +10,20 @@
     card_view:cardCornerRadius="4dp"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher_round"
+        android:importantForAccessibility="no"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:layout_marginLeft="50dp"
+        >
 
         <TextView
             android:id="@+id/beer_list_name_textview"

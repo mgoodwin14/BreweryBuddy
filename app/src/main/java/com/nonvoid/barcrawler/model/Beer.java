@@ -3,6 +3,7 @@ package com.nonvoid.barcrawler.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Matt on 5/12/2017.
@@ -15,8 +16,10 @@ public class Beer {
     String name;
     @SerializedName("description")
     String description;
-    @SerializedName("abv")
-    String abv;
+    @SerializedName("labels")
+    Map<String, String> labels;
+    @SerializedName("style")
+    Style style;
 
     public String getId() {
         return id;
@@ -30,7 +33,14 @@ public class Beer {
         return description;
     }
 
-    public String getAbv() {
-        return abv;
+    public String getShortName() {
+        return style.shortName;
+    }
+
+    class Style{
+        @SerializedName("abvMin")
+        String abv;
+        @SerializedName("shortName")
+        String shortName;
     }
 }
