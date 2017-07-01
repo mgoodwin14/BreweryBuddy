@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,11 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        location = getArguments().getParcelable(BREWERY_BEER_LIST_BUNDLE_KEY);
+        Bundle bundle = getArguments();
+
+        if(bundle != null) {
+            location = getArguments().getParcelable(BREWERY_BEER_LIST_BUNDLE_KEY);
+        }
         ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
     }
 
@@ -71,6 +76,18 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+
+        if(location!=null) {
+            getBeers(location);
+        }
+
+
+        return view;
+    }
+
+    private void getBeers(BreweryLocation location) {
+
         ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
                 "Loading. Please wait...", true);
 
@@ -80,10 +97,10 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
                             beerList = list;
                             recyclerView.setAdapter(new BeerListAdapter(beerList, this));
                             dialog.dismiss();
-                        }
+                        },
+                        throwable -> Log.e("", throwable.getMessage(), throwable)
                 );
         compositeDisposable.add(disposable);
-        return view;
     }
 
     @Override
@@ -95,5 +112,15 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public void onBeerSelected(Beer beer) {
         Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
+    }
+
+    private void handleThrowable(Throwable throwable) {
+        Log.e("", throwable.getMessage(), throwable);
+    }
+
+    private void handleOnNext(ArrayList<Beer> list) {
+        beerList = list;
+//                            recyclerView.setAdapter(new BeerListAdapter(beerList, this));
+//                            dialog.dismiss();
     }
 }

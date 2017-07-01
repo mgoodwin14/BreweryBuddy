@@ -7,6 +7,7 @@ import com.nonvoid.barcrawler.datalayer.service.BeerService;
 import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
+import com.nonvoid.barcrawler.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
