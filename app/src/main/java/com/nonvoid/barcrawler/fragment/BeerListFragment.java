@@ -78,9 +78,9 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        Menu sub = menu.addSubMenu(69,69,69, "Sort");
-        sub.add(69,69,69, "abc");
-        sub.add(69,69,69, "type");
+        Menu sub = menu.addSubMenu("Sort");
+        sub.add("abc");
+        sub.add("type");
     }
 
     @Override
