@@ -1,6 +1,7 @@
 package com.nonvoid.barcrawler.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
+import com.nonvoid.barcrawler.activity.BeerDetailsActivity;
 import com.nonvoid.barcrawler.adapter.BeerListAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
@@ -112,6 +114,7 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public void onBeerSelected(Beer beer) {
         Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
+        startActivity( BeerDetailsActivity.Companion.newIntent(getContext(), beer ) );
     }
 
     private void handleThrowable(Throwable throwable) {
