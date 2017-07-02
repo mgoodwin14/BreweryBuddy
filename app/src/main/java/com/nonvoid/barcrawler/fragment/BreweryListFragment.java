@@ -1,6 +1,5 @@
 package com.nonvoid.barcrawler.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -14,11 +13,14 @@ import android.view.ViewGroup;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
+import com.nonvoid.barcrawler.adapter.BreweryAdapter;
 import com.nonvoid.barcrawler.adapter.BreweryLocationListAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
+import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
-import com.nonvoid.barcrawler.util.IntentTags;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,27 +35,37 @@ import io.reactivex.disposables.CompositeDisposable;
  * Created by Matt on 5/11/2017.
  */
 
-public class BreweryListFragment extends Fragment implements BreweryLocationListAdapter.Callback {
+public class BreweryListFragment extends Fragment implements BreweryLocationListAdapter.Callback, BreweryAdapter.Callback {
 
     private static final String TAG = BreweryListFragment.class.getSimpleName();
-    private static final String BREWERY_LOCTION_LIST_BUNDLE_KEY = "brewery_locations";
+    private static final String BREWERY_LOCTION_LIST_BUNDLE_KEY = "brewery_locations_key";
+    private static final String BREWERY_LIST_BUNDLE_KEY = "brewery_key";
 
     @BindView(R.id.brewery_list_recyclerview)
     RecyclerView breweryListRecyclerView;
-//    @BindView(R.id.search_edit_text)
-//    EditText searchEditText;
+
+    RecyclerView.Adapter adapter;
 
     @Inject
     BreweryAPI client;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private List<BreweryLocation> breweryLocations;
 
 
-    public static BreweryListFragment newInstance(List<BreweryLocation> locations){
+    @org.jetbrains.annotations.Nullable
+    public static BreweryListFragment newInstance(@NotNull List<BreweryLocation> locations){
         BreweryListFragment fragment = new BreweryListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY, (ArrayList<? extends Parcelable>) locations);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @org.jetbrains.annotations.Nullable
+    public static BreweryListFragment newInstance(@NotNull ArrayList<Brewery> breweries) {
+        BreweryListFragment fragment = new BreweryListFragment();
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(BREWERY_LIST_BUNDLE_KEY, (ArrayList<? extends Parcelable>) breweries);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,7 +77,16 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
         ((MyApp) getActivity().getApplication()).getNetComponent().inject(this);
         Bundle bundle = getArguments();
         if(bundle!= null) {
-            breweryLocations = getArguments().getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
+            ArrayList<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
+            if(breweryList != null){
+                adapter = new BreweryAdapter(breweryList, this);
+            }else {
+
+                List<BreweryLocation> breweryLocations = bundle.getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
+                if (breweryLocations != null) {
+                    adapter = new BreweryLocationListAdapter(breweryLocations, this);
+                }
+            }
         }
     }
 
@@ -77,6 +98,7 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
 
         breweryListRecyclerView.setHasFixedSize(true);
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        breweryListRecyclerView.setAdapter(adapter);
         return view;
     }
 
@@ -88,10 +110,12 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
 
     @Override
     public void onBrewerySelected(BreweryLocation location) {
-        Intent intent = new Intent(getContext(), BreweryDetailsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(IntentTags.BREWERY_ITEM, location);
-        intent.putExtras(bundle);
-        startActivity(intent);
+
+        startActivity(BreweryDetailsActivity.newIntent(getContext(), location));
+    }
+
+    @Override
+    public void onBrewerySelected(Brewery brewery) {
+        startActivity(BreweryDetailsActivity.newIntent(getContext(), brewery));
     }
 }

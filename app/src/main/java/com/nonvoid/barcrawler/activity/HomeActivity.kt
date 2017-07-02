@@ -118,16 +118,18 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return ProgressDialog.show(this, "", text)
     }
 
-    private lateinit var  breweryList: ArrayList<BreweryLocation>
+
 
     private fun setList(list: ArrayList<BreweryLocation>) {
-        this.breweryList = list
+
         supportFragmentManager.beginTransaction()
-                .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(breweryList))
+                .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
                 .commit()
     }
 
     private fun setBreweryList (list: ArrayList<Brewery>){
-        Snackbar.make(nav_view, " setBreweryList", Snackbar.LENGTH_LONG).show()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
+                .commit()
     }
 }

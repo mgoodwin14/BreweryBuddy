@@ -33,19 +33,6 @@ public class BreweryLocation implements Parcelable {
     @SerializedName("locationTypeDisplay")
     String locationType;
 
-    protected BreweryLocation(Parcel in) {
-        id = in.readString();
-        breweryId = in.readString();
-        name = in.readString();
-        lat = in.readDouble();
-        lng = in.readDouble();
-        locality = in.readString();
-        region = in.readString();
-        breweryData=new BreweryData();
-        breweryData.name = in.readString();
-        breweryData.description = in.readString();
-    }
-
     public static final Creator<BreweryLocation> CREATOR = new Creator<BreweryLocation>() {
         @Override
         public BreweryLocation createFromParcel(Parcel in) {
@@ -57,6 +44,39 @@ public class BreweryLocation implements Parcelable {
             return new BreweryLocation[size];
         }
     };
+
+    protected BreweryLocation(Parcel in) {
+        id = in.readString();
+        breweryId = in.readString();
+        name = in.readString();
+        lat = in.readDouble();
+        lng = in.readDouble();
+        locality = in.readString();
+        region = in.readString();
+        locationType = in.readString();
+        breweryData=new BreweryData();
+        breweryData.name = in.readString();
+        breweryData.description = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(breweryId);
+        dest.writeString(name);
+        dest.writeDouble(lat);
+        dest.writeDouble(lng);
+        dest.writeString(locality);
+        dest.writeString(region);
+        dest.writeString(locationType);
+        dest.writeString(breweryData.name);
+        dest.writeString(breweryData.description);
+    }
 
     public String getId() {
         return id;
@@ -93,24 +113,6 @@ public class BreweryLocation implements Parcelable {
 
     public String getLocationType(){
         return locationType;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(breweryId);
-        dest.writeString(name);
-        dest.writeDouble(lat);
-        dest.writeDouble(lng);
-        dest.writeString(locality);
-        dest.writeString(region);
-        dest.writeString(breweryData.name);
-        dest.writeString(breweryData.description);
     }
 
     public String getDescription() {
