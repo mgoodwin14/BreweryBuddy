@@ -11,6 +11,20 @@ import com.google.gson.annotations.SerializedName;
 
 public class Brewery implements Parcelable {
 
+    @SerializedName("id")
+    private String id;
+    @SerializedName("description")
+    private String description;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("nameShortDisplay")
+    private String nameShortDisplay;
+    @SerializedName("brandClassification")
+    private String brandClassification;
+    @SerializedName("images")
+    private Images images;
+
+
     public static final Creator<Brewery> CREATOR = new Creator<Brewery>() {
         @Override
         public Brewery createFromParcel(Parcel in) {
@@ -29,6 +43,8 @@ public class Brewery implements Parcelable {
         name = in.readString();
         nameShortDisplay = in.readString();
         brandClassification = in.readString();
+        images.icon = in.readString();
+        images.squareMedium = in.readString();
     }
 
     @Override
@@ -43,18 +59,9 @@ public class Brewery implements Parcelable {
         dest.writeString(name);
         dest.writeString(nameShortDisplay);
         dest.writeString(brandClassification);
+        dest.writeString(images.icon);
+        dest.writeString(images.squareMedium);
     }
-
-    @SerializedName("id")
-    private String id;
-    @SerializedName("description")
-    private String description;
-    @SerializedName("name")
-    private String name;
-    @SerializedName("nameShortDisplay")
-    private String nameShortDisplay;
-    @SerializedName("brandClassification")
-    private String brandClassification;
 
     public String getId() {
         return id;
@@ -76,5 +83,18 @@ public class Brewery implements Parcelable {
         return brandClassification;
     }
 
+    public String getIcon(){
+        return images.icon;
+    }
 
+    public String getSquareMediumImage(){
+        return images.squareMedium;
+    }
+
+    class Images {
+        @SerializedName("icon")
+        String icon;
+        @SerializedName("squareMedium")
+        String squareMedium;
+    }
 }
