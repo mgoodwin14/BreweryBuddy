@@ -44,8 +44,6 @@ public class BreweryDetailsActivity extends BaseActivity {
     @BindView(R.id.beer_list_button)
     Button button;
 
-
-    private BeerListFragment listFragment;
     private String breweryId;
 
     @Inject
@@ -95,18 +93,17 @@ public class BreweryDetailsActivity extends BaseActivity {
                         .commit();
 
                 breweryId = location.getBreweryId();
-                listFragment = BeerListFragment.newInstance(location);
             } else {
                 Brewery brewery = bundle.getParcelable(BREWERY_ITEM);
                 if(brewery!= null){
                     breweryNameTextView.setText(brewery.getName());
                     breweryDescriptionTextView.setText(brewery.getDescription());
-
+                    breweryId = brewery.getId();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.brewery_map_fragment_frame, BeerListFragment.newInstance(brewery))
+                            .replace(R.id.brewery_map_fragment_frame, BeerListFragment.newInstance(breweryId))
                             .addToBackStack(null)
                             .commit();
-                    breweryId = brewery.getId();
+
                     button.setVisibility(View.GONE);
                 }
             }
@@ -138,7 +135,7 @@ public class BreweryDetailsActivity extends BaseActivity {
         if(button.getText().toString().equalsIgnoreCase("beers")){
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.brewery_map_fragment_frame, listFragment)
+                    .replace(R.id.brewery_map_fragment_frame, BeerListFragment.newInstance(breweryId))
                     .addToBackStack(null)
                     .commit();
 
