@@ -14,5 +14,9 @@ public class Brewery {
     private String description;
     @SerializedName("name")
     private String name;
+    @SerializedName("nameShortDisplay")
+    private String nameShortDisplay;
+    @SerializedName("brandClassification")
+    private String brandClassification;
 
 }

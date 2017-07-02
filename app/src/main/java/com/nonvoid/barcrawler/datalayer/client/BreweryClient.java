@@ -2,15 +2,14 @@ package com.nonvoid.barcrawler.datalayer.client;
 
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
+import com.nonvoid.barcrawler.datalayer.response.BreweryResponse;
 import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
 import com.nonvoid.barcrawler.datalayer.service.BeerService;
 import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
-import com.nonvoid.barcrawler.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 import io.reactivex.Observable;
@@ -64,6 +63,13 @@ public class BreweryClient implements BreweryAPI {
     public Observable<ArrayList<Beer>> getBeersForBrewery(BreweryLocation location) {
         return getBeersForBrewery(location.getBreweryId())
                 .compose(applySchedulers());
+    }
+
+    @Override
+    public Observable<ArrayList<Brewery>> searchForBrewery(String query) {
+        return service.searchForBrewery(query)
+                .compose(applySchedulers())
+                .map(BreweryResponse::getLocations);
     }
 
     private <T> ObservableTransformer<T, T> applySchedulers() {
