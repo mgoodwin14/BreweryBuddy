@@ -1,9 +1,12 @@
 package com.nonvoid.barcrawler.datalayer.service;
 
 import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
+import com.nonvoid.barcrawler.datalayer.response.BreweryResponse;
 import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
+import com.nonvoid.barcrawler.model.Brewery;
 
 
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -22,4 +25,7 @@ public interface BeerService {
 
     @GET("brewery/{id}/beers?key=98d5ee318c335e35af66cc5f952fd412&format=json")
     Observable<BeerResponse> getBeersForBrewery(@Path("id") String breweryId);
+
+    @GET("search?key=98d5ee318c335e35af66cc5f952fd412&format=json&type=brewery")
+    Observable<BreweryResponse> searchForBrewery(@Query("q") String query);
 }

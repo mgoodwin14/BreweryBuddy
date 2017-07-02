@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +14,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.nonvoid.barcrawler.R;
-import com.nonvoid.barcrawler.adapter.BreweryListAdapter;
-import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
-import com.nonvoid.barcrawler.util.IntentTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +32,7 @@ import butterknife.ButterKnife;
 
 public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
 
+    private static final String LOCATION_ITEMS = "location_items";
     @BindView(R.id.brewery_mapview)
     MapView mapView;
 
@@ -54,7 +49,7 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     public static BreweryMapFragment newInstance(ArrayList<BreweryLocation> breweryLocations) {
         BreweryMapFragment fragment = new BreweryMapFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(IntentTags.BREWERY_ITEM, breweryLocations);
+        args.putParcelableArrayList(LOCATION_ITEMS, breweryLocations);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,7 +57,7 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        locationList = getArguments().getParcelableArrayList(IntentTags.BREWERY_ITEM);
+        locationList = getArguments().getParcelableArrayList(LOCATION_ITEMS);
     }
 
     @Nullable
@@ -103,7 +98,6 @@ public class BreweryMapFragment extends Fragment implements OnMapReadyCallback {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
             }
         }
-
     }
 
     @Override

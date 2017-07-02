@@ -14,9 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".activity.BreweryDetailsActivity"
-            android:label="Brewery Details" />
+
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -31,24 +29,22 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/title_activity_main">
-
-        </activity>
+            android:name=".activity.BreweryDetailsActivity"
+            android:label="Brewery Details" />
         <activity
-            android:name=".activity.NavDrawerActivity"
-            android:label="@string/title_activity_nav_drawer"
-            android:theme="@style/AppTheme.NoActionBar">
-
+            android:name=".activity.BeerDetailsActivity"
+            android:label="Beer Details"/>
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="Brewery Buddy"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.BeerDetailsActivity" />
     </application>
 
 </manifest>

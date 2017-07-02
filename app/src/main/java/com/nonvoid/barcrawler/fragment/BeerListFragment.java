@@ -22,6 +22,7 @@ import com.nonvoid.barcrawler.adapter.BeerListAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.model.Beer;
+import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
@@ -42,7 +43,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BeerListFragment extends Fragment implements BeerListAdapter.Callback {
 
-    private static final String BREWERY_BEER_LIST_BUNDLE_KEY = "brewery_location";
+    private static final String BREWERY_LOCATION_BUNDLE_KEY = "brewery_location_key";
+    private static final String BREWERY_BUNDLE_KEY = "brewery_key";
 
     @Inject
     BreweryAPI client;
@@ -50,15 +52,21 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @BindView(R.id.beer_list_recyclerview)
     RecyclerView recyclerView;
 
-    private BreweryLocation location;
-
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ArrayList<Beer> beerList;
+
+    public static BeerListFragment newInstance(Brewery brewery){
+        BeerListFragment fragment = new BeerListFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(BREWERY_BUNDLE_KEY, brewery);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public static BeerListFragment newInstance(BreweryLocation location){
         BeerListFragment fragment = new BeerListFragment();
         Bundle args = new Bundle();
-        args.putParcelable(BREWERY_BEER_LIST_BUNDLE_KEY, location);
+        args.putParcelable(BREWERY_LOCATION_BUNDLE_KEY, location);
         fragment.setArguments(args);
         return fragment;
     }
@@ -66,11 +74,6 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-
-        if(bundle != null) {
-            location = getArguments().getParcelable(BREWERY_BEER_LIST_BUNDLE_KEY);
-        }
         ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
         setHasOptionsMenu(true);
     }
@@ -105,15 +108,41 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
         ButterKnife.bind(this, view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-
-        if(location!=null) {
-            getBeers(location);
-        }
-
-
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Bundle bundle = getArguments();
+        if(bundle != null){
+            Brewery brewery = bundle.getParcelable(BREWERY_BUNDLE_KEY);
+            if(brewery!= null){
+                getBeers(brewery);
+            }
+            else {
+                BreweryLocation location = bundle.getParcelable(BREWERY_LOCATION_BUNDLE_KEY);
+                if (location != null) {
+                    getBeers(location);
+                }
+            }
+        }
+    }
+
+    private void getBeers(Brewery brewery) {
+        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
+                "Loading. Please wait...", true);
+
+        Disposable disposable = client.getBeersForBrewery(brewery.getId())
+                .subscribe(
+                        list -> {
+                            beerList = list;
+                            recyclerView.setAdapter(new BeerListAdapter(beerList, this));
+                            dialog.dismiss();
+                        },
+                        throwable -> Log.e("", throwable.getMessage(), throwable)
+                );
+        compositeDisposable.add(disposable);
     }
 
     private void getBeers(BreweryLocation location) {
@@ -143,15 +172,5 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     public void onBeerSelected(Beer beer) {
         Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
         startActivity( BeerDetailsActivity.Companion.newIntent(getContext(), beer ) );
-    }
-
-    private void handleThrowable(Throwable throwable) {
-        Log.e("", throwable.getMessage(), throwable);
-    }
-
-    private void handleOnNext(ArrayList<Beer> list) {
-        beerList = list;
-//                            recyclerView.setAdapter(new BeerListAdapter(beerList, this));
-//                            dialog.dismiss();
     }
 }
