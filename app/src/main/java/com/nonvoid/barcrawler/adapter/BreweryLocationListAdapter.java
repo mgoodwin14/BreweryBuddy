@@ -18,14 +18,14 @@ import butterknife.ButterKnife;
  * Created by Matt on 5/3/2017.
  */
 
-public class BreweryListAdapter extends RecyclerView.Adapter<BreweryListAdapter.BreweryListViewHolder> {
+public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLocationListAdapter.BreweryListViewHolder> {
 
 
     private final Callback callback;
 
     private List<BreweryLocation> breweryLocations;
 
-    public BreweryListAdapter(List<BreweryLocation> breweryLocations, Callback callback) {
+    public BreweryLocationListAdapter(List<BreweryLocation> breweryLocations, Callback callback) {
         this.breweryLocations = breweryLocations;
         this.callback = callback;
     }

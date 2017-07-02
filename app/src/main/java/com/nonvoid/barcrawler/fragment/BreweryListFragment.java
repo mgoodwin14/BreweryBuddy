@@ -1,7 +1,5 @@
 package com.nonvoid.barcrawler.fragment;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -13,12 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
-import com.nonvoid.barcrawler.adapter.BreweryListAdapter;
+import com.nonvoid.barcrawler.adapter.BreweryLocationListAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.model.BreweryLocation;
@@ -32,13 +28,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Matt on 5/11/2017.
  */
 
-public class BreweryListFragment extends Fragment implements BreweryListAdapter.Callback {
+public class BreweryListFragment extends Fragment implements BreweryLocationListAdapter.Callback {
 
     private static final String TAG = BreweryListFragment.class.getSimpleName();
     private static final String BREWERY_LOCTION_LIST_BUNDLE_KEY = "brewery_locations";
