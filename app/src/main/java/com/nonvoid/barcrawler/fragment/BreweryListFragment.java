@@ -45,8 +45,8 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
 
     @BindView(R.id.brewery_list_recyclerview)
     RecyclerView breweryListRecyclerView;
-    @BindView(R.id.search_edit_text)
-    EditText searchEditText;
+//    @BindView(R.id.search_edit_text)
+//    EditText searchEditText;
 
     @Inject
     BreweryAPI client;
@@ -82,32 +82,6 @@ public class BreweryListFragment extends Fragment implements BreweryListAdapter.
 
         breweryListRecyclerView.setHasFixedSize(true);
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            Log.d("MPG", "Trying to search");
-
-            final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-
-            ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-                    "Loading. Please wait...", true);
-
-            Disposable disposable =  client.getLocationsInCity(v.getText().toString())
-                    .subscribe(
-                            list -> {
-                                breweryLocations = list;
-                                breweryListRecyclerView.setAdapter(new BreweryListAdapter(breweryLocations, BreweryListFragment.this));
-                                Log.d("MPG", "successful search");
-                                dialog.dismiss();
-                    },
-                            throwable -> {
-                                Log.d("MPG", "Failed to search: " + throwable.getMessage());
-                                dialog.dismiss();}
-                    );
-
-            compositeDisposable.add(disposable);
-            return true;
-        });
         return view;
     }
 
