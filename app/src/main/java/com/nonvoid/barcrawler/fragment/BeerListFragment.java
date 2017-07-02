@@ -43,8 +43,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BeerListFragment extends Fragment implements BeerListAdapter.Callback {
 
-    private static final String BREWERY_LOCATION_BUNDLE_KEY = "brewery_location_key";
-    private static final String BREWERY_BUNDLE_KEY = "brewery_key";
+    private static final String BEER_LIST_BUNDLE_KEY = "beer_list_key";
+    private static final String BREWERY_ID_BUNDLE_KEY = "brewery_id_key";
 
     @Inject
     BreweryAPI client;
@@ -55,18 +55,19 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ArrayList<Beer> beerList;
 
-    public static BeerListFragment newInstance(Brewery brewery){
+    @org.jetbrains.annotations.Nullable
+    public static BeerListFragment newInstance(@org.jetbrains.annotations.Nullable ArrayList<Beer> list) {
         BeerListFragment fragment = new BeerListFragment();
         Bundle args = new Bundle();
-        args.putParcelable(BREWERY_BUNDLE_KEY, brewery);
+        args.putParcelableArrayList(BEER_LIST_BUNDLE_KEY, list);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static BeerListFragment newInstance(BreweryLocation location){
+    public static BeerListFragment newInstance(@org.jetbrains.annotations.Nullable String breweryId) {
         BeerListFragment fragment = new BeerListFragment();
         Bundle args = new Bundle();
-        args.putParcelable(BREWERY_LOCATION_BUNDLE_KEY, location);
+        args.putString(BREWERY_ID_BUNDLE_KEY, breweryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -115,56 +116,32 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     public void onStart() {
         super.onStart();
         Bundle bundle = getArguments();
-        if(bundle != null){
-            Brewery brewery = bundle.getParcelable(BREWERY_BUNDLE_KEY);
-            if(brewery!= null){
-                getBeers(brewery);
-            }
-            else {
-                BreweryLocation location = bundle.getParcelable(BREWERY_LOCATION_BUNDLE_KEY);
-                if (location != null) {
-                    getBeers(location);
-                }
+        if(bundle != null) {
+            beerList = bundle.getParcelableArrayList(BEER_LIST_BUNDLE_KEY);
+            if(beerList!= null){
+                recyclerView.setAdapter(new BeerListAdapter(beerList, this));
+            }else {
+                String breweryId = bundle.getString(BREWERY_ID_BUNDLE_KEY);
+                ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
+                        "Loading. Please wait...", true);
+
+                Disposable disposable = client.getBeersForBrewery(breweryId)
+                        .subscribe(
+                                list -> {
+                                    beerList = list;
+                                    recyclerView.setAdapter(new BeerListAdapter(beerList, this));
+                                    dialog.dismiss();
+                                },
+                                throwable -> Log.e("", throwable.getMessage(), throwable)
+                        );
+                compositeDisposable.add(disposable);
             }
         }
     }
 
-    private void getBeers(Brewery brewery) {
-        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-                "Loading. Please wait...", true);
-
-        Disposable disposable = client.getBeersForBrewery(brewery.getId())
-                .subscribe(
-                        list -> {
-                            beerList = list;
-                            recyclerView.setAdapter(new BeerListAdapter(beerList, this));
-                            dialog.dismiss();
-                        },
-                        throwable -> Log.e("", throwable.getMessage(), throwable)
-                );
-        compositeDisposable.add(disposable);
-    }
-
-    private void getBeers(BreweryLocation location) {
-
-        ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
-                "Loading. Please wait...", true);
-
-        Disposable disposable = client.getBeersForBrewery(location)
-                .subscribe(
-                        list -> {
-                            beerList = list;
-                            recyclerView.setAdapter(new BeerListAdapter(beerList, this));
-                            dialog.dismiss();
-                        },
-                        throwable -> Log.e("", throwable.getMessage(), throwable)
-                );
-        compositeDisposable.add(disposable);
-    }
-
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         compositeDisposable.clear();
     }
 
