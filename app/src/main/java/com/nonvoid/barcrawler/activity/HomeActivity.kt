@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -34,7 +35,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
+        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
         setUpDrawerNav()
         setUpSearch()
     }
@@ -83,7 +85,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val disposable = this.client.getLocationsInCity(search_edit_text.text.toString())
                     .subscribe(
                             {
-                                list ->  setList(list)
+                                list ->  supportFragmentManager.beginTransaction()
+                                    .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
+                                    .commit()
                                 dialog.dismiss()
                             },
                             {
@@ -101,7 +105,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 client.searchForBrewery(search_edit_text.text.toString())
                         .subscribe(
                                 {
-                                    list ->  setBreweryList(list)
+                                    list ->  supportFragmentManager.beginTransaction()
+                                        .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
+                                        .commit()
                                     dialog.dismiss()},
                                 {
                                     throwable -> Log.e("", throwable.message, throwable)
@@ -116,20 +122,5 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(v.windowToken, 0)
         return ProgressDialog.show(this, "", text)
-    }
-
-
-
-    private fun setList(list: ArrayList<BreweryLocation>) {
-
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
-                .commit()
-    }
-
-    private fun setBreweryList (list: ArrayList<Brewery>){
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
-                .commit()
     }
 }
