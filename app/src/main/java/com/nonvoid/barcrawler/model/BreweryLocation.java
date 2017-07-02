@@ -13,25 +13,25 @@ import com.nonvoid.barcrawler.util.StringUtils;
 
 public class BreweryLocation implements Parcelable {
     @SerializedName("id")
-    String id;
+    private String id;
     @SerializedName("breweryId")
-    String breweryId;
+    private String breweryId;
     @SerializedName("name")
-    String name;
+    private String name;
     @SerializedName("streetAddress")
-    String streetAddress;
+    private String streetAddress;
     @SerializedName("latitude")
-    double lat;
+    private double lat;
     @SerializedName("longitude")
-    double lng;
+    private double lng;
     @SerializedName("brewery")
-    BreweryData breweryData;
+    private BreweryData breweryData;
     @SerializedName("locality")
-    String locality;
+    private String locality;
     @SerializedName("region")
-    String region;
+    private String region;
     @SerializedName("locationTypeDisplay")
-    String locationType;
+    private String locationType;
 
     public static final Creator<BreweryLocation> CREATOR = new Creator<BreweryLocation>() {
         @Override
@@ -44,6 +44,10 @@ public class BreweryLocation implements Parcelable {
             return new BreweryLocation[size];
         }
     };
+
+    public BreweryLocation(String id){
+        this.id = id;
+    }
 
     protected BreweryLocation(Parcel in) {
         id = in.readString();

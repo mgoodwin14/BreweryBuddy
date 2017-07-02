@@ -43,8 +43,8 @@ public class Brewery implements Parcelable {
         name = in.readString();
         nameShortDisplay = in.readString();
         brandClassification = in.readString();
-        images.icon = in.readString();
-        images.squareMedium = in.readString();
+//        images.icon = in.readString();
+//        images.squareMedium = in.readString();
     }
 
     @Override
@@ -59,8 +59,8 @@ public class Brewery implements Parcelable {
         dest.writeString(name);
         dest.writeString(nameShortDisplay);
         dest.writeString(brandClassification);
-        dest.writeString(images.icon);
-        dest.writeString(images.squareMedium);
+//        dest.writeString(images.icon);
+//        dest.writeString(images.squareMedium);
     }
 
     public String getId() {
