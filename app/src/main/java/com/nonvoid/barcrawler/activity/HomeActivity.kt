@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager
 
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient
+import com.nonvoid.barcrawler.fragment.BeerListFragment
 import com.nonvoid.barcrawler.fragment.BreweryListFragment
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.model.BreweryLocation
@@ -109,6 +110,25 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                         .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
                                         .commit()
                                     dialog.dismiss()},
+                                {
+                                    throwable -> Log.e("", throwable.message, throwable)
+                                    dialog.dismiss()
+                                }
+                        )
+            }
+        }
+
+        beer_search_button.setOnClickListener { v ->
+            run{
+                val dialog = showSearchDialog(v, "Searching for beers named ${search_edit_text.text}")
+                client.searchForBeer(search_edit_text.text.toString())
+                        .subscribe(
+                                {
+                                    list -> supportFragmentManager.beginTransaction()
+                                        .replace(R.id.content_frame_layout, BeerListFragment.newInstance(list))
+                                        .commit()
+                                    dialog.dismiss()
+                                },
                                 {
                                     throwable -> Log.e("", throwable.message, throwable)
                                     dialog.dismiss()
