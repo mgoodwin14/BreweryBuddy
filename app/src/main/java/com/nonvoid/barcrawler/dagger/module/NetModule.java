@@ -34,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetModule {
 
-    String mBaseUrl;
+    private String mBaseUrl;
 
     // Constructor needs one parameter to instantiate.
     public NetModule(String baseUrl) {

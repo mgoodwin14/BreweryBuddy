@@ -17,27 +17,33 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 
 import com.nonvoid.barcrawler.R
+import com.nonvoid.barcrawler.dagger.MyApp
+import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient
 import com.nonvoid.barcrawler.fragment.BeerListFragment
 import com.nonvoid.barcrawler.fragment.BreweryListFragment
-import com.nonvoid.barcrawler.model.Brewery
-import com.nonvoid.barcrawler.model.BreweryLocation
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import kotlinx.android.synthetic.main.search_view_layout.*
 import java.util.ArrayList
+import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    val client : BreweryClient = BreweryClient()
-    val disposables : CompositeDisposable = CompositeDisposable();
+    @Inject
+    lateinit var client : BreweryAPI
+
+    val disposables : CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
+
+        (application as MyApp).netComponent.inject(this)
+
         setUpDrawerNav()
         setUpSearch()
     }
@@ -52,6 +58,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if(drawer_layout.isDrawerOpen(GravityCompat.START))
             drawer_layout.closeDrawer(GravityCompat.START)
+        else if(supportFragmentManager.backStackEntryCount>1)
+            supportFragmentManager.popBackStack()
         else
             super.onBackPressed()
     }
@@ -137,6 +145,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
+
+
 
     private fun showSearchDialog(v : View, text :String): Dialog{
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -5,8 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.annotation.Nullable
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import com.nonvoid.barcrawler.R
+import com.nonvoid.barcrawler.dagger.MyApp
+import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient
 import com.nonvoid.barcrawler.model.Beer
 import kotlinx.android.synthetic.main.beer_details_activity.*
@@ -16,11 +19,13 @@ import kotlinx.android.synthetic.main.beer_details_activity.*
  */
 class BeerDetailsActivity : AppCompatActivity() {
 
-    val client = BreweryClient()
+    lateinit var client :BreweryAPI
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.beer_details_activity)
+
+        (application as MyApp).netComponent.inject(this)
 
         val beer : Beer = intent.extras.getParcelable(INTENT_BEER_ID)
         beer_details_name_textview.text = beer.name
@@ -32,7 +37,7 @@ class BeerDetailsActivity : AppCompatActivity() {
     }
 
     private fun doBeerStuff(beer: Beer) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Snackbar.make(beer_details_description_textview.rootView, "Do Beer Stuff", Snackbar.LENGTH_LONG).show()
     }
 
     companion object {
