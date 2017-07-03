@@ -55,7 +55,7 @@ public class Beer implements Parcelable {
     }
 
     public String getShortName() {
-        return style.shortName;
+        return style.shortName != null ? style.shortName : "";
     }
 
     @Override

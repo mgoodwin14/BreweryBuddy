@@ -22,4 +22,5 @@ public interface BreweryAPI {
 
     Observable<ArrayList<Brewery>> searchForBrewery(String query);
     Observable<ArrayList<Beer>> searchForBeer(String query);
+    Observable<Beer> getBeer(String beerId);
 }

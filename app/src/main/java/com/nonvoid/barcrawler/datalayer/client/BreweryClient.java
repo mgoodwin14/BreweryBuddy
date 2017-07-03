@@ -79,6 +79,18 @@ public class BreweryClient implements BreweryAPI {
                 .map(BeerResponse::getBeers);
     }
 
+    @Override
+    public Observable<Beer> getBeer(String beerId) {
+        return service.getBeerById(beerId)
+                .compose(applySchedulers())
+                .map(x -> {
+                    if(x!=null && x.getBeers() != null && !x.getBeers().isEmpty()) {
+                        return x.getBeers().get(0);
+                    }
+                    return null;
+                });
+    }
+
     private <T> ObservableTransformer<T, T> applySchedulers() {
         return observable -> observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
