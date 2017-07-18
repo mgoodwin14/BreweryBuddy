@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +32,7 @@ import butterknife.OnClick;
  * Created by Matt on 5/13/2017.
  */
 
-public class BreweryDetailsActivity extends BaseActivity {
+public class BreweryDetailsActivity extends AppCompatActivity {
 
     private static final String BREWERY_ITEM = "brewery_item";
     private static final String LOCATION_ITEM = "location_item";
