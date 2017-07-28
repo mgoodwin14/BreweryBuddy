@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.model.BreweryLocation;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLoca
 
     @Override
     public BreweryLocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brewery_list_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brewery_location_list_row, parent, false);
         view.setOnClickListener(v -> {
             int position = ((RecyclerView) v.getParent()).getChildLayoutPosition(v);
             callback.onBrewerySelected(breweryLocations.get(position));
@@ -52,10 +54,14 @@ public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLoca
 
     class BreweryLocationViewHolder extends RecyclerView.ViewHolder{
 
+        @BindView(R.id.brewery_location_list_city_textview)
+        TextView cityTextView;
         @BindView(R.id.brewery_list_name_textview)
         TextView nameTextView;
         @BindView(R.id.brewery_list_brand_classification_textview)
         TextView descriptionTextView;
+        @BindView(R.id.brewery_location_image_view)
+        ImageView imageView;
 
 
         BreweryLocationViewHolder(View itemView) {
@@ -64,6 +70,7 @@ public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLoca
         }
 
         void setView(BreweryLocation breweryLocation) {
+            cityTextView.setText(breweryLocation.getLocality() + ", " + breweryLocation.getRegion());
             nameTextView.setText(breweryLocation.getName());
             descriptionTextView.setText(breweryLocation.getLocationType());
         }
