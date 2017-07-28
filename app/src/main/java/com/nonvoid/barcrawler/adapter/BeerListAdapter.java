@@ -68,8 +68,6 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
             if(beer.getLabels() != null && beer.getLabels().getIcon()!=null){
                 Picasso.with(imageView.getContext())
                         .load(beer.getLabels().getLarge())
-//                        .resize(150, 150)
-//                        .centerCrop()
                         .into(imageView);
             } else {
                 if(!beer.getBreweries().isEmpty()
@@ -92,8 +90,11 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
                     breweryNameTextView.setVisibility(View.GONE);
                 }
             }
-
-            descriptionTextView.setText(beer.getStyle().getShortName());
+            if(beer.getStyle()!=null) {
+                descriptionTextView.setText(beer.getStyle().getShortName());
+            } else {
+                descriptionTextView.setVisibility(View.GONE);
+            }
         }
     }
 
