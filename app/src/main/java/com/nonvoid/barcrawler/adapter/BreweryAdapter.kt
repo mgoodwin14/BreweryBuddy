@@ -4,9 +4,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.model.Brewery
+import com.squareup.picasso.Picasso
 
 
 /**
@@ -15,8 +17,7 @@ import com.nonvoid.barcrawler.model.Brewery
 class BreweryAdapter(private val list: ArrayList<Brewery>, private val callback: Callback) : RecyclerView.Adapter<BreweryAdapter.BreweryViewHolder>() {
 
     override fun onBindViewHolder(holder: BreweryViewHolder, position: Int) {
-        holder.nameTextView.text = list[position].name
-        holder.descriptionTextView.text = list[position].brandClassification
+        holder.setView(list[position])
     }
 
     override fun getItemCount(): Int = list.size
@@ -32,7 +33,25 @@ class BreweryAdapter(private val list: ArrayList<Brewery>, private val callback:
 
     class BreweryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val nameTextView = itemView.findViewById(R.id.brewery_list_name_textview) as TextView
-        val descriptionTextView = itemView.findViewById(R.id.brewery_list_description_textview) as TextView
+        val descriptionTextView = itemView.findViewById(R.id.brewery_list_brand_classification_textview) as TextView
+        val locationTextView = itemView.findViewById(R.id.brewery_list_location_textview) as TextView
+        val imageView = itemView.findViewById(R.id.brewery_image_view) as ImageView
+
+        fun setView(brewery: Brewery){
+            nameTextView.text = brewery.name
+            descriptionTextView.text = brewery.brandClassification.toUpperCase()
+            if(!brewery.locations.isEmpty()){
+                //need to turn on premium features at
+                //http://www.brewerydb.com/developers/premium
+                //locationTextView.text = brewery.locations?.get(0)?.locality
+            } else {
+                locationTextView.visibility = View.GONE
+            }
+
+            Picasso.with(imageView.context)
+                    .load(brewery.images?.large)
+                    .into(imageView)
+        }
     }
 
     interface Callback{

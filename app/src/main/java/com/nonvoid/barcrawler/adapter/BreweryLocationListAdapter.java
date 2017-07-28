@@ -54,8 +54,9 @@ public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLoca
 
         @BindView(R.id.brewery_list_name_textview)
         TextView nameTextView;
-        @BindView(R.id.brewery_list_description_textview)
+        @BindView(R.id.brewery_list_brand_classification_textview)
         TextView descriptionTextView;
+
 
         BreweryLocationViewHolder(View itemView) {
             super(itemView);

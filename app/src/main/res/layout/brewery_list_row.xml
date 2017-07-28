@@ -14,26 +14,67 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="top"
+        android:background="@android:drawable/screen_background_dark_transparent">
+
+        <TextView
+            android:id="@+id/brewery_list_location_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:maxLines="4"
+            android:textColor="@color/cardview_light_background"
+            android:ellipsize="end"
+            tools:text="Columbs, OH"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/brewery_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
+        android:background="@android:drawable/screen_background_dark_transparent">
+
+
+
+        <TextView
+            android:id="@+id/brewery_list_brand_classification_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:maxLines="4"
+            android:textColor="@color/cardview_light_background"
+            android:ellipsize="end"
+            android:layout_gravity="center_horizontal"
+            tools:text="Brewpub"
+            />
+
+
 
         <TextView
             android:id="@+id/brewery_list_name_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="17sp"
+            android:textColor="@color/cardview_light_background"
             style="@style/PrimaryText"
             tools:text="Brewery Name"
             />
 
-        <TextView
-            android:id="@+id/brewery_list_description_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:maxLines="4"
-            android:ellipsize="end"
-            tools:text="Brewery Description, up to 4 lines"
-            />
+
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

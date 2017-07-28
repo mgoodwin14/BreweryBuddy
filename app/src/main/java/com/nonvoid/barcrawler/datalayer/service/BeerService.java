@@ -23,7 +23,7 @@ public interface BeerService {
     @GET("brewery/{id}/beers?key=98d5ee318c335e35af66cc5f952fd412&format=json")
     Observable<BeerResponse> getBeersForBrewery(@Path("id") String breweryId);
 
-    @GET("search?key=98d5ee318c335e35af66cc5f952fd412&format=json&type=brewery")
+    @GET("search?key=98d5ee318c335e35af66cc5f952fd412&format=json&type=brewery&withLocations=y")
     Observable<BreweryResponse> searchForBrewery(@Query("q") String query);
 
     @GET("search?key=98d5ee318c335e35af66cc5f952fd412&format=json&type=beer&withBreweries=y")

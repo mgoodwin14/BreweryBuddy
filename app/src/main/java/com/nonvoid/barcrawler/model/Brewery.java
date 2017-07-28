@@ -56,7 +56,7 @@ public class Brewery implements Parcelable
     private String brandClassification;
     @SerializedName("locations")
     @Expose
-    private List<Location> locations = new ArrayList<Location>();
+    private final List<Location> locations = new ArrayList<Location>();
     public final static Parcelable.Creator<Brewery> CREATOR = new Creator<Brewery>() {
 
 
@@ -206,9 +206,9 @@ public class Brewery implements Parcelable
         return locations;
     }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
+//    public void setLocations(List<Location> locations) {
+//        this.locations = locations;
+//    }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
