@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.model.BreweryLocation;
@@ -70,9 +71,18 @@ public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLoca
         }
 
         void setView(BreweryLocation breweryLocation) {
+            if(breweryLocation.getLocality()==null || breweryLocation.getRegion()==null){
+                Toast.makeText(imageView.getContext(), "null location: " + breweryLocation.getName(), Toast.LENGTH_LONG).show();
+            }
+
             cityTextView.setText(breweryLocation.getLocality() + ", " + breweryLocation.getRegion());
             nameTextView.setText(breweryLocation.getName());
             descriptionTextView.setText(breweryLocation.getLocationType());
+            if(breweryLocation.getBrewery().getImages() != null) {
+                Picasso.with(imageView.getContext())
+                        .load(breweryLocation.getBrewery().getImages().getLarge())
+                    .into(imageView);
+            }
         }
     }
 
