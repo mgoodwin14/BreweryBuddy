@@ -29,9 +29,9 @@ class BeerDetailsActivity : AppCompatActivity() {
         beer_details_name_textview.text = beer.name
         beer_details_description_textview.text = beer.description
 
-        client.getBeer(beer.id).subscribe(
-                {beer -> doBeerStuff(beer)}
-        )
+//        client.getBeer(beer.id).subscribe(
+//                {beer -> doBeerStuff(beer)}
+//        )
     }
 
     private fun doBeerStuff(beer: Beer) {
@@ -41,10 +41,17 @@ class BeerDetailsActivity : AppCompatActivity() {
     companion object {
 
         private val INTENT_BEER_ID = "beer_id"
+        private val INTENT_BEER = "beer"
 
         fun newIntent(context: Context, beer: Beer): Intent {
             val intent = Intent(context, BeerDetailsActivity::class.java)
             intent.putExtra(INTENT_BEER_ID, beer)
+            return intent
+        }
+
+        fun newIntent(context: Context, beerId: String): Intent{
+            val intent = Intent(context, BeerDetailsActivity::class.java)
+            intent.putExtra(INTENT_BEER_ID, beerId)
             return intent
         }
     }
