@@ -1,17 +1,14 @@
 package com.nonvoid.barcrawler.datalayer.client;
 
-import android.util.Log;
-
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
 import com.nonvoid.barcrawler.datalayer.response.BreweryResponse;
 import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
 import com.nonvoid.barcrawler.datalayer.service.BeerService;
-import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
+import com.nonvoid.barcrawler.model.Beer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -19,10 +16,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
@@ -72,11 +66,7 @@ public class BreweryClient implements BreweryAPI {
                 .map(BeerResponse::getBeers);
     }
 
-    @Override
-    public Observable<ArrayList<Beer>> getBeersForBrewery(BreweryLocation location) {
-        return getBeersForBrewery(location.getBreweryId())
-                .compose(applySchedulers());
-    }
+
 
     @Override
     public Observable<ArrayList<Brewery>> searchForBrewery(String query) {
@@ -96,9 +86,9 @@ public class BreweryClient implements BreweryAPI {
     public Observable<Beer> getBeer(String beerId) {
         return service.getBeerById(beerId)
                 .compose(applySchedulers())
-                .map(x -> {
-                    if(x!=null && x.getBeers() != null && !x.getBeers().isEmpty()) {
-                        return x.getBeers().get(0);
+                .map(response -> {
+                    if(response!=null && response.getBeers() != null && !response.getBeers().isEmpty()) {
+                        return response.getBeers().get(0);
                     }
                     return null;
                 });

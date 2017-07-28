@@ -6,10 +6,11 @@ import com.nonvoid.barcrawler.model.Beer;
 import java.util.ArrayList;
 
 /**
- * Created by Matt on 5/29/2017.
+ * Created by Matt on 7/17/2017.
  */
 
-public class BeerResponse extends BaseResponse {
+public class BeerResponse extends BaseResponse{
+
     @SerializedName("data")
     ArrayList<Beer> beers;
 
