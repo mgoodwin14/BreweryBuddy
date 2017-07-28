@@ -1,8 +1,8 @@
 package com.nonvoid.barcrawler.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,25 +17,19 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
-import com.nonvoid.barcrawler.activity.BeerDetailsActivity;
 import com.nonvoid.barcrawler.adapter.BeerListAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.model.Beer;
-import com.nonvoid.barcrawler.model.Brewery;
-import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Matt on 5/30/2017.
@@ -55,8 +49,8 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ArrayList<Beer> beerList;
 
-    @org.jetbrains.annotations.Nullable
-    public static BeerListFragment newInstance(@org.jetbrains.annotations.Nullable ArrayList<Beer> list) {
+
+    public static BeerListFragment newInstance(ArrayList<Beer> list) {
         BeerListFragment fragment = new BeerListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(BEER_LIST_BUNDLE_KEY, list);
@@ -64,7 +58,7 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
         return fragment;
     }
 
-    public static BeerListFragment newInstance(@org.jetbrains.annotations.Nullable String breweryId) {
+    public static BeerListFragment newInstance(String breweryId) {
         BeerListFragment fragment = new BeerListFragment();
         Bundle args = new Bundle();
         args.putString(BREWERY_ID_BUNDLE_KEY, breweryId);
@@ -90,7 +84,7 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getTitle().toString().equalsIgnoreCase("type")){
-            beerList.sort((o1, o2) -> o1.getShortName().compareTo(o2.getShortName()));
+            beerList.sort((o1, o2) -> o1.getStyle().getShortName().compareTo(o2.getStyle().getShortName()));
             recyclerView.getAdapter().notifyDataSetChanged();
             return true;
         }else if (item.getTitle().toString().equalsIgnoreCase("abc")){
@@ -148,6 +142,6 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public void onBeerSelected(Beer beer) {
         Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
-        startActivity( BeerDetailsActivity.Companion.newIntent(getContext(), beer ) );
+//        startActivity( BeerDetailsActivity.Companion.newIntent(getContext(), beer ) );
     }
 }

@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.model.Beer;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -47,8 +49,12 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
 
     class BeerListViewHolder extends RecyclerView.ViewHolder{
 
+        @BindView(R.id.icon_image_view)
+        ImageView imageView;
         @BindView(R.id.beer_list_name_textview)
         TextView nameTextView;
+        @BindView(R.id.beer_list_brewery_name_text_view)
+        TextView breweryNameTextView;
         @BindView(R.id.beer_list_style_textview)
         TextView descriptionTextView;
 
@@ -58,8 +64,28 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
         }
 
         public void setView(Beer beer) {
+
+            if(beer.getLabels() != null && beer.getLabels().getIcon()!=null){
+                Picasso.with(imageView.getContext())
+                        .load(beer.getLabels().getLarge())
+//                        .resize(150, 150)
+//                        .centerCrop()
+                        .into(imageView);
+            }
             nameTextView.setText(beer.getName());
-            descriptionTextView.setText(beer.getShortName());
+
+            if(!beer.getBreweries().isEmpty()) {
+                String  line2 = beer.getBreweries().get(0).getName();
+                if (!beer.getBreweries().get(0).getLocations().isEmpty()
+                        && beer.getBreweries().get(0).getLocations().get(0).getLocality() != null) {
+                    line2 += " - " + beer.getBreweries().get(0).getLocations().get(0).getLocality();
+                    breweryNameTextView.setText(line2);
+                } else {
+                    breweryNameTextView.setVisibility(View.GONE);
+                }
+            }
+
+            descriptionTextView.setText(beer.getStyle().getShortName());
         }
     }
 

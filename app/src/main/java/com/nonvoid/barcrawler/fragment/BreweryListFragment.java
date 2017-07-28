@@ -52,8 +52,8 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
-    @org.jetbrains.annotations.Nullable
-    public static BreweryListFragment newInstance(@NotNull List<BreweryLocation> locations){
+
+    public static BreweryListFragment newInstance(List<BreweryLocation> locations){
         BreweryListFragment fragment = new BreweryListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY, (ArrayList<? extends Parcelable>) locations);
@@ -61,11 +61,11 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
         return fragment;
     }
 
-    @org.jetbrains.annotations.Nullable
-    public static BreweryListFragment newInstance(@NotNull ArrayList<Brewery> breweries) {
+
+    public static BreweryListFragment newInstance(ArrayList<Brewery> breweries) {
         BreweryListFragment fragment = new BreweryListFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(BREWERY_LIST_BUNDLE_KEY, (ArrayList<? extends Parcelable>) breweries);
+        args.putParcelableArrayList(BREWERY_LIST_BUNDLE_KEY, breweries);
         fragment.setArguments(args);
         return fragment;
     }
