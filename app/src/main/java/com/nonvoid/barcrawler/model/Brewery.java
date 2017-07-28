@@ -1,100 +1,235 @@
+
 package com.nonvoid.barcrawler.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Matt on 5/3/2017.
- */
-
-public class Brewery implements Parcelable {
+public class Brewery implements Parcelable
+{
 
     @SerializedName("id")
+    @Expose
     private String id;
-    @SerializedName("description")
-    private String description;
     @SerializedName("name")
+    @Expose
     private String name;
     @SerializedName("nameShortDisplay")
+    @Expose
     private String nameShortDisplay;
-    @SerializedName("brandClassification")
-    private String brandClassification;
+    @SerializedName("description")
+    @Expose
+    private String description;
+    @SerializedName("website")
+    @Expose
+    private String website;
+    @SerializedName("established")
+    @Expose
+    private String established;
+    @SerializedName("isOrganic")
+    @Expose
+    private String isOrganic;
     @SerializedName("images")
+    @Expose
     private Images images;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("statusDisplay")
+    @Expose
+    private String statusDisplay;
+    @SerializedName("createDate")
+    @Expose
+    private String createDate;
+    @SerializedName("updateDate")
+    @Expose
+    private String updateDate;
+    @SerializedName("isMassOwned")
+    @Expose
+    private String isMassOwned;
+    @SerializedName("brandClassification")
+    @Expose
+    private String brandClassification;
+    @SerializedName("locations")
+    @Expose
+    private List<Location> locations = new ArrayList<Location>();
+    public final static Parcelable.Creator<Brewery> CREATOR = new Creator<Brewery>() {
 
 
-    public static final Creator<Brewery> CREATOR = new Creator<Brewery>() {
-        @Override
+        @SuppressWarnings({
+            "unchecked"
+        })
         public Brewery createFromParcel(Parcel in) {
-            return new Brewery(in);
+            Brewery instance = new Brewery();
+            instance.id = ((String) in.readValue((String.class.getClassLoader())));
+            instance.name = ((String) in.readValue((String.class.getClassLoader())));
+            instance.nameShortDisplay = ((String) in.readValue((String.class.getClassLoader())));
+            instance.description = ((String) in.readValue((String.class.getClassLoader())));
+            instance.website = ((String) in.readValue((String.class.getClassLoader())));
+            instance.established = ((String) in.readValue((String.class.getClassLoader())));
+            instance.isOrganic = ((String) in.readValue((String.class.getClassLoader())));
+            instance.images = ((Images) in.readValue((Images.class.getClassLoader())));
+            instance.status = ((String) in.readValue((String.class.getClassLoader())));
+            instance.statusDisplay = ((String) in.readValue((String.class.getClassLoader())));
+            instance.createDate = ((String) in.readValue((String.class.getClassLoader())));
+            instance.updateDate = ((String) in.readValue((String.class.getClassLoader())));
+            instance.isMassOwned = ((String) in.readValue((String.class.getClassLoader())));
+            instance.brandClassification = ((String) in.readValue((String.class.getClassLoader())));
+            in.readList(instance.locations, (Location.class.getClassLoader()));
+            return instance;
         }
 
-        @Override
         public Brewery[] newArray(int size) {
-            return new Brewery[size];
+            return (new Brewery[size]);
         }
-    };
 
-    protected Brewery(Parcel in) {
-        id = in.readString();
-        description = in.readString();
-        name = in.readString();
-        nameShortDisplay = in.readString();
-        brandClassification = in.readString();
-//        images.icon = in.readString();
-//        images.squareMedium = in.readString();
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(description);
-        dest.writeString(name);
-        dest.writeString(nameShortDisplay);
-        dest.writeString(brandClassification);
-//        dest.writeString(images.icon);
-//        dest.writeString(images.squareMedium);
-    }
+    ;
 
     public String getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getNameShortDisplay() {
         return nameShortDisplay;
+    }
+
+    public void setNameShortDisplay(String nameShortDisplay) {
+        this.nameShortDisplay = nameShortDisplay;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getEstablished() {
+        return established;
+    }
+
+    public void setEstablished(String established) {
+        this.established = established;
+    }
+
+    public String getIsOrganic() {
+        return isOrganic;
+    }
+
+    public void setIsOrganic(String isOrganic) {
+        this.isOrganic = isOrganic;
+    }
+
+    public Images getImages() {
+        return images;
+    }
+
+    public void setImages(Images images) {
+        this.images = images;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatusDisplay() {
+        return statusDisplay;
+    }
+
+    public void setStatusDisplay(String statusDisplay) {
+        this.statusDisplay = statusDisplay;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getIsMassOwned() {
+        return isMassOwned;
+    }
+
+    public void setIsMassOwned(String isMassOwned) {
+        this.isMassOwned = isMassOwned;
     }
 
     public String getBrandClassification() {
         return brandClassification;
     }
 
-    public String getIcon(){
-        return images.icon;
+    public void setBrandClassification(String brandClassification) {
+        this.brandClassification = brandClassification;
     }
 
-    public String getSquareMediumImage(){
-        return images.squareMedium;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    class Images {
-        @SerializedName("icon")
-        String icon;
-        @SerializedName("squareMedium")
-        String squareMedium;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(name);
+        dest.writeValue(nameShortDisplay);
+        dest.writeValue(description);
+        dest.writeValue(website);
+        dest.writeValue(established);
+        dest.writeValue(isOrganic);
+        dest.writeValue(images);
+        dest.writeValue(status);
+        dest.writeValue(statusDisplay);
+        dest.writeValue(createDate);
+        dest.writeValue(updateDate);
+        dest.writeValue(isMassOwned);
+        dest.writeValue(brandClassification);
+        dest.writeList(locations);
+    }
+
+    public int describeContents() {
+        return  0;
+    }
+
 }
