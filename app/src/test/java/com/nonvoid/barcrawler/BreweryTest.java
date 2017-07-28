@@ -4,21 +4,17 @@ import android.support.annotation.NonNull;
 
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
-import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
 import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
 
 import io.reactivex.Scheduler;
 import io.reactivex.android.plugins.RxAndroidPlugins;
