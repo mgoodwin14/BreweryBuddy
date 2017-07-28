@@ -38,8 +38,14 @@ class BreweryAdapter(private val list: ArrayList<Brewery>, private val callback:
         val imageView = itemView.findViewById(R.id.brewery_image_view) as ImageView
 
         fun setView(brewery: Brewery){
-            nameTextView.text = brewery.name
-            descriptionTextView.text = brewery.brandClassification.toUpperCase()
+
+            if(brewery.established != null && brewery.established.isNotEmpty()){
+                nameTextView.text = "${brewery.nameShortDisplay} est. ${brewery.established}"
+            } else {
+                nameTextView.text = brewery.nameShortDisplay
+            }
+
+
             if(!brewery.locations.isEmpty()){
                 //need to turn on premium features at
                 //http://www.brewerydb.com/developers/premium

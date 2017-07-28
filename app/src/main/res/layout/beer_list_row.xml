@@ -11,6 +11,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
+        android:id="@+id/icon_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher_round"
@@ -33,6 +34,14 @@
             android:layout_weight="5"
             style="@style/PrimaryText"
             tools:text="Beer Name"
+            />
+
+        <TextView
+            android:id="@+id/beer_list_brewery_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="Brewery"
             />
 
         <TextView
