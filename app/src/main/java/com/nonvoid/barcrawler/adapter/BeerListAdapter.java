@@ -84,9 +84,9 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
 
             if(!beer.getBreweries().isEmpty()) {
                 String  line2 = beer.getBreweries().get(0).getNameShortDisplay();
-                if (!beer.getBreweries().get(0).getLocations().isEmpty()
-                        && beer.getBreweries().get(0).getLocations().get(0).getLocality() != null) {
-                    line2 += " - " + beer.getBreweries().get(0).getLocations().get(0).getLocality();
+                if (!beer.getBreweries().get(0).getBreweryLocations().isEmpty()
+                        && beer.getBreweries().get(0).getBreweryLocations().get(0).getLocality() != null) {
+                    line2 += " - " + beer.getBreweries().get(0).getBreweryLocations().get(0).getLocality();
                     breweryNameTextView.setText(line2);
                 } else {
                     breweryNameTextView.setVisibility(View.GONE);
