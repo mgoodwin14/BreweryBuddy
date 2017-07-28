@@ -1,13 +1,14 @@
-
 package com.nonvoid.barcrawler.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Location implements Parcelable
+public class BreweryLocation implements Parcelable
 {
 
     @SerializedName("id")
@@ -36,10 +37,10 @@ public class Location implements Parcelable
     private String website;
     @SerializedName("latitude")
     @Expose
-    private double latitude;
+    private Double latitude;
     @SerializedName("longitude")
     @Expose
-    private double longitude;
+    private Double longitude;
     @SerializedName("isPrimary")
     @Expose
     private String isPrimary;
@@ -61,6 +62,9 @@ public class Location implements Parcelable
     @SerializedName("countryIsoCode")
     @Expose
     private String countryIsoCode;
+    @SerializedName("yearOpened")
+    @Expose
+    private String yearOpened;
     @SerializedName("status")
     @Expose
     private String status;
@@ -73,17 +77,23 @@ public class Location implements Parcelable
     @SerializedName("updateDate")
     @Expose
     private String updateDate;
+    @SerializedName("breweryId")
+    @Expose
+    private String breweryId;
+    @SerializedName("brewery")
+    @Expose
+    private Brewery brewery;
     @SerializedName("country")
     @Expose
     private Country country;
-    public final static Parcelable.Creator<Location> CREATOR = new Creator<Location>() {
+    public final static Parcelable.Creator<BreweryLocation> CREATOR = new Creator<BreweryLocation>() {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Location createFromParcel(Parcel in) {
-            Location instance = new Location();
+        public BreweryLocation createFromParcel(Parcel in) {
+            BreweryLocation instance = new BreweryLocation();
             instance.id = ((String) in.readValue((String.class.getClassLoader())));
             instance.name = ((String) in.readValue((String.class.getClassLoader())));
             instance.streetAddress = ((String) in.readValue((String.class.getClassLoader())));
@@ -92,8 +102,8 @@ public class Location implements Parcelable
             instance.postalCode = ((String) in.readValue((String.class.getClassLoader())));
             instance.phone = ((String) in.readValue((String.class.getClassLoader())));
             instance.website = ((String) in.readValue((String.class.getClassLoader())));
-            instance.latitude = ((double) in.readValue((double.class.getClassLoader())));
-            instance.longitude = ((double) in.readValue((double.class.getClassLoader())));
+            instance.latitude = ((Double) in.readValue((Double.class.getClassLoader())));
+            instance.longitude = ((Double) in.readValue((Double.class.getClassLoader())));
             instance.isPrimary = ((String) in.readValue((String.class.getClassLoader())));
             instance.inPlanning = ((String) in.readValue((String.class.getClassLoader())));
             instance.isClosed = ((String) in.readValue((String.class.getClassLoader())));
@@ -101,20 +111,23 @@ public class Location implements Parcelable
             instance.locationType = ((String) in.readValue((String.class.getClassLoader())));
             instance.locationTypeDisplay = ((String) in.readValue((String.class.getClassLoader())));
             instance.countryIsoCode = ((String) in.readValue((String.class.getClassLoader())));
+            instance.yearOpened = ((String) in.readValue((String.class.getClassLoader())));
             instance.status = ((String) in.readValue((String.class.getClassLoader())));
             instance.statusDisplay = ((String) in.readValue((String.class.getClassLoader())));
             instance.createDate = ((String) in.readValue((String.class.getClassLoader())));
             instance.updateDate = ((String) in.readValue((String.class.getClassLoader())));
+            instance.breweryId = ((String) in.readValue((String.class.getClassLoader())));
+            instance.brewery = ((Brewery) in.readValue((Brewery.class.getClassLoader())));
             instance.country = ((Country) in.readValue((Country.class.getClassLoader())));
             return instance;
         }
 
-        public Location[] newArray(int size) {
-            return (new Location[size]);
+        public BreweryLocation[] newArray(int size) {
+            return (new BreweryLocation[size]);
         }
 
     }
-    ;
+            ;
 
     public String getId() {
         return id;
@@ -180,19 +193,19 @@ public class Location implements Parcelable
         this.website = website;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -252,6 +265,14 @@ public class Location implements Parcelable
         this.countryIsoCode = countryIsoCode;
     }
 
+    public String getYearOpened() {
+        return yearOpened;
+    }
+
+    public void setYearOpened(String yearOpened) {
+        this.yearOpened = yearOpened;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -284,6 +305,22 @@ public class Location implements Parcelable
         this.updateDate = updateDate;
     }
 
+    public String getBreweryId() {
+        return breweryId;
+    }
+
+    public void setBreweryId(String breweryId) {
+        this.breweryId = breweryId;
+    }
+
+    public Brewery getBrewery() {
+        return brewery;
+    }
+
+    public void setBrewery(Brewery brewery) {
+        this.brewery = brewery;
+    }
+
     public Country getCountry() {
         return country;
     }
@@ -310,15 +347,25 @@ public class Location implements Parcelable
         dest.writeValue(locationType);
         dest.writeValue(locationTypeDisplay);
         dest.writeValue(countryIsoCode);
+        dest.writeValue(yearOpened);
         dest.writeValue(status);
         dest.writeValue(statusDisplay);
         dest.writeValue(createDate);
         dest.writeValue(updateDate);
+        dest.writeValue(breweryId);
+        dest.writeValue(brewery);
         dest.writeValue(country);
     }
 
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+    public LatLng getLatLng(){
+        return new LatLng(latitude, longitude);
+    }
+
+    public String getDescription(){
+        return brewery.getDescription();
+    }
 }

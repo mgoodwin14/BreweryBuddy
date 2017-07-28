@@ -54,9 +54,9 @@ public class Brewery implements Parcelable
     @SerializedName("brandClassification")
     @Expose
     private String brandClassification;
-    @SerializedName("locations")
+    @SerializedName("breweryLocations")
     @Expose
-    private final List<Location> locations = new ArrayList<Location>();
+    private final List<BreweryLocation> breweryLocations = new ArrayList<BreweryLocation>();
     public final static Parcelable.Creator<Brewery> CREATOR = new Creator<Brewery>() {
 
 
@@ -79,7 +79,7 @@ public class Brewery implements Parcelable
             instance.updateDate = ((String) in.readValue((String.class.getClassLoader())));
             instance.isMassOwned = ((String) in.readValue((String.class.getClassLoader())));
             instance.brandClassification = ((String) in.readValue((String.class.getClassLoader())));
-            in.readList(instance.locations, (Location.class.getClassLoader()));
+            in.readList(instance.breweryLocations, (BreweryLocation.class.getClassLoader()));
             return instance;
         }
 
@@ -202,12 +202,12 @@ public class Brewery implements Parcelable
         this.brandClassification = brandClassification;
     }
 
-    public List<Location> getLocations() {
-        return locations;
+    public List<BreweryLocation> getBreweryLocations() {
+        return breweryLocations;
     }
 
-//    public void setLocations(List<Location> locations) {
-//        this.locations = locations;
+//    public void setLocations(List<BreweryLocation> breweryLocations) {
+//        this.breweryLocations = breweryLocations;
 //    }
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -225,7 +225,7 @@ public class Brewery implements Parcelable
         dest.writeValue(updateDate);
         dest.writeValue(isMassOwned);
         dest.writeValue(brandClassification);
-        dest.writeList(locations);
+        dest.writeList(breweryLocations);
     }
 
     public int describeContents() {
