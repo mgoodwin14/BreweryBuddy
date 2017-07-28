@@ -49,7 +49,7 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
 
     class BeerListViewHolder extends RecyclerView.ViewHolder{
 
-        @BindView(R.id.icon_image_view)
+        @BindView(R.id.beer_image_view)
         ImageView imageView;
         @BindView(R.id.beer_list_name_textview)
         TextView nameTextView;
@@ -71,11 +71,19 @@ public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerLi
 //                        .resize(150, 150)
 //                        .centerCrop()
                         .into(imageView);
+            } else {
+                if(!beer.getBreweries().isEmpty()
+                        && beer.getBreweries().get(0).getImages() != null
+                        && beer.getBreweries().get(0).getImages().getIcon() != null){
+                    Picasso.with(imageView.getContext())
+                            .load(beer.getBreweries().get(0).getImages().getLarge())
+                            .into(imageView);
+                }
             }
             nameTextView.setText(beer.getName());
 
             if(!beer.getBreweries().isEmpty()) {
-                String  line2 = beer.getBreweries().get(0).getName();
+                String  line2 = beer.getBreweries().get(0).getNameShortDisplay();
                 if (!beer.getBreweries().get(0).getLocations().isEmpty()
                         && beer.getBreweries().get(0).getLocations().get(0).getLocality() != null) {
                     line2 += " - " + beer.getBreweries().get(0).getLocations().get(0).getLocality();
