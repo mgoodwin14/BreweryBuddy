@@ -26,7 +26,6 @@
             android:textSize="15sp"
             android:maxLines="4"
             android:textColor="@color/cardview_light_background"
-            android:ellipsize="end"
             tools:text="Columbs, OH"
             />
 
