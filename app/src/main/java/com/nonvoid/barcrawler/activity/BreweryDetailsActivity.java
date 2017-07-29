@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
@@ -39,6 +40,7 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
     private static final String BREWERY_ITEM = "brewery_item";
     private static final String LOCATION_ITEM = "location_item";
+    private static final String TRANSITION_NAME = "transition";
 
     @BindView(R.id.brewery_details_image_view)
     ImageView imageView;
@@ -63,9 +65,10 @@ public class BreweryDetailsActivity extends AppCompatActivity {
         return intent;
     }
 
-    public static Intent newIntent(Context context, Brewery brewery){
+    public static Intent newIntent(Context context, Brewery brewery, ImageView imageView){
         Intent intent = new Intent(context, BreweryDetailsActivity.class);
         intent.putExtra(BREWERY_ITEM, brewery);
+        intent.putExtra(TRANSITION_NAME, ViewCompat.getTransitionName(imageView));
         return intent;
     }
 
@@ -106,8 +109,8 @@ public class BreweryDetailsActivity extends AppCompatActivity {
                             .addToBackStack(null)
                             .commit();
 
-                    button.setVisibility(View.GONE);
-                    String trans = bundle.getString("trans");
+//                    button.setVisibility(View.GONE);
+                    String trans = bundle.getString(TRANSITION_NAME);
                     imageView.setTransitionName(trans);
                     Picasso.with(this)
                             .load(brewery.getImages().getLarge())
@@ -150,7 +153,7 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.beer_list_button)
     public void onShowBeerList(){
-        if(button.getText().toString().equalsIgnoreCase("beers")){
+        if(button.getText().toString().equalsIgnoreCase("Beer List")){
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.brewery_map_fragment_frame, BeerListFragment.newInstance(breweryId))

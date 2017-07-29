@@ -120,7 +120,7 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
 
     @Override
     public void onBrewerySelected(Brewery brewery, ImageView imageView) {
-        Intent intent = BreweryDetailsActivity.newIntent(getContext(), brewery);
+        Intent intent = BreweryDetailsActivity.newIntent(getContext(), brewery, imageView);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 getActivity(),
