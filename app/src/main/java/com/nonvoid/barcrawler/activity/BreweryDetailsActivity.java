@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
@@ -21,6 +22,8 @@ import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.util.StringUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -37,7 +40,8 @@ public class BreweryDetailsActivity extends AppCompatActivity {
     private static final String BREWERY_ITEM = "brewery_item";
     private static final String LOCATION_ITEM = "location_item";
 
-
+    @BindView(R.id.brewery_details_image_view)
+    ImageView imageView;
     @BindView(R.id.brewery_details_name_textview)
     TextView breweryNameTextView;
     @BindView(R.id.brewery_details_description_textview)
@@ -61,9 +65,7 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
     public static Intent newIntent(Context context, Brewery brewery){
         Intent intent = new Intent(context, BreweryDetailsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(BREWERY_ITEM, brewery);
-        intent.putExtras(bundle);
+        intent.putExtra(BREWERY_ITEM, brewery);
         return intent;
     }
 
@@ -76,7 +78,6 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-
             BreweryLocation location = bundle.getParcelable(LOCATION_ITEM);
 
             if (location != null) {
@@ -106,6 +107,22 @@ public class BreweryDetailsActivity extends AppCompatActivity {
                             .commit();
 
                     button.setVisibility(View.GONE);
+                    String trans = bundle.getString("trans");
+                    imageView.setTransitionName(trans);
+                    Picasso.with(this)
+                            .load(brewery.getImages().getLarge())
+                            .noFade()
+                            .into(imageView, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    supportStartPostponedEnterTransition();
+                                }
+
+                                @Override
+                                public void onError() {
+                                    supportStartPostponedEnterTransition();
+                                }
+                            });
                 }
             }
         }

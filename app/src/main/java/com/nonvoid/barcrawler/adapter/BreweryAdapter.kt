@@ -1,5 +1,6 @@
 package com.nonvoid.barcrawler.adapter
 
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -17,17 +18,18 @@ import com.squareup.picasso.Picasso
 class BreweryAdapter(private val list: ArrayList<Brewery>, private val callback: Callback) : RecyclerView.Adapter<BreweryAdapter.BreweryViewHolder>() {
 
     override fun onBindViewHolder(holder: BreweryViewHolder, position: Int) {
-        holder.setView(list[position])
+        val brewery = list[position]
+        holder.setView(brewery)
+        holder.itemView.setOnClickListener { v ->
+            callback.onBrewerySelected(list[position], holder.imageView)
+        }
+        ViewCompat.setTransitionName(holder.imageView, brewery.id)
     }
 
     override fun getItemCount(): Int = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreweryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.brewery_list_row, parent, false)
-        view.setOnClickListener { v ->
-            val position = (v.parent as RecyclerView).getChildLayoutPosition(v)
-            callback.onBrewerySelected(list[position])
-        }
         return BreweryViewHolder(view)
     }
 
@@ -61,6 +63,6 @@ class BreweryAdapter(private val list: ArrayList<Brewery>, private val callback:
     }
 
     interface Callback{
-        fun onBrewerySelected(brewery: Brewery)
+        fun onBrewerySelected(brewery: Brewery, imageView: ImageView)
     }
 }
