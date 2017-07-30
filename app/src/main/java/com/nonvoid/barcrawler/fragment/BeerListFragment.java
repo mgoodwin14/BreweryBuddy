@@ -1,6 +1,7 @@
 package com.nonvoid.barcrawler.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -70,8 +71,8 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
     }
 
     @Override
@@ -109,8 +110,9 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
         Bundle bundle = getArguments();
         if(bundle != null) {
             beerList = bundle.getParcelableArrayList(BEER_LIST_BUNDLE_KEY);
@@ -118,7 +120,7 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
                 recyclerView.setAdapter(new BeerListAdapter(beerList, this));
             }else {
                 String breweryId = bundle.getString(BREWERY_ID_BUNDLE_KEY);
-                ProgressDialog dialog = ProgressDialog.show(getActivity(), "",
+                ProgressDialog dialog = ProgressDialog.show(context, "",
                         "Loading. Please wait...", true);
 
                 Disposable disposable = client.getBeersForBrewery(breweryId)
@@ -128,7 +130,10 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
                                     recyclerView.setAdapter(new BeerListAdapter(beerList, this));
                                     dialog.dismiss();
                                 },
-                                throwable -> Log.e("", throwable.getMessage(), throwable)
+                                throwable ->{
+                                    Log.e("", throwable.getMessage(), throwable);
+                                    dialog.dismiss();
+                                }
                         );
                 compositeDisposable.add(disposable);
             }
@@ -136,8 +141,8 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         compositeDisposable.clear();
     }
 
