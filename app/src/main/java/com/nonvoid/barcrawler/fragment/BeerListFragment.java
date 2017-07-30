@@ -104,6 +104,7 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
         ButterKnife.bind(this, view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setNestedScrollingEnabled(false);
         return view;
     }
 

@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +31,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Matt on 5/13/2017.
@@ -49,7 +49,16 @@ public class BreweryDetailsActivity extends AppCompatActivity {
     @BindView(R.id.brewery_details_description_textview)
     TextView breweryDescriptionTextView;
     @BindView(R.id.beer_list_button)
-    Button button;
+    Button beerListButton;
+    @BindView(R.id.map_button)
+    Button mapButton;
+    @BindView(R.id.brewery_description_button)
+    Button descriptionButton;
+    @BindView(R.id.brewery_beer_list_fragment_frame)
+    FrameLayout beerListFragmentFrame;
+    @BindView(R.id.brewery_map_fragment_frame)
+    FrameLayout mapFragmentFrame;
+
 
     private String breweryId;
 
@@ -105,11 +114,16 @@ public class BreweryDetailsActivity extends AppCompatActivity {
                     breweryDescriptionTextView.setText(brewery.getDescription());
                     breweryId = brewery.getId();
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.brewery_map_fragment_frame, BeerListFragment.newInstance(breweryId))
-                            .addToBackStack(null)
+                            .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(breweryId))
                             .commit();
 
-//                    button.setVisibility(View.GONE);
+                    if(!brewery.getBreweryLocations().isEmpty()) {
+                        getSupportFragmentManager().beginTransaction()
+                                .add(R.id.brewery_map_fragment_frame, BreweryMapFragment.newInstance(brewery.getBreweryLocations().get(0)))
+                                .commit();
+                    }
+
+//                    beerListButton.setVisibility(View.GONE);
                     String trans = bundle.getString(TRANSITION_NAME);
                     imageView.setTransitionName(trans);
                     Picasso.with(this)
@@ -151,19 +165,37 @@ public class BreweryDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.beer_list_button)
-    public void onShowBeerList(){
-        if(button.getText().toString().equalsIgnoreCase("Beer List")){
 
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.brewery_map_fragment_frame, BeerListFragment.newInstance(breweryId))
-                    .addToBackStack(null)
-                    .commit();
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.beer_list_button:
+                beerListButton.setVisibility(View.GONE);
+                descriptionButton.setVisibility(View.VISIBLE);
+                mapButton.setVisibility(View.VISIBLE);
 
-            button.setText("Map");
-        }else {
-            onBackPressed();
-            button.setText("Beers");
+                beerListFragmentFrame.setVisibility(View.VISIBLE);
+                breweryDescriptionTextView.setVisibility(View.GONE);
+                mapFragmentFrame.setVisibility(View.GONE);
+                break;
+
+            case R.id.map_button:
+                mapButton.setVisibility(View.GONE);
+                beerListButton.setVisibility(View.VISIBLE);
+                descriptionButton.setVisibility(View.VISIBLE);
+
+                mapFragmentFrame.setVisibility(View.VISIBLE);
+                beerListFragmentFrame.setVisibility(View.GONE);
+                breweryDescriptionTextView.setVisibility(View.GONE);
+                break;
+            case R.id.brewery_description_button:
+                descriptionButton.setVisibility(View.GONE);
+                mapButton.setVisibility(View.VISIBLE);
+                beerListButton.setVisibility(View.VISIBLE);
+
+                breweryDescriptionTextView.setVisibility(View.VISIBLE);
+                mapFragmentFrame.setVisibility(View.GONE);
+                beerListFragmentFrame.setVisibility(View.GONE);
+                break;
         }
     }
 
