@@ -53,7 +53,7 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
     @Inject
     BreweryAPI client;
 
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+//    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
 
@@ -109,7 +109,7 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
     @Override
     public void onPause() {
         super.onPause();
-        compositeDisposable.clear();
+//        compositeDisposable.clear();
     }
 
     @Override
