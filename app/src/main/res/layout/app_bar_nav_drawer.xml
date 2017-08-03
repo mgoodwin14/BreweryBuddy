@@ -26,8 +26,10 @@
         android:paddingTop="?actionBarSize"
         android:orientation="vertical"
         >
-
-        <include layout="@layout/search_view_layout"/>
+        <FrameLayout
+            android:id="@+id/search_fragment_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <FrameLayout
             android:id="@+id/content_frame_layout"

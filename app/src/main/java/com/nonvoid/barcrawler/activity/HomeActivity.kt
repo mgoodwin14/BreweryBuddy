@@ -22,6 +22,7 @@ import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
 import com.nonvoid.barcrawler.datalayer.client.BreweryClient
 import com.nonvoid.barcrawler.fragment.BeerListFragment
 import com.nonvoid.barcrawler.fragment.BreweryListFragment
+import com.nonvoid.barcrawler.fragment.SearchFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
@@ -29,7 +30,7 @@ import kotlinx.android.synthetic.main.search_view_layout.*
 import java.util.ArrayList
 import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchFragment.SearchFragmentCallback {
 
     @Inject
     lateinit var client : BreweryAPI
@@ -41,7 +42,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_home)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-
         (application as MyApp).netComponent.inject(this)
 
         setUpDrawerNav()
@@ -85,67 +85,75 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setUpSearch(){
 
-        city_search_button.setOnClickListener { v ->
-            run {
-                Log.d("MPG", "Trying to search")
+        val searchFragment = SearchFragment.newInstance(this)
+        supportFragmentManager.beginTransaction()
+                .add(R.id.search_fragment_frame_layout, searchFragment)
+                .commit()
 
-                val dialog = showSearchDialog(v, "Loading breweries in ${search_edit_text.text}")
-
-                val disposable = this.client.getLocationsInCity(search_edit_text.text.toString())
-                    .subscribe(
-                            {
-                                list ->  supportFragmentManager.beginTransaction()
-                                    .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
-                                    .commit()
-                                dialog.dismiss()
-                            },
-                            {
-                                throwable -> Log.e("", throwable.message, throwable)
-                                dialog.dismiss()
-                            }
-                    )
-                disposables.add(disposable)
-            }
-        }
-
-        brewery_search_button.setOnClickListener { v ->
-            run {
-                val dialog = showSearchDialog(v, "Searching for breweries with ${search_edit_text.text} in the name")
-                client.searchForBrewery(search_edit_text.text.toString())
-                        .subscribe(
-                                {
-                                    list ->  supportFragmentManager.beginTransaction()
-                                        .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
-                                        .commit()
-                                    dialog.dismiss()},
-                                {
-                                    throwable -> Log.e("", throwable.message, throwable)
-                                    dialog.dismiss()
-                                }
-                        )
-            }
-        }
-
-        beer_search_button.setOnClickListener { v ->
-            run{
-                val dialog = showSearchDialog(v, "Searching for beers named ${search_edit_text.text}")
-                client.searchForBeer(search_edit_text.text.toString())
-                        .subscribe(
-                                {
-                                    list -> supportFragmentManager.beginTransaction()
-                                        .replace(R.id.content_frame_layout, BeerListFragment.newInstance(list))
-                                        .commit()
-                                    dialog.dismiss()
-                                },
-                                {
-                                    throwable -> Log.e("", throwable.message, throwable)
-                                    dialog.dismiss()
-                                }
-                        )
-            }
-        }
+//        city_search_button.setOnClickListener { v ->
+//            run {
+//                Log.d("MPG", "Trying to search")
+//
+//                val dialog = showSearchDialog(v, "Loading breweries in ${search_edit_text.text}")
+//
+//                val disposable = this.client.getLocationsInCity(search_edit_text.text.toString())
+//                    .subscribe(
+//                            {
+//                                list ->  supportFragmentManager.beginTransaction()
+//                                    .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
+//                                    .commit()
+//                                dialog.dismiss()
+//                            },
+//                            {
+//                                throwable -> Log.e("", throwable.message, throwable)
+//                                dialog.dismiss()
+//                            }
+//                    )
+//                disposables.add(disposable)
+//            }
+//        }
+//
+//        brewery_search_button.setOnClickListener { v ->
+//            run {
+//                val dialog = showSearchDialog(v, "Searching for breweries with ${search_edit_text.text} in the name")
+//                client.searchForBrewery(search_edit_text.text.toString())
+//                        .subscribe(
+//                                {
+//                                    list ->  supportFragmentManager.beginTransaction()
+//                                        .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
+//                                        .commit()
+//                                    dialog.dismiss()},
+//                                {
+//                                    throwable -> Log.e("", throwable.message, throwable)
+//                                    dialog.dismiss()
+//                                }
+//                        )
+//            }
+//        }
+//
+//        beer_search_button.setOnClickListener { v ->
+//            run{
+//                val dialog = showSearchDialog(v, "Searching for beers named ${search_edit_text.text}")
+//                client.searchForBeer(search_edit_text.text.toString())
+//                        .subscribe(
+//                                {
+//                                    list -> supportFragmentManager.beginTransaction()
+//                                        .replace(R.id.content_frame_layout, BeerListFragment.newInstance(list))
+//                                        .commit()
+//                                    dialog.dismiss()
+//                                },
+//                                {
+//                                    throwable -> Log.e("", throwable.message, throwable)
+//                                    dialog.dismiss()
+//                                }
+//                        )
+//            }
+//        }
     }
 
+    override fun doOnSearch(query: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 
     private fun showSearchDialog(v : View, text :String): Dialog{
