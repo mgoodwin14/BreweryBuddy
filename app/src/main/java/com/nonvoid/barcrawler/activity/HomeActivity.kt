@@ -1,16 +1,16 @@
 package com.nonvoid.barcrawler.activity
 
 import android.app.Dialog
+
 import android.app.ProgressDialog
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,18 +19,14 @@ import android.view.inputmethod.InputMethodManager
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
-import com.nonvoid.barcrawler.datalayer.client.BreweryClient
-import com.nonvoid.barcrawler.fragment.BeerListFragment
 import com.nonvoid.barcrawler.fragment.BreweryListFragment
 import com.nonvoid.barcrawler.fragment.SearchFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
-import kotlinx.android.synthetic.main.search_view_layout.*
-import java.util.ArrayList
 import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchFragment.SearchFragmentCallback {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchFragment.Searchable {
 
     @Inject
     lateinit var client : BreweryAPI
@@ -45,14 +41,34 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         (application as MyApp).netComponent.inject(this)
 
         setUpDrawerNav()
-        setUpSearch()
+//        setUpSearch()
+        val breweryFragment = BreweryListFragment()
+        val searchFragment = SearchFragment.newInstance(breweryFragment)
+        supportFragmentManager.beginTransaction()
+                .add(R.id.search_fragment_frame_layout, searchFragment, searchFragment.javaClass.simpleName)
+                .add(R.id.content_frame_layout, breweryFragment, breweryFragment.javaClass.simpleName)
+                .commit()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("implement navigation item selected")
-//        when (item.itemId){
-//            R.id.nav_brewery ->
-//        }
+//        TODO("implement navigation item selected")
+        drawer_layout.closeDrawer(GravityCompat.START)
+        when (item.itemId){
+            R.id.nav_brewery -> {
+                supportFragmentManager.findFragmentByTag(BreweryListFragment::class.java.simpleName)?: replaceContent(BreweryListFragment())
+                return true
+            }
+        }
+        return false
+    }
+
+    fun replaceContent(fragment: Fragment){
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame_layout, fragment)
+                .commit()
+
+        val searchFragment = supportFragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName) as SearchFragment
+        searchFragment.setSearchable(fragment as SearchFragment.Searchable)
     }
 
     override fun onBackPressed() {

@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.search_fragment.*
 
 class SearchFragment : Fragment(){
 
-    lateinit  var callback : SearchFragmentCallback
+    private lateinit var callback : Searchable
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
@@ -24,15 +24,20 @@ class SearchFragment : Fragment(){
         })
     }
 
+    fun setSearchable(searchable: Searchable){
+        callback = searchable
+        search_fragment_edit_text.setText("")
+    }
+
     companion object {
-        fun newInstance(callback: SearchFragmentCallback): Fragment{
+        fun newInstance(callback: Searchable): Fragment{
             val fragment = SearchFragment()
             fragment.callback = callback
             return fragment
         }
     }
 
-    interface SearchFragmentCallback{
+    interface Searchable {
         fun doOnSearch(query: String)
     }
 }

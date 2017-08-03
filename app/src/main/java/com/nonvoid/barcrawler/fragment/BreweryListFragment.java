@@ -1,5 +1,7 @@
 package com.nonvoid.barcrawler.fragment;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.nonvoid.barcrawler.R;
@@ -53,9 +56,9 @@ public class BreweryListFragment extends Fragment implements BreweryLocationAdap
     @Inject
     BreweryAPI client;
 
-//    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    ProgressDialog loadingDialog;
 
-
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static BreweryListFragment newInstance(List<BreweryLocation> locations){
         BreweryListFragment fragment = new BreweryListFragment();
@@ -99,7 +102,6 @@ public class BreweryListFragment extends Fragment implements BreweryLocationAdap
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.brewery_list_fragment, container, false);
         ButterKnife.bind(this, view);
-
         breweryListRecyclerView.setHasFixedSize(true);
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         breweryListRecyclerView.setAdapter(adapter);
@@ -109,12 +111,11 @@ public class BreweryListFragment extends Fragment implements BreweryLocationAdap
     @Override
     public void onPause() {
         super.onPause();
-//        compositeDisposable.clear();
+        compositeDisposable.clear();
     }
 
     @Override
     public void onBrewerySelected(BreweryLocation location) {
-
         startActivity(BreweryDetailsActivity.newIntent(getContext(), location));
     }
 
@@ -127,5 +128,32 @@ public class BreweryListFragment extends Fragment implements BreweryLocationAdap
                 imageView,
                 ViewCompat.getTransitionName(imageView));
         startActivity(intent, options.toBundle());
+    }
+
+    @Override
+    public void doOnSearch(@NotNull String query) {
+        Log.d("MPG", "Searching brewery list");
+        //hide keyboard
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+        compositeDisposable.add(client.searchForBrewery(query)
+                .doOnSubscribe( x ->showLoading(true))
+                .doOnComplete(() ->showLoading(false))
+                .subscribe(
+                        list -> {
+                            BreweryAdapter adapter = new BreweryAdapter(list, this);
+                            breweryListRecyclerView.setAdapter(adapter);
+                        },
+                        throwable -> Log.d("MPG", throwable.getMessage(), throwable)
+                ));
+    }
+
+    public void showLoading(boolean show){
+        if(show){
+            loadingDialog = ProgressDialog.show(getContext(), "", "Searching for Breweries", false, true);
+        }else {
+            loadingDialog.dismiss();
+        }
     }
 }
