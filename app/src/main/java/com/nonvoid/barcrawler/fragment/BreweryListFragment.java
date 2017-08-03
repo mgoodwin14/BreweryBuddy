@@ -45,7 +45,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class BreweryListFragment extends Fragment implements BreweryLocationAdapter.Callback, BreweryAdapter.Callback, SearchFragment.Searchable {
 
     private static final String TAG = BreweryListFragment.class.getSimpleName();
-    private static final String BREWERY_LOCTION_LIST_BUNDLE_KEY = "brewery_locations_key";
+    private static final String BREWERY_LOCATION_LIST_BUNDLE_KEY = "brewery_locations_key";
     private static final String BREWERY_LIST_BUNDLE_KEY = "brewery_key";
 
     @BindView(R.id.brewery_list_recyclerview)
@@ -63,7 +63,7 @@ public class BreweryListFragment extends Fragment implements BreweryLocationAdap
     public static BreweryListFragment newInstance(List<BreweryLocation> locations){
         BreweryListFragment fragment = new BreweryListFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY, (ArrayList<? extends Parcelable>) locations);
+        args.putParcelableArrayList(BREWERY_LOCATION_LIST_BUNDLE_KEY, (ArrayList<? extends Parcelable>) locations);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,7 +89,7 @@ public class BreweryListFragment extends Fragment implements BreweryLocationAdap
                 adapter = new BreweryAdapter(breweryList, this);
             }else {
 
-                List<BreweryLocation> breweryLocations = bundle.getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
+                List<BreweryLocation> breweryLocations = bundle.getParcelableArrayList(BREWERY_LOCATION_LIST_BUNDLE_KEY);
                 if (breweryLocations != null) {
                     adapter = new BreweryLocationAdapter(breweryLocations, this);
                 }
