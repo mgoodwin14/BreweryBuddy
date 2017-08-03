@@ -18,7 +18,7 @@ import android.widget.ImageView;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
 import com.nonvoid.barcrawler.adapter.BreweryAdapter;
-import com.nonvoid.barcrawler.adapter.BreweryLocationListAdapter;
+import com.nonvoid.barcrawler.adapter.BreweryLocationAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.model.Brewery;
@@ -39,7 +39,7 @@ import io.reactivex.disposables.CompositeDisposable;
  * Created by Matt on 5/11/2017.
  */
 
-public class BreweryListFragment extends Fragment implements BreweryLocationListAdapter.Callback, BreweryAdapter.Callback {
+public class BreweryListFragment extends Fragment implements BreweryLocationAdapter.Callback, BreweryAdapter.Callback, SearchFragment.Searchable {
 
     private static final String TAG = BreweryListFragment.class.getSimpleName();
     private static final String BREWERY_LOCTION_LIST_BUNDLE_KEY = "brewery_locations_key";
@@ -88,7 +88,7 @@ public class BreweryListFragment extends Fragment implements BreweryLocationList
 
                 List<BreweryLocation> breweryLocations = bundle.getParcelableArrayList(BREWERY_LOCTION_LIST_BUNDLE_KEY);
                 if (breweryLocations != null) {
-                    adapter = new BreweryLocationListAdapter(breweryLocations, this);
+                    adapter = new BreweryLocationAdapter(breweryLocations, this);
                 }
             }
         }

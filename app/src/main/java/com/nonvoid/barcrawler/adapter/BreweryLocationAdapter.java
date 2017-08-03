@@ -21,14 +21,14 @@ import butterknife.ButterKnife;
  * Created by Matt on 5/3/2017.
  */
 
-public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLocationListAdapter.BreweryLocationViewHolder> {
+public class BreweryLocationAdapter extends RecyclerView.Adapter<BreweryLocationAdapter.BreweryLocationViewHolder> {
 
 
     private final Callback callback;
 
     private List<BreweryLocation> breweryLocations;
 
-    public BreweryLocationListAdapter(List<BreweryLocation> breweryLocations, Callback callback) {
+    public BreweryLocationAdapter(List<BreweryLocation> breweryLocations, Callback callback) {
         this.breweryLocations = breweryLocations;
         this.callback = callback;
     }
@@ -75,7 +75,7 @@ public class BreweryLocationListAdapter extends RecyclerView.Adapter<BreweryLoca
                 Toast.makeText(imageView.getContext(), "null location: " + breweryLocation.getName(), Toast.LENGTH_LONG).show();
             }
 
-            cityTextView.setText(breweryLocation.getLocality() + ", " + breweryLocation.getRegion());
+            cityTextView.setText(String.format("%s, %s", breweryLocation.getLocality(), breweryLocation.getRegion()));
             nameTextView.setText(breweryLocation.getName());
             descriptionTextView.setText(breweryLocation.getLocationType());
             if(breweryLocation.getBrewery().getImages() != null) {
