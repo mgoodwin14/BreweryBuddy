@@ -3,7 +3,6 @@ package com.nonvoid.barcrawler.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.activity.BeerDetailsActivity;
-import com.nonvoid.barcrawler.adapter.BeerListAdapter;
+import com.nonvoid.barcrawler.adapter.BeerAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.model.Beer;
@@ -37,7 +36,7 @@ import io.reactivex.disposables.Disposable;
  * Created by Matt on 5/30/2017.
  */
 
-public class BeerListFragment extends Fragment implements BeerListAdapter.Callback {
+public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
 
     private static final String BEER_LIST_BUNDLE_KEY = "beer_list_key";
     private static final String BREWERY_ID_BUNDLE_KEY = "brewery_id_key";
@@ -117,7 +116,7 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
         if(bundle != null) {
             beerList = bundle.getParcelableArrayList(BEER_LIST_BUNDLE_KEY);
             if(beerList!= null){
-                recyclerView.setAdapter(new BeerListAdapter(beerList, this));
+                recyclerView.setAdapter(new BeerAdapter(beerList, this));
             }else {
                 String breweryId = bundle.getString(BREWERY_ID_BUNDLE_KEY);
                 ProgressDialog dialog = ProgressDialog.show(context, "",
@@ -127,7 +126,7 @@ public class BeerListFragment extends Fragment implements BeerListAdapter.Callba
                         .subscribe(
                                 list -> {
                                     beerList = list;
-                                    recyclerView.setAdapter(new BeerListAdapter(beerList, this));
+                                    recyclerView.setAdapter(new BeerAdapter(beerList, this));
                                     dialog.dismiss();
                                 },
                                 throwable ->{

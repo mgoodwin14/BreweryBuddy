@@ -16,12 +16,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BeerListAdapter extends RecyclerView.Adapter<BeerListAdapter.BeerListViewHolder> {
+public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerListViewHolder> {
 
     private final Callback callback;
     private List<Beer> beerList;
 
-    public BeerListAdapter(List<Beer> beerList, Callback callback) {
+    public BeerAdapter(List<Beer> beerList, Callback callback) {
         this.beerList = beerList;
         this.callback = callback;
     }
