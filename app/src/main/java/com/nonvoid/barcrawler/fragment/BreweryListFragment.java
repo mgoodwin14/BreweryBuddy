@@ -26,12 +26,10 @@ import com.nonvoid.barcrawler.adapter.BreweryLocationAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.model.Brewery;
-import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -61,15 +59,6 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     ProgressDialog loadingDialog;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
-
-    public static BreweryListFragment newInstance(ArrayList<Brewery> breweries) {
-        BreweryListFragment fragment = new BreweryListFragment();
-        Bundle args = new Bundle();
-        args.putParcelableArrayList(BREWERY_LIST_BUNDLE_KEY, breweries);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
