@@ -51,12 +51,10 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     @BindView(R.id.search_empty_state)
     TextView emptyStateTextView;
 
-    RecyclerView.Adapter adapter;
-
     @Inject
     BreweryAPI client;
 
-    ProgressDialog loadingDialog;
+    private ProgressDialog loadingDialog;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -65,13 +63,6 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         super.onCreate(savedInstanceState);
         Log.d(TAG, "MPG onCreate");
         ((MyApp) getActivity().getApplication()).getNetComponent().inject(this);
-        Bundle bundle = getArguments();
-        if(bundle!= null) {
-            ArrayList<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
-            if(breweryList != null){
-                adapter = new BreweryAdapter(breweryList, this);
-            }
-        }
     }
 
     @Nullable
@@ -81,7 +72,6 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         ButterKnife.bind(this, view);
         breweryListRecyclerView.setHasFixedSize(true);
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        breweryListRecyclerView.setAdapter(adapter);
         return view;
     }
 
