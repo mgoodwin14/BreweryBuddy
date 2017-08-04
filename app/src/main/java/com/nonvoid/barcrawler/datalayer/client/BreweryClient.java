@@ -66,13 +66,11 @@ public class BreweryClient implements BreweryAPI {
                 .map(BeerResponse::getBeers);
     }
 
-
-
     @Override
     public Observable<ArrayList<Brewery>> searchForBrewery(String query) {
         return service.searchForBrewery(query)
                 .compose(applySchedulers())
-                .map(BreweryResponse::getLocations);
+                .map(BreweryResponse::getBreweries);
     }
 
     @Override

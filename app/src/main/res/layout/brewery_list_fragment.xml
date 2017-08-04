@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/search_empty_state"
+        android:text="No breweries, try searching"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Breweries"
+        android:layout_gravity="top|center_horizontal"
         />
 
     <android.support.v7.widget.RecyclerView
@@ -16,4 +18,4 @@
         android:layout_height="match_parent"
         />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
