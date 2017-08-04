@@ -10,6 +10,13 @@
     card_view:cardCornerRadius="4dp"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <ImageView
+        android:id="@+id/brewery_location_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,13 +37,6 @@
             />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/brewery_location_image_view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
         android:layout_width="match_parent"
