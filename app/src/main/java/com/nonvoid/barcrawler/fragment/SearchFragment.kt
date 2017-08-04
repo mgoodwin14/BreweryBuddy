@@ -20,7 +20,8 @@ class SearchFragment : Fragment(){
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         search_fragment_button.setOnClickListener({
-            callback.doOnSearch(search_fragment_edit_text.text.toString())
+            if(!search_fragment_edit_text.text.toString().isNullOrBlank())
+                callback.doOnSearch(search_fragment_edit_text.text.toString())
         })
     }
 
