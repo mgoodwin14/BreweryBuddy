@@ -15,6 +15,9 @@ public class BeerResponse extends BaseResponse{
     ArrayList<Beer> beers;
 
     public ArrayList<Beer> getBeers() {
+        if(beers == null){
+            beers = new ArrayList<>();
+        }
         return beers;
     }
 }

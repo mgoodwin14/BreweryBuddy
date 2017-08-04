@@ -33,6 +33,9 @@ public class LocationResponse {
     }
 
     public ArrayList<BreweryLocation> getLocations() {
+        if(locations == null){
+            locations = new ArrayList<>();
+        }
         return locations;
     }
 }
