@@ -20,6 +20,7 @@ import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
 import com.nonvoid.barcrawler.fragment.BreweryListFragment
+import com.nonvoid.barcrawler.fragment.BreweryLocationFragment
 import com.nonvoid.barcrawler.fragment.SearchFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
@@ -55,7 +56,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         when (item.itemId){
             R.id.nav_brewery -> {
-                supportFragmentManager.findFragmentByTag(BreweryListFragment::class.java.simpleName)?: replaceContent(BreweryListFragment())
+                supportFragmentManager.findFragmentByTag(BreweryListFragment::class.java.simpleName)?:
+                        replaceContent(BreweryListFragment())
+                return true
+            }
+            R.id.nav_location -> {
+                supportFragmentManager.findFragmentByTag(BreweryLocationFragment::class.java.simpleName)?:
+                        replaceContent(BreweryLocationFragment())
                 return true
             }
         }
