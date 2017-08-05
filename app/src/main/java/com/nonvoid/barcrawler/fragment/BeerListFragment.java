@@ -159,8 +159,6 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
 
     @Override
     public void onBeerSelected(Beer beer, ImageView imageView) {
-        Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
-
         Intent intent = BeerDetailsActivity.Companion.newIntent(getContext(), beer, imageView);
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
