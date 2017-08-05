@@ -72,6 +72,7 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         ButterKnife.bind(this, view);
         breweryListRecyclerView.setHasFixedSize(true);
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        emptyStateTextView.setText("search for brewery");
         return view;
     }
 

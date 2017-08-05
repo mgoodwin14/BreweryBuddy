@@ -57,7 +57,7 @@ class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.C
         brewery_list_recyclerview.setHasFixedSize(true)
         brewery_list_recyclerview.layoutManager = LinearLayoutManager(context)
         brewery_list_recyclerview.adapter = BreweryLocationAdapter(breweryLocationList, this)
-        search_empty_state.hint = "Location"
+        search_empty_state.text = "search by city"
     }
 
     override fun doOnSearch(query: String) {
