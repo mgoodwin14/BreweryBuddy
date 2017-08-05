@@ -1,5 +1,6 @@
 package com.nonvoid.barcrawler.adapter;
 
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +30,17 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerListViewHo
     @Override
     public BeerListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.beer_list_row, parent, false);
-
-        view.setOnClickListener(v -> {
-            int position = ((RecyclerView) v.getParent()).getChildLayoutPosition(v);
-            callback.onBeerSelected(beerList.get(position));
-        });
         return new BeerListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(BeerListViewHolder holder, int position) {
+        Beer beer = beerList.get(position);
         holder.setView(beerList.get(position));
+        holder.itemView.setOnClickListener(v -> {
+            callback.onBeerSelected(beer, holder.imageView);
+        });
+        ViewCompat.setTransitionName(holder.imageView, beer.getId());
     }
 
     @Override
@@ -99,6 +100,6 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerListViewHo
     }
 
     public interface Callback{
-        void onBeerSelected(Beer beer);
+        void onBeerSelected(Beer beer, ImageView imageView);
     }
 }

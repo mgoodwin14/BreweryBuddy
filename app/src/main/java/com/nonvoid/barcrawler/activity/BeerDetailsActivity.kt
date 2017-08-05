@@ -5,11 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.design.widget.Snackbar
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
+import android.widget.ImageView
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
 import com.nonvoid.barcrawler.model.Beer
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.beer_details_activity.*
 
 /**
@@ -22,12 +26,25 @@ class BeerDetailsActivity : AppCompatActivity() {
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.beer_details_activity)
-
         (application as MyApp).netComponent.inject(this)
 
         val beer : Beer = intent.extras.getParcelable(INTENT_BEER_ID)
         beer_details_name_textview.text = beer.name
         beer_details_description_textview.text = beer.description
+
+        beer_details_image_view.transitionName = intent.extras.getString(TRANSITION_NAME)
+        Picasso.with(this)
+                .load(beer.labels.large)
+                .noFade()
+                .into(beer_details_image_view, object : Callback {
+                    override fun onSuccess() {
+                        supportStartPostponedEnterTransition()
+                    }
+
+                    override fun onError() {
+                        supportStartPostponedEnterTransition()
+                    }
+                })
 
 //        client.getBeer(beer.id).subscribe(
 //                {beer -> doBeerStuff(beer)}
@@ -42,10 +59,17 @@ class BeerDetailsActivity : AppCompatActivity() {
 
         private val INTENT_BEER_ID = "beer_id"
         private val INTENT_BEER = "beer"
+        private val TRANSITION_NAME = "beer_transition"
 
         fun newIntent(context: Context, beer: Beer): Intent {
             val intent = Intent(context, BeerDetailsActivity::class.java)
             intent.putExtra(INTENT_BEER_ID, beer)
+            return intent
+        }
+
+        fun newIntent(context: Context, beer: Beer, imageView: ImageView): Intent{
+            val intent = newIntent(context, beer)
+            intent.putExtra(TRANSITION_NAME, ViewCompat.getTransitionName(imageView))
             return intent
         }
 

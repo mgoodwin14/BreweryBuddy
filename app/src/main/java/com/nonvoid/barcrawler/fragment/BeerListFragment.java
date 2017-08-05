@@ -2,9 +2,12 @@ package com.nonvoid.barcrawler.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -154,9 +158,16 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
     }
 
     @Override
-    public void onBeerSelected(Beer beer) {
+    public void onBeerSelected(Beer beer, ImageView imageView) {
         Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
-        startActivity( BeerDetailsActivity.Companion.newIntent(getContext(), beer ));
+
+        Intent intent = BeerDetailsActivity.Companion.newIntent(getContext(), beer, imageView);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                getActivity(),
+                imageView,
+                ViewCompat.getTransitionName(imageView));
+        startActivity( intent, options.toBundle());
     }
 
     @Override
