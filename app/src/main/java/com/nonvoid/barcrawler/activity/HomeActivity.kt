@@ -69,6 +69,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_beer -> {
                 supportFragmentManager.findFragmentByTag(BeerListFragment::class.java.simpleName)?:
                         replaceContent(BeerListFragment())
+                return true
             }
         }
         return false
