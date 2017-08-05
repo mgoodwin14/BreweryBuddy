@@ -40,7 +40,7 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
     private static final String BREWERY_ITEM = "brewery_item";
     private static final String LOCATION_ITEM = "location_item";
-    private static final String TRANSITION_NAME = "transition";
+    private static final String TRANSITION_NAME = "brewery_transition";
 
     @BindView(R.id.brewery_details_image_view)
     ImageView imageView;
