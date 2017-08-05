@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
@@ -22,6 +24,8 @@ import com.nonvoid.barcrawler.adapter.BeerAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
 import com.nonvoid.barcrawler.model.Beer;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -36,7 +40,7 @@ import io.reactivex.disposables.Disposable;
  * Created by Matt on 5/30/2017.
  */
 
-public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
+public class BeerListFragment extends Fragment implements BeerAdapter.Callback, SearchFragment.Searchable {
 
     private static final String BEER_LIST_BUNDLE_KEY = "beer_list_key";
     private static final String BREWERY_ID_BUNDLE_KEY = "brewery_id_key";
@@ -44,11 +48,14 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
     @Inject
     BreweryAPI client;
 
-    @BindView(R.id.beer_list_recyclerview)
+    @BindView(R.id.brewery_list_recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.search_empty_state)
+    TextView emptyStateTextView;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ArrayList<Beer> beerList;
+    private ProgressDialog loadingDialog;
 
 
     public static BeerListFragment newInstance(ArrayList<Beer> list) {
@@ -100,11 +107,12 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.beer_list_fragment, container, false);
+        View view = inflater.inflate(R.layout.brewery_list_fragment, container, false);
         ButterKnife.bind(this, view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setNestedScrollingEnabled(false);
+        emptyStateTextView.setText("search for beers");
         return view;
     }
 
@@ -149,5 +157,41 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
     public void onBeerSelected(Beer beer) {
         Toast.makeText(getContext(), "Selected: " +beer.getName(), Toast.LENGTH_LONG).show();
         startActivity( BeerDetailsActivity.Companion.newIntent(getContext(), beer ));
+    }
+
+    @Override
+    public void doOnSearch(@NotNull String query) {
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+        compositeDisposable.add(client.searchForBeer(query)
+                .doOnSubscribe(x ->showLoading(true))
+                .doOnComplete(() -> showLoading(false))
+                .doOnError(throwable -> Log.d("MPG", throwable.getMessage(), throwable))
+                .subscribe(this::setList));
+    }
+
+    private void setList(ArrayList<Beer> list) {
+        if(list.isEmpty()){
+            emptyStateTextView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }else {
+            BeerAdapter adapter = new BeerAdapter(list, this);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyStateTextView.setVisibility(View.GONE);
+        }
+
+        beerList = list;
+        recyclerView.setAdapter(new BeerAdapter(beerList, this));
+    }
+
+
+    private void showLoading(boolean show){
+        if(show){
+            loadingDialog = ProgressDialog.show(getContext(), "", "Searching for Breweries", false, true);
+        }else {
+            loadingDialog.dismiss();
+        }
     }
 }

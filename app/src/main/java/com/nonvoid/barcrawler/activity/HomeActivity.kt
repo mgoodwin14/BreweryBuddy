@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
+import com.nonvoid.barcrawler.fragment.BeerListFragment
 import com.nonvoid.barcrawler.fragment.BreweryListFragment
 import com.nonvoid.barcrawler.fragment.BreweryLocationFragment
 import com.nonvoid.barcrawler.fragment.SearchFragment
@@ -64,6 +65,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportFragmentManager.findFragmentByTag(BreweryLocationFragment::class.java.simpleName)?:
                         replaceContent(BreweryLocationFragment())
                 return true
+            }
+            R.id.nav_beer -> {
+                supportFragmentManager.findFragmentByTag(BeerListFragment::class.java.simpleName)?:
+                        replaceContent(BeerListFragment())
             }
         }
         return false
