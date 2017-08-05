@@ -117,6 +117,8 @@ public class Beer implements Parcelable
     }
 
     public Labels getLabels() {
+        if(labels== null)
+            labels = new Labels();
         return labels;
     }
 
