@@ -66,6 +66,7 @@ public class Beer implements Parcelable
             instance.id = ((String) in.readValue((String.class.getClassLoader())));
             instance.name = ((String) in.readValue((String.class.getClassLoader())));
             instance.nameDisplay = ((String) in.readValue((String.class.getClassLoader())));
+            instance.description = ((String) in.readValue((String.class.getClassLoader())));
             instance.abv = ((String) in.readValue((String.class.getClassLoader())));
             instance.styleId = ((int) in.readValue((int.class.getClassLoader())));
             instance.isOrganic = ((String) in.readValue((String.class.getClassLoader())));
@@ -151,6 +152,7 @@ public class Beer implements Parcelable
         dest.writeValue(id);
         dest.writeValue(name);
         dest.writeValue(nameDisplay);
+        dest.writeValue(description);
         dest.writeValue(abv);
         dest.writeValue(styleId);
         dest.writeValue(isOrganic);
