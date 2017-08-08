@@ -77,7 +77,7 @@ public class BreweryLocationAdapter extends RecyclerView.Adapter<BreweryLocation
 
             cityTextView.setText(String.format("%s, %s", breweryLocation.getLocality(), breweryLocation.getRegion()));
             nameTextView.setText(breweryLocation.getName());
-            descriptionTextView.setText(breweryLocation.getLocationType());
+            descriptionTextView.setText(breweryLocation.getLocationTypeDisplay());
             if(breweryLocation.getBrewery().getImages() != null) {
                 Picasso.with(imageView.getContext())
                         .load(breweryLocation.getBrewery().getImages().getLarge())
