@@ -121,6 +121,15 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if(getArguments() != null && getArguments().getString(BREWERY_ID_BUNDLE_KEY) != null){
+            emptyStateTextView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
@@ -132,7 +141,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
             }else {
                 String breweryId = bundle.getString(BREWERY_ID_BUNDLE_KEY);
                 ProgressDialog dialog = ProgressDialog.show(context, "",
-                        "Loading. Please wait...", true);
+                        "Loading. Please wait...", true, true);
 
                 Disposable disposable = client.getBeersForBrewery(breweryId)
                         .subscribe(
