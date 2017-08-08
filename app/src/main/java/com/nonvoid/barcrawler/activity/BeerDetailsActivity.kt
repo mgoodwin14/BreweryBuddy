@@ -31,7 +31,7 @@ class BeerDetailsActivity : AppCompatActivity() {
         (application as MyApp).netComponent.inject(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val beer : Beer = intent.extras.getParcelable(INTENT_BEER_ID)
+        val beer : Beer = intent.extras.getParcelable(INTENT_BEER)
         beer_details_name_textview.text = beer.name
         beer_details_description_textview.text = beer.description
         beer_details_style_text_view.text = beer.style.shortName
@@ -60,6 +60,8 @@ class BeerDetailsActivity : AppCompatActivity() {
 //        )
     }
 
+
+
     private fun doBeerStuff(beer: Beer) {
         Snackbar.make(beer_details_description_textview.rootView, "Do Beer Stuff", Snackbar.LENGTH_LONG).show()
     }
@@ -72,7 +74,7 @@ class BeerDetailsActivity : AppCompatActivity() {
 
         fun newIntent(context: Context, beer: Beer): Intent {
             val intent = Intent(context, BeerDetailsActivity::class.java)
-            intent.putExtra(INTENT_BEER_ID, beer)
+            intent.putExtra(INTENT_BEER, beer)
             return intent
         }
 
