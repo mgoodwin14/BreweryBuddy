@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nonvoid.barcrawler.R
+import com.nonvoid.barcrawler.activity.BreweryDetailsActivity
 import com.nonvoid.barcrawler.adapter.BreweryLocationAdapter
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
@@ -24,9 +25,6 @@ import kotlinx.android.synthetic.main.brewery_list_fragment.*
  * Created by Matt on 8/3/2017.
  */
 class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.Callback {
-    override fun onBrewerySelected(location: BreweryLocation?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     @Inject
     lateinit var client: BreweryAPI
@@ -60,12 +58,16 @@ class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.C
         search_empty_state.text = "search by city"
     }
 
+    override fun onPause() {
+        super.onPause()
+        disposables.clear()
+    }
+
     override fun doOnSearch(query: String) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
          client.getLocationsInCity(query)
                 .doOnSubscribe{showLoading(true)}
                 .doOnComplete({showLoading(false)})
-                 .doOnError({x -> Log.d("MPG", x.message, x)})
+                .doOnError({x -> Log.d("MPG", x.message, x)})
                 .subscribe({list -> setList(list) })
     }
 
@@ -81,9 +83,8 @@ class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.C
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        disposables.clear()
+    override fun onBrewerySelected(location: BreweryLocation?) {
+        startActivity(BreweryDetailsActivity.newIntent(context, location))
     }
 
     companion object {
