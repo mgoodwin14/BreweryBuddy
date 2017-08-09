@@ -30,9 +30,6 @@ import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchFragment.Searchable {
 
-    @Inject
-    lateinit var client : BreweryAPI
-
     val disposables : CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +50,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        TODO("implement navigation item selected")
         drawer_layout.closeDrawer(GravityCompat.START)
         when (item.itemId){
             R.id.nav_brewery -> {

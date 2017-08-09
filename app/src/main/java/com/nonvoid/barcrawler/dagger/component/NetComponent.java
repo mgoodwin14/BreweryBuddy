@@ -4,7 +4,6 @@ package com.nonvoid.barcrawler.dagger.component;
 import com.nonvoid.barcrawler.activity.BeerDetailsActivity;
 import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
 import com.nonvoid.barcrawler.activity.HomeActivity;
-import com.nonvoid.barcrawler.activity.MainActivity;
 import com.nonvoid.barcrawler.dagger.module.AppModule;
 import com.nonvoid.barcrawler.dagger.module.NetModule;
 import com.nonvoid.barcrawler.fragment.BeerListFragment;
@@ -18,7 +17,6 @@ import dagger.Component;
 @Singleton
 @Component(modules={AppModule.class, NetModule.class})
 public interface NetComponent {
-    void inject(MainActivity activity);
     void inject(BreweryDetailsActivity activity);
     void inject(BeerDetailsActivity activity);
     void inject(BreweryListFragment fragment);
