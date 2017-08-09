@@ -11,10 +11,15 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
@@ -32,12 +37,33 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     val disposables : CompositeDisposable = CompositeDisposable()
 
+    lateinit var firebaseAuth : FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         (application as MyApp).netComponent.inject(this)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        if(firebaseAuth.currentUser!=null){
+            Log.d("MPG", "currentUser: ${firebaseAuth.currentUser}")
+        }else {
+            firebaseAuth.signInAnonymously()
+                    .addOnCompleteListener(this, {result ->
+                        if(result.isSuccessful){
+                            Log.d("MPG", "signInAnonymously:success")
+                            val user = firebaseAuth.currentUser
+                            Log.d("MPG", "currentUser: ${user.toString()}")
+                            Toast.makeText(this, "Auth success!", Toast.LENGTH_LONG).show()
+                        } else {
+                            Log.d("MPG", "signInAnonymously:failure -> ${result.exception}")
+                            Toast.makeText(this, "Auth failed", Toast.LENGTH_LONG).show()
+                        }
+                    })
+        }
 
         setUpDrawerNav()
 //        setUpSearch()
@@ -47,6 +73,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .add(R.id.search_fragment_frame_layout, searchFragment, searchFragment.javaClass.simpleName)
                 .add(R.id.content_frame_layout, breweryFragment, breweryFragment.javaClass.simpleName)
                 .commit()
+    }
+
+    override fun onStart() {
+        super.onStart()
+//        updateUser( firebaseAuth.currentUser )
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
