@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,8 +18,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
+import com.nonvoid.barcrawler.datalayer.client.FireBaseClient;
 import com.nonvoid.barcrawler.fragment.BeerListFragment;
 import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.Brewery;
@@ -44,6 +54,8 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.brewery_details_image_view)
     ImageView imageView;
+    @BindView(R.id.brewery_details_number_of_favorites)
+    TextView numberOfFavoritesTextView;
     @BindView(R.id.brewery_details_name_textview)
     TextView breweryNameTextView;
     @BindView(R.id.brewery_details_description_textview)
@@ -60,10 +72,14 @@ public class BreweryDetailsActivity extends AppCompatActivity {
     FrameLayout mapFragmentFrame;
 
 
-    private String breweryId;
+//    private String breweryId;
+    private Brewery brewery;
 
     @Inject
     SharedPreferences sharedPref;
+
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    FireBaseClient client = new FireBaseClient(user);
 
 
     public static Intent newIntent(Context context, BreweryLocation location){
@@ -106,15 +122,16 @@ public class BreweryDetailsActivity extends AppCompatActivity {
                         .addToBackStack(null)
                         .commit();
 
-                breweryId = location.getBreweryId();
+//                breweryId = location.getBreweryId();
+                brewery = location.getBrewery();
             } else {
-                Brewery brewery = bundle.getParcelable(BREWERY_ITEM);
+                brewery = bundle.getParcelable(BREWERY_ITEM);
                 if(brewery!= null){
                     breweryNameTextView.setText(brewery.getName());
                     breweryDescriptionTextView.setText(brewery.getDescription());
-                    breweryId = brewery.getId();
+//                    breweryId = brewery.getId();
                     getSupportFragmentManager().beginTransaction()
-                            .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(breweryId))
+                            .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(brewery.getId()))
                             .commit();
 
                     if(!brewery.getBreweryLocations().isEmpty()) {
@@ -143,13 +160,14 @@ public class BreweryDetailsActivity extends AppCompatActivity {
                 }
             }
         }
+        setFravoriteCount();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.brewery_details_menu, menu);
-        if(sharedPref.getBoolean(breweryId, false)) {
+        if(sharedPref.getBoolean(brewery.getId(), false)) {
             menu.getItem(0).setIcon(R.drawable.ic_favorite_checked);
         }
         return true;
@@ -210,11 +228,31 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
     private void toggleFavorite() {
 
-        Boolean fav = sharedPref.getBoolean(breweryId, false);
+        Boolean fav = !sharedPref.getBoolean(brewery.getId(), false);
         sharedPref.edit()
-                .putBoolean(breweryId, !fav)
+                .putBoolean(brewery.getId(), fav)
                 .apply();
 
+        client.setBreweryAsFavorite(brewery, fav);
+        setFravoriteCount();
+
         invalidateOptionsMenu();
+    }
+
+    private void setFravoriteCount() {
+        client.getNumberOfFavoritesForBrewery(brewery)
+                .subscribe(numberOfFavorites -> {
+                    Log.d("MPG", "got favorite is not null");
+                    if(numberOfFavorites==null || numberOfFavorites==0){
+                        numberOfFavoritesTextView.setText("Be the first to favorite this brewery!");
+                    }
+                    else if(numberOfFavorites==1){
+                        numberOfFavoritesTextView.setText("1 person has favorited this brewery");
+                    }
+                    else{
+                        numberOfFavoritesTextView.setText(numberOfFavorites + " people have favorited this brewery");
+                    }
+                }, throwable -> Log.d("MPG", throwable.getMessage(), throwable)
+            );
     }
 }

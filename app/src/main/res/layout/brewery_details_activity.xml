@@ -25,6 +25,13 @@
                 android:layout_gravity="center_horizontal|top"/>
 
             <TextView
+                android:id="@+id/brewery_details_number_of_favorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="5 people like this brewery"
+                />
+
+            <TextView
 
                 android:id="@+id/brewery_details_name_textview"
                 android:layout_width="match_parent"
