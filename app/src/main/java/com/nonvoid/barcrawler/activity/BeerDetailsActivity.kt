@@ -17,12 +17,14 @@ import com.nonvoid.barcrawler.model.Beer
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.beer_details_activity.*
+import javax.inject.Inject
 
 /**
  * Created by Matt on 6/30/2017.
  */
 class BeerDetailsActivity : AppCompatActivity() {
 
+    @Inject
     lateinit var client :BreweryAPI
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
@@ -54,16 +56,6 @@ class BeerDetailsActivity : AppCompatActivity() {
                         supportStartPostponedEnterTransition()
                     }
                 })
-
-//        client.getBeer(beer.id).subscribe(
-//                {beer -> doBeerStuff(beer)}
-//        )
-    }
-
-
-
-    private fun doBeerStuff(beer: Beer) {
-        Snackbar.make(beer_details_description_textview.rootView, "Do Beer Stuff", Snackbar.LENGTH_LONG).show()
     }
 
     companion object {
