@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.datalayer.io.BreweryAPI;
+import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI;
 import com.nonvoid.barcrawler.SearchFragment;
 import com.nonvoid.barcrawler.model.Beer;
 
@@ -48,7 +48,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
     private static final String BREWERY_ID_BUNDLE_KEY = "brewery_id_key";
 
     @Inject
-    BreweryAPI client;
+    BreweryDataBaseAPI client;
 
     @BindView(R.id.brewery_list_recyclerview)
     RecyclerView recyclerView;

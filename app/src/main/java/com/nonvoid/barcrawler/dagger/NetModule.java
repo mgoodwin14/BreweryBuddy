@@ -7,8 +7,8 @@ import android.preference.PreferenceManager;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nonvoid.barcrawler.datalayer.io.BreweryAPI;
-import com.nonvoid.barcrawler.datalayer.io.BreweryClient;
+import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI;
+import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseClient;
 import com.nonvoid.barcrawler.datalayer.io.BeerService;
 
 import javax.inject.Singleton;
@@ -94,7 +94,7 @@ public class NetModule {
 
     @Provides
     @Singleton
-    BreweryAPI provideBreweryClient(BeerService service){
-        return new BreweryClient(service);
+    BreweryDataBaseAPI provideBreweryClient(BeerService service){
+        return new BreweryDataBaseClient(service);
     }
 }

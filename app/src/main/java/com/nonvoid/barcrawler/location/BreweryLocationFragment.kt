@@ -13,7 +13,7 @@ import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.brewery.BreweryDetailsActivity
 import com.nonvoid.barcrawler.brewery.BreweryListFragment
 import com.nonvoid.barcrawler.dagger.MyApp
-import com.nonvoid.barcrawler.datalayer.io.BreweryAPI
+import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.SearchFragment.Searchable
 import com.nonvoid.barcrawler.model.BreweryLocation
 import io.reactivex.disposables.CompositeDisposable
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.brewery_list_fragment.*
 class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.Callback {
 
     @Inject
-    lateinit var client: BreweryAPI
+    lateinit var client: BreweryDataBaseAPI
 
     val breweryLocationList = ArrayList<BreweryLocation>()
 

@@ -14,7 +14,7 @@ import io.reactivex.Observable;
  * This interface is used by retro
  */
 
-public interface BreweryAPI {
+public interface BreweryDataBaseAPI {
     Observable<ArrayList<BreweryLocation>> getLocationsInCity(String city);
     Observable<ArrayList<Beer>> getBeersForBrewery(String breweryId);
     Observable<ArrayList<Brewery>> searchForBrewery(String query);

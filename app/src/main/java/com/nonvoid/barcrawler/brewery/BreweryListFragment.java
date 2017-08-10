@@ -18,7 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nonvoid.barcrawler.datalayer.io.BreweryAPI;
+import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.SearchFragment;
@@ -49,7 +49,7 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     TextView emptyStateTextView;
 
     @Inject
-    BreweryAPI client;
+    BreweryDataBaseAPI client;
 
     private ProgressDialog loadingDialog;
 

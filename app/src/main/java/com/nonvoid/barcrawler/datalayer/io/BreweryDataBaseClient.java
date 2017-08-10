@@ -27,11 +27,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Matt on 5/5/2017.
  */
 
-public class BreweryClient implements BreweryAPI {
+public class BreweryDataBaseClient implements BreweryDataBaseAPI {
 
     private BeerService service;
 
-    public BreweryClient() {
+    public BreweryDataBaseClient() {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -46,7 +46,7 @@ public class BreweryClient implements BreweryAPI {
         service = retrofit.create(BeerService.class);
     }
 
-    public BreweryClient(BeerService service) {
+    public BreweryDataBaseClient(BeerService service) {
         this.service = service;
     }
 
