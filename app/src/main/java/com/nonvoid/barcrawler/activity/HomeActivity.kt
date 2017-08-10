@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, SearchFragment.Searchable {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val disposables : CompositeDisposable = CompositeDisposable()
 
@@ -66,18 +66,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         setUpDrawerNav()
-//        setUpSearch()
         val breweryFragment = BreweryListFragment()
         val searchFragment = SearchFragment.newInstance(breweryFragment)
         supportFragmentManager.beginTransaction()
                 .add(R.id.search_fragment_frame_layout, searchFragment, searchFragment.javaClass.simpleName)
                 .add(R.id.content_frame_layout, breweryFragment, breweryFragment.javaClass.simpleName)
                 .commit()
-    }
-
-    override fun onStart() {
-        super.onStart()
-//        updateUser( firebaseAuth.currentUser )
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -137,84 +131,5 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-    }
-
-    private fun setUpSearch(){
-
-        val searchFragment = SearchFragment.newInstance(this)
-        supportFragmentManager.beginTransaction()
-                .add(R.id.search_fragment_frame_layout, searchFragment)
-                .commit()
-
-//        city_search_button.setOnClickListener { v ->
-//            run {
-//                Log.d("MPG", "Trying to search")
-//
-//                val dialog = showSearchDialog(v, "Loading breweries in ${search_edit_text.text}")
-//
-//                val disposable = this.client.getLocationsInCity(search_edit_text.text.toString())
-//                    .subscribe(
-//                            {
-//                                list ->  supportFragmentManager.beginTransaction()
-//                                    .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
-//                                    .commit()
-//                                dialog.dismiss()
-//                            },
-//                            {
-//                                throwable -> Log.e("", throwable.message, throwable)
-//                                dialog.dismiss()
-//                            }
-//                    )
-//                disposables.add(disposable)
-//            }
-//        }
-//
-//        brewery_search_button.setOnClickListener { v ->
-//            run {
-//                val dialog = showSearchDialog(v, "Searching for breweries with ${search_edit_text.text} in the name")
-//                client.searchForBrewery(search_edit_text.text.toString())
-//                        .subscribe(
-//                                {
-//                                    list ->  supportFragmentManager.beginTransaction()
-//                                        .replace(R.id.content_frame_layout, BreweryListFragment.newInstance(list))
-//                                        .commit()
-//                                    dialog.dismiss()},
-//                                {
-//                                    throwable -> Log.e("", throwable.message, throwable)
-//                                    dialog.dismiss()
-//                                }
-//                        )
-//            }
-//        }
-//
-//        beer_search_button.setOnClickListener { v ->
-//            run{
-//                val dialog = showSearchDialog(v, "Searching for beers named ${search_edit_text.text}")
-//                client.searchForBeer(search_edit_text.text.toString())
-//                        .subscribe(
-//                                {
-//                                    list -> supportFragmentManager.beginTransaction()
-//                                        .replace(R.id.content_frame_layout, BeerListFragment.newInstance(list))
-//                                        .commit()
-//                                    dialog.dismiss()
-//                                },
-//                                {
-//                                    throwable -> Log.e("", throwable.message, throwable)
-//                                    dialog.dismiss()
-//                                }
-//                        )
-//            }
-//        }
-    }
-
-    override fun doOnSearch(query: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-
-    private fun showSearchDialog(v : View, text :String): Dialog{
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(v.windowToken, 0)
-        return ProgressDialog.show(this, "", text)
     }
 }
