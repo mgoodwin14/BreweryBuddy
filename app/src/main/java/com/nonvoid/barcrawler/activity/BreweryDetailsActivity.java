@@ -20,14 +20,9 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
+import com.nonvoid.barcrawler.datalayer.api.RatingRepoAPI;
 import com.nonvoid.barcrawler.datalayer.client.FireBaseClient;
 import com.nonvoid.barcrawler.fragment.BeerListFragment;
 import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
@@ -79,7 +74,7 @@ public class BreweryDetailsActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    FireBaseClient client = new FireBaseClient(user);
+    RatingRepoAPI ratingClient = new FireBaseClient(user);
 
 
     public static Intent newIntent(Context context, BreweryLocation location){
@@ -233,14 +228,14 @@ public class BreweryDetailsActivity extends AppCompatActivity {
                 .putBoolean(brewery.getId(), fav)
                 .apply();
 
-        client.setBreweryAsFavorite(brewery, fav);
+        ratingClient.setBreweryAsFavorite(brewery, fav);
         setFravoriteCount();
 
         invalidateOptionsMenu();
     }
 
     private void setFravoriteCount() {
-        client.getNumberOfFavoritesForBrewery(brewery)
+        ratingClient.getNumberOfFavoritesForBrewery(brewery)
                 .subscribe(numberOfFavorites -> {
                     Log.d("MPG", "got favorite is not null");
                     if(numberOfFavorites==null || numberOfFavorites==0){

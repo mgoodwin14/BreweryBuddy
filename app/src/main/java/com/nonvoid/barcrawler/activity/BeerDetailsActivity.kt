@@ -4,18 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.Nullable
-import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.AttributeSet
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
+import com.nonvoid.barcrawler.datalayer.api.RatingRepoAPI
 import com.nonvoid.barcrawler.datalayer.client.FireBaseClient
 import com.nonvoid.barcrawler.model.Beer
 import com.squareup.picasso.Callback
@@ -32,7 +30,7 @@ class BeerDetailsActivity : AppCompatActivity() {
     lateinit var client :BreweryAPI
 
     lateinit var beer :Beer
-    lateinit var firebaseClient :FireBaseClient
+    lateinit var ratingClient: RatingRepoAPI
 
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +61,11 @@ class BeerDetailsActivity : AppCompatActivity() {
                 })
         val user = FirebaseAuth.getInstance().currentUser
         if(user!=null){
-            firebaseClient = FireBaseClient(user)
+            ratingClient = FireBaseClient(user)
 
             getRating()
 
-            firebaseClient.isBeerLiked(beer).subscribe(
+            ratingClient.isBeerLiked(beer).subscribe(
                     {result -> toggleLikeButtons(result) },
                     {throwable -> Log.d("MPG", throwable.message, throwable) }
             )
@@ -75,8 +73,9 @@ class BeerDetailsActivity : AppCompatActivity() {
             dislike_button.setOnClickListener{ toggleLikeButtons(false) }
         }
     }
+
     private fun getRating(){
-        firebaseClient.getBeerRating(beer).subscribe(
+        ratingClient.getBeerRating(beer).subscribe(
                 {result ->
                     val rating = (result*100).toInt()
                     if(rating > 0){
@@ -90,11 +89,11 @@ class BeerDetailsActivity : AppCompatActivity() {
 
     private fun toggleLikeButtons(like: Boolean){
         if(like){
-            firebaseClient.likeBeer(beer)
+            ratingClient.likeBeer(beer)
             like_button.setBackgroundColor(getColor(R.color.primary))
             dislike_button.setBackgroundColor(getColor(R.color.bright_foreground_disabled_material_dark))
         }else {
-            firebaseClient.dislikeBeer(beer)
+            ratingClient.dislikeBeer(beer)
             like_button.setBackgroundColor(getColor(R.color.bright_foreground_disabled_material_dark))
             dislike_button.setBackgroundColor(getColor(R.color.primary))
         }
