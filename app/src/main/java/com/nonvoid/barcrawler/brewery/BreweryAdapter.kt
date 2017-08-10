@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso
 /**
  * Created by Matt on 7/1/2017.
  */
-class BreweryAdapter(private val list: ArrayList<Brewery>, private val callback: Callback) : RecyclerView.Adapter<BreweryAdapter.BreweryViewHolder>() {
+class BreweryAdapter(private val list: List<Brewery>, private val callback: Callback) : RecyclerView.Adapter<BreweryAdapter.BreweryViewHolder>() {
 
     override fun onBindViewHolder(holder: BreweryViewHolder, position: Int) {
         val brewery = list[position]

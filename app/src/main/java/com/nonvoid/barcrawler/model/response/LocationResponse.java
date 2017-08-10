@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Matt on 5/5/2017.
@@ -31,7 +32,7 @@ public class LocationResponse {
         return results;
     }
 
-    public ArrayList<BreweryLocation> getLocations() {
+    public List<BreweryLocation> getLocations() {
         if(locations == null){
             locations = new ArrayList<>();
         }

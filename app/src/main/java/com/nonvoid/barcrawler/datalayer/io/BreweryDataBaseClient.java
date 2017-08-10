@@ -1,5 +1,7 @@
 package com.nonvoid.barcrawler.datalayer.io;
 
+import android.util.Log;
+
 import com.nonvoid.barcrawler.model.response.BeerResponse;
 import com.nonvoid.barcrawler.model.response.BreweryResponse;
 import com.nonvoid.barcrawler.model.response.LocationResponse;
@@ -7,20 +9,13 @@ import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.model.Beer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 
 /**
@@ -36,31 +31,43 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
     }
 
     @Override
-    public Observable<ArrayList<BreweryLocation>> getLocationsInCity(String city) {
-        return service.getBrewery(city)
+    public Observable<List<BreweryLocation>> searchCityForBreweries(String city) {
+        return service.searchCityForBreweries(city)
                 .compose(applySchedulers())
                 .map(LocationResponse::getLocations);
     }
 
     @Override
-    public Observable<ArrayList<Beer>> getBeersForBrewery(String breweryId) {
+    public Observable<List<Beer>> getBeersForBrewery(String breweryId) {
         return service.getBeersForBrewery(breweryId)
                 .compose(applySchedulers())
                 .map(BeerResponse::getBeers);
     }
 
     @Override
-    public Observable<ArrayList<Brewery>> searchForBrewery(String query) {
+    public Observable<List<Brewery>> searchForBrewery(String query) {
         return service.searchForBrewery(query)
                 .compose(applySchedulers())
                 .map(BreweryResponse::getBreweries);
     }
 
     @Override
-    public Observable<ArrayList<Beer>> searchForBeer(String query) {
+    public Observable<List<Beer>> searchForBeer(String query) {
         return service.searchForBeer(query)
                 .compose(applySchedulers())
                 .map(BeerResponse::getBeers);
+    }
+
+    @Override
+    public Observable<Brewery> getBrewery(String breweryId) {
+        return service.getBreweryById(breweryId)
+                .compose(applySchedulers())
+                .map(response ->{
+                    if(response!=null && response.getBreweries() !=null && !response.getBreweries().isEmpty()){
+                        return response.getBreweries().get(0);
+                    }
+                    return null;
+                });
     }
 
     @Override
@@ -76,7 +83,9 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
     }
 
     private <T> ObservableTransformer<T, T> applySchedulers() {
-        return observable -> observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        return observable ->
+                observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> Log.d("MPG", throwable.getMessage(), throwable));
     }
 }

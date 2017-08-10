@@ -27,6 +27,7 @@ import com.nonvoid.barcrawler.model.Brewery;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -104,7 +105,7 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
                 .subscribe(this::setList));
     }
 
-    private void setList(ArrayList<Brewery> list) {
+    private void setList(List<Brewery> list) {
         if(list.isEmpty()){
             emptyStateTextView.setVisibility(View.VISIBLE);
             breweryListRecyclerView.setVisibility(View.GONE);

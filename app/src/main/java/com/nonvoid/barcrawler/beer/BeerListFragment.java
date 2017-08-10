@@ -30,6 +30,7 @@ import com.nonvoid.barcrawler.model.Beer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -56,7 +57,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
     TextView emptyStateTextView;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private ArrayList<Beer> beerList;
+    private List<Beer> beerList;
     private ProgressDialog loadingDialog;
 
 
@@ -144,7 +145,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
                 Disposable disposable = client.getBeersForBrewery(breweryId)
                         .subscribe(
                                 list -> {
-                                    beerList = list;
+                                    beerList =  list;
                                     recyclerView.setAdapter(new BeerAdapter(beerList, this));
                                     dialog.dismiss();
                                 },
@@ -187,7 +188,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
                 .subscribe(this::setList));
     }
 
-    private void setList(ArrayList<Beer> list) {
+    private void setList(List<Beer> list) {
         if(list.isEmpty()){
             emptyStateTextView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);

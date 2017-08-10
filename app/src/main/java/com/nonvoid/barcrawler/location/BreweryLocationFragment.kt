@@ -64,14 +64,14 @@ class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.C
     }
 
     override fun doOnSearch(query: String) {
-         client.getLocationsInCity(query)
+         client.searchCityForBreweries(query)
                 .doOnSubscribe{showLoading(true)}
                 .doOnComplete({showLoading(false)})
                 .doOnError({x -> Log.d("MPG", x.message, x)})
                 .subscribe({list -> setList(list) })
     }
 
-    fun setList(list: ArrayList<BreweryLocation>){
+    fun setList(list: List<BreweryLocation>){
         if(list.isEmpty()){
             search_empty_state.visibility = View.VISIBLE
             brewery_list_recyclerview.visibility = View.GONE
