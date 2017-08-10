@@ -2,8 +2,8 @@ package com.nonvoid.barcrawler;
 
 import android.support.annotation.NonNull;
 
-import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
-import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
+import com.nonvoid.barcrawler.datalayer.io.BreweryAPI;
+import com.nonvoid.barcrawler.datalayer.io.BreweryClient;
 import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 

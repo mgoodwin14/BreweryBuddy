@@ -1,9 +1,8 @@
-package com.nonvoid.barcrawler.datalayer.client
+package com.nonvoid.barcrawler.social
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
-import com.nonvoid.barcrawler.datalayer.api.RatingRepoAPI
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import durdinapps.rxfirebase2.RxFirebaseDatabase
@@ -12,7 +11,7 @@ import io.reactivex.Maybe
 /**
  * Created by Matt on 8/8/2017.
  */
-class FireBaseClient (private val user: FirebaseUser) : RatingRepoAPI{
+class FireBaseClient (private val user: FirebaseUser) : RatingRepoAPI {
     private val reference :DatabaseReference = FirebaseDatabase.getInstance().reference
 
     override fun setBreweryAsFavorite(brewery: Brewery, favorite: Boolean) {

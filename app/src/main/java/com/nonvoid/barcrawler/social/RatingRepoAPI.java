@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.datalayer.api;
+package com.nonvoid.barcrawler.social;
 
 import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.model.Brewery;

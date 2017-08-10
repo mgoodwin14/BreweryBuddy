@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.datalayer.response;
+package com.nonvoid.barcrawler.model.response;
 
 import com.google.gson.annotations.SerializedName;
 

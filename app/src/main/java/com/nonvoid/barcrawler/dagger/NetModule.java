@@ -1,28 +1,22 @@
-package com.nonvoid.barcrawler.dagger.module;
+package com.nonvoid.barcrawler.dagger;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
-import com.nonvoid.barcrawler.datalayer.client.BreweryClient;
-import com.nonvoid.barcrawler.datalayer.service.BeerService;
-
-import java.io.IOException;
+import com.nonvoid.barcrawler.datalayer.io.BreweryAPI;
+import com.nonvoid.barcrawler.datalayer.io.BreweryClient;
+import com.nonvoid.barcrawler.datalayer.io.BeerService;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

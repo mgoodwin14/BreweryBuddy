@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.dagger.module;
+package com.nonvoid.barcrawler.dagger;
 
 import android.app.Application;
 

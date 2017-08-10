@@ -1,10 +1,9 @@
-package com.nonvoid.barcrawler.fragment;
+package com.nonvoid.barcrawler.brewery;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -19,12 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nonvoid.barcrawler.datalayer.io.BreweryAPI;
 import com.nonvoid.barcrawler.R;
-import com.nonvoid.barcrawler.activity.BreweryDetailsActivity;
-import com.nonvoid.barcrawler.adapter.BreweryAdapter;
-import com.nonvoid.barcrawler.adapter.BreweryLocationAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
+import com.nonvoid.barcrawler.SearchFragment;
 import com.nonvoid.barcrawler.model.Brewery;
 
 import org.jetbrains.annotations.NotNull;

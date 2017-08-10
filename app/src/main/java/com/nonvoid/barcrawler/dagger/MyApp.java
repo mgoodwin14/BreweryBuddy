@@ -3,11 +3,6 @@ package com.nonvoid.barcrawler.dagger;
 
 import android.app.Application;
 
-import com.nonvoid.barcrawler.dagger.component.DaggerNetComponent;
-import com.nonvoid.barcrawler.dagger.component.NetComponent;
-import com.nonvoid.barcrawler.dagger.module.AppModule;
-import com.nonvoid.barcrawler.dagger.module.NetModule;
-
 
 public class MyApp extends Application {
 

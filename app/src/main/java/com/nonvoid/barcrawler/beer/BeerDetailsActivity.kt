@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.activity
+package com.nonvoid.barcrawler.beer
 
 import android.content.Context
 import android.content.Intent
@@ -12,9 +12,9 @@ import android.widget.ImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
-import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
-import com.nonvoid.barcrawler.datalayer.api.RatingRepoAPI
-import com.nonvoid.barcrawler.datalayer.client.FireBaseClient
+import com.nonvoid.barcrawler.datalayer.io.BreweryAPI
+import com.nonvoid.barcrawler.social.RatingRepoAPI
+import com.nonvoid.barcrawler.social.FireBaseClient
 import com.nonvoid.barcrawler.model.Beer
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class BeerDetailsActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var client :BreweryAPI
+    lateinit var client : BreweryAPI
 
     lateinit var beer :Beer
     lateinit var ratingClient: RatingRepoAPI

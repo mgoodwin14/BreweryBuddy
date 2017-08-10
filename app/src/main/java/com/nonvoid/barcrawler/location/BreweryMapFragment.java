@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.fragment;
+package com.nonvoid.barcrawler.location;
 
 import android.content.Intent;
 import android.net.Uri;

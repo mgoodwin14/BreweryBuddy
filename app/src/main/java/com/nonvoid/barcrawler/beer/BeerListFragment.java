@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.fragment;
+package com.nonvoid.barcrawler.beer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -20,13 +20,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nonvoid.barcrawler.R;
-import com.nonvoid.barcrawler.activity.BeerDetailsActivity;
-import com.nonvoid.barcrawler.adapter.BeerAdapter;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
+import com.nonvoid.barcrawler.datalayer.io.BreweryAPI;
+import com.nonvoid.barcrawler.SearchFragment;
 import com.nonvoid.barcrawler.model.Beer;
 
 import org.jetbrains.annotations.NotNull;

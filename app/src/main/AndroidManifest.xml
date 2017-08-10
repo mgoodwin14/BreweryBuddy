@@ -29,13 +29,13 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activity.BreweryDetailsActivity"
+            android:name=".brewery.BreweryDetailsActivity"
             android:label="Brewery Details" />
         <activity
-            android:name=".activity.BeerDetailsActivity"
+            android:name=".beer.BeerDetailsActivity"
             android:label="Beer Details"/>
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".HomeActivity"
             android:label="Brewery Buddy"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize">

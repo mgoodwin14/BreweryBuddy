@@ -1,10 +1,9 @@
-package com.nonvoid.barcrawler.datalayer.response;
+package com.nonvoid.barcrawler.model.response;
 
 import com.google.gson.annotations.SerializedName;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Matt on 5/5/2017.

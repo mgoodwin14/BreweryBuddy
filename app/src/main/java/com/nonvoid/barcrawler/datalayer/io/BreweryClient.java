@@ -1,10 +1,8 @@
-package com.nonvoid.barcrawler.datalayer.client;
+package com.nonvoid.barcrawler.datalayer.io;
 
-import com.nonvoid.barcrawler.datalayer.api.BreweryAPI;
-import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
-import com.nonvoid.barcrawler.datalayer.response.BreweryResponse;
-import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
-import com.nonvoid.barcrawler.datalayer.service.BeerService;
+import com.nonvoid.barcrawler.model.response.BeerResponse;
+import com.nonvoid.barcrawler.model.response.BreweryResponse;
+import com.nonvoid.barcrawler.model.response.LocationResponse;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.nonvoid.barcrawler.model.Beer;

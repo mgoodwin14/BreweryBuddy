@@ -1,8 +1,8 @@
-package com.nonvoid.barcrawler.datalayer.service;
+package com.nonvoid.barcrawler.datalayer.io;
 
-import com.nonvoid.barcrawler.datalayer.response.BeerResponse;
-import com.nonvoid.barcrawler.datalayer.response.BreweryResponse;
-import com.nonvoid.barcrawler.datalayer.response.LocationResponse;
+import com.nonvoid.barcrawler.model.response.BeerResponse;
+import com.nonvoid.barcrawler.model.response.BreweryResponse;
+import com.nonvoid.barcrawler.model.response.LocationResponse;
 
 
 import io.reactivex.Observable;

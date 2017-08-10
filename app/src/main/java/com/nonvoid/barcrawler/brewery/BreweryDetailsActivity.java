@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.activity;
+package com.nonvoid.barcrawler.brewery;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,13 +22,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.datalayer.api.RatingRepoAPI;
-import com.nonvoid.barcrawler.datalayer.client.FireBaseClient;
-import com.nonvoid.barcrawler.fragment.BeerListFragment;
-import com.nonvoid.barcrawler.fragment.BreweryMapFragment;
+import com.nonvoid.barcrawler.social.RatingRepoAPI;
+import com.nonvoid.barcrawler.social.FireBaseClient;
+import com.nonvoid.barcrawler.beer.BeerListFragment;
+import com.nonvoid.barcrawler.location.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
-import com.nonvoid.barcrawler.util.StringUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -105,10 +104,8 @@ public class BreweryDetailsActivity extends AppCompatActivity {
 
             if (location != null) {
                 breweryNameTextView.setText(location.getName());
-                if(StringUtils.isNotNullOrEmpty( location.getDescription() )) {
-                    breweryDescriptionTextView.setText(location.getDescription());
-                    breweryDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
-                }
+                breweryDescriptionTextView.setText(location.getDescription());
+                breweryDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
 
                 BreweryMapFragment fragment = BreweryMapFragment.newInstance(location);
 

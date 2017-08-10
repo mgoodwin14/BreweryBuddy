@@ -1,9 +1,5 @@
-package com.nonvoid.barcrawler.activity
+package com.nonvoid.barcrawler
 
-import android.app.Dialog
-
-import android.app.ProgressDialog
-import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -14,24 +10,16 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
-import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
-import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
-import com.nonvoid.barcrawler.fragment.BeerListFragment
-import com.nonvoid.barcrawler.fragment.BreweryListFragment
-import com.nonvoid.barcrawler.fragment.BreweryLocationFragment
-import com.nonvoid.barcrawler.fragment.SearchFragment
+import com.nonvoid.barcrawler.beer.BeerListFragment
+import com.nonvoid.barcrawler.brewery.BreweryListFragment
+import com.nonvoid.barcrawler.location.BreweryLocationFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
-import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
