@@ -51,7 +51,7 @@ class BreweryAdapter(private val list: List<Brewery>, private val callback: Call
             if(!brewery.breweryLocations.isEmpty()){
                 //need to turn on premium features at
                 //http://www.brewerydb.com/developers/premium
-                //locationTextView.text = brewery.locations?.get(0)?.locality
+                locationTextView.text = brewery.breweryLocations?.get(0)?.locality
             } else {
                 locationTextView.visibility = View.GONE
             }
