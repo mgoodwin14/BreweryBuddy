@@ -8,11 +8,15 @@ import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.AttributeSet
+import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import com.google.firebase.auth.FirebaseAuth
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.api.BreweryAPI
+import com.nonvoid.barcrawler.datalayer.client.FireBaseClient
 import com.nonvoid.barcrawler.model.Beer
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -27,19 +31,20 @@ class BeerDetailsActivity : AppCompatActivity() {
     @Inject
     lateinit var client :BreweryAPI
 
+    lateinit var beer :Beer
+    lateinit var firebaseClient :FireBaseClient
+
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.beer_details_activity)
         (application as MyApp).netComponent.inject(this)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val beer : Beer = intent.extras.getParcelable(INTENT_BEER)
+        beer = intent.extras.getParcelable(INTENT_BEER)
         beer_details_name_textview.text = beer.name
         beer_details_description_textview.text = beer.description
         beer_details_style_text_view.text = beer.style.shortName
-        abv_text_view.text = "${beer.abv}%"
-        beg_grav_text_view.text = beer.style.ogMin
-        end_grav_text_view.text = beer.style.fgMin
+        beer_details_abv.text = "${beer.abv}% ABV"
 
         val picUrl = beer.labels.large?:beer.labels.icon?: beer.breweries[0]?.images?.large
 
@@ -56,6 +61,36 @@ class BeerDetailsActivity : AppCompatActivity() {
                         supportStartPostponedEnterTransition()
                     }
                 })
+        val user = FirebaseAuth.getInstance().currentUser
+        if(user!=null){
+            firebaseClient = FireBaseClient(user)
+
+            firebaseClient.isBeerLiked(beer).subscribe(
+                    {result -> toggleLikeButtons(result) },
+                    {throwable -> Log.d("MPG", throwable.message, throwable) }
+            )
+            like_button.setOnClickListener{ toggleLikeButtons(true) }
+            dislike_button.setOnClickListener{ toggleLikeButtons(false) }
+        }
+    }
+
+    private fun toggleLikeButtons(like: Boolean){
+        if(like){
+            firebaseClient.likeBeer(beer)
+            like_button.setBackgroundColor(getColor(R.color.primary))
+            dislike_button.setBackgroundColor(getColor(R.color.bright_foreground_disabled_material_dark))
+        }else {
+            firebaseClient.dislikeBeer(beer)
+            like_button.setBackgroundColor(getColor(R.color.bright_foreground_disabled_material_dark))
+            dislike_button.setBackgroundColor(getColor(R.color.primary))
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.home -> onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {
