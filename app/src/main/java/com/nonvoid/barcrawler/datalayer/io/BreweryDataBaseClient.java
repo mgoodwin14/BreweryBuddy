@@ -31,21 +31,6 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
 
     private BeerService service;
 
-    public BreweryDataBaseClient() {
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .baseUrl("http://api.brewerydb.com/v2/")
-                .build();
-        service = retrofit.create(BeerService.class);
-    }
-
     public BreweryDataBaseClient(BeerService service) {
         this.service = service;
     }
