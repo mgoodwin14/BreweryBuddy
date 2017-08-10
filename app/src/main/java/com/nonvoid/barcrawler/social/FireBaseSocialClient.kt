@@ -11,7 +11,7 @@ import io.reactivex.Maybe
 /**
  * Created by Matt on 8/8/2017.
  */
-class FireBaseClient (private val user: FirebaseUser) : RatingRepoAPI {
+class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
     private val reference :DatabaseReference = FirebaseDatabase.getInstance().reference
 
     override fun setBreweryAsFavorite(brewery: Brewery, favorite: Boolean) {

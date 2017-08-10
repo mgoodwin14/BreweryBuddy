@@ -22,8 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.social.RatingRepoAPI;
-import com.nonvoid.barcrawler.social.FireBaseClient;
+import com.nonvoid.barcrawler.social.SocialRepoAPI;
+import com.nonvoid.barcrawler.social.FireBaseSocialClient;
 import com.nonvoid.barcrawler.beer.BeerListFragment;
 import com.nonvoid.barcrawler.location.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.Brewery;
@@ -73,7 +73,7 @@ public class BreweryDetailsActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    RatingRepoAPI ratingClient = new FireBaseClient(user);
+    SocialRepoAPI ratingClient = new FireBaseSocialClient(user);
 
 
     public static Intent newIntent(Context context, BreweryLocation location){

@@ -9,7 +9,7 @@ import io.reactivex.Maybe;
  * Created by Matt on 8/10/2017.
  */
 
-public interface RatingRepoAPI {
+public interface SocialRepoAPI {
     void setBreweryAsFavorite(Brewery brewery, Boolean favorite);
     Maybe<Integer> getNumberOfFavoritesForBrewery(Brewery brewery);
     Maybe<Boolean> isBeerLiked(Beer beer);
