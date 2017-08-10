@@ -7,6 +7,7 @@ import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import io.reactivex.Maybe
+import io.reactivex.Single
 
 /**
  * Created by Matt on 8/8/2017.
@@ -35,10 +36,24 @@ class FireBaseClient(private val user: FirebaseUser) {
     }
 
     fun isBeerLiked(beer: Beer): Maybe<Boolean> {
-        return RxFirebaseDatabase.observeSingleValueEvent(getBeerRatingReference(beer)
-                .child(user.uid)
-                .orderByValue(), {snapShot -> snapShot.value == 1}
+        return RxFirebaseDatabase.observeSingleValueEvent(
+                getBeerRatingReference(beer).child(user.uid).orderByValue(),
+                {snapShot -> snapShot.value == 1}
         )
+    }
+
+    fun getBeerRating(beer: Beer): Maybe<Double> {
+        return RxFirebaseDatabase.observeSingleValueEvent(
+                getBeerRatingReference(beer).orderByValue())
+                .map({snapshot ->
+                    run{
+                        var rating :Double = 0.0
+                        if(snapshot.hasChildren()){
+                            rating =(snapshot.value as Map<String, Double>).values.sum() / snapshot.childrenCount.toDouble()
+                        }
+                        rating
+                    }
+                })
     }
 
     fun likeBeer(beer: Beer){
