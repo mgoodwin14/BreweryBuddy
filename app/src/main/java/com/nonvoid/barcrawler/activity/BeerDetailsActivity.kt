@@ -65,6 +65,8 @@ class BeerDetailsActivity : AppCompatActivity() {
         if(user!=null){
             firebaseClient = FireBaseClient(user)
 
+            getRating()
+
             firebaseClient.isBeerLiked(beer).subscribe(
                     {result -> toggleLikeButtons(result) },
                     {throwable -> Log.d("MPG", throwable.message, throwable) }
@@ -72,6 +74,18 @@ class BeerDetailsActivity : AppCompatActivity() {
             like_button.setOnClickListener{ toggleLikeButtons(true) }
             dislike_button.setOnClickListener{ toggleLikeButtons(false) }
         }
+    }
+    private fun getRating(){
+        firebaseClient.getBeerRating(beer).subscribe(
+                {result ->
+                    val rating = (result*100).toInt()
+                    if(rating > 0){
+                        beer_rating_text_view.text = "${rating}%"
+                    }else {
+                        beer_rating_text_view.text = "Be the first to like this beer"
+                    }},
+                {throwable -> Log.d("MPG", throwable.message, throwable) }
+        )
     }
 
     private fun toggleLikeButtons(like: Boolean){
@@ -84,6 +98,7 @@ class BeerDetailsActivity : AppCompatActivity() {
             like_button.setBackgroundColor(getColor(R.color.bright_foreground_disabled_material_dark))
             dislike_button.setBackgroundColor(getColor(R.color.primary))
         }
+        getRating()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
