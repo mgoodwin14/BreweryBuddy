@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.beer.BeerListFragment
 import com.nonvoid.barcrawler.brewery.BreweryListFragment
-import com.nonvoid.barcrawler.location.BreweryLocationFragment
+import com.nonvoid.barcrawler.brewery.BreweryLocationFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*

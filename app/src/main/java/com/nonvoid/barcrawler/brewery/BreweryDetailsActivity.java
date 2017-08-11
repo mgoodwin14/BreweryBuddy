@@ -25,7 +25,6 @@ import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.social.SocialRepoAPI;
 import com.nonvoid.barcrawler.social.FireBaseSocialClient;
 import com.nonvoid.barcrawler.beer.BeerListFragment;
-import com.nonvoid.barcrawler.location.BreweryMapFragment;
 import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.squareup.picasso.Callback;

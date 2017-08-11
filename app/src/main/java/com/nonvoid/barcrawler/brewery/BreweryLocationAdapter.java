@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.location;
+package com.nonvoid.barcrawler.brewery;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

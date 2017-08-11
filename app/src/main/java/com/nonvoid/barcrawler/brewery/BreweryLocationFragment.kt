@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.location
+package com.nonvoid.barcrawler.brewery
 
 import android.app.ProgressDialog
 import android.os.Bundle
@@ -10,8 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nonvoid.barcrawler.R
-import com.nonvoid.barcrawler.brewery.BreweryDetailsActivity
-import com.nonvoid.barcrawler.brewery.BreweryListFragment
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.SearchFragment.Searchable

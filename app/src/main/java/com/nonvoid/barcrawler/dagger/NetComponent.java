@@ -6,7 +6,7 @@ import com.nonvoid.barcrawler.brewery.BreweryDetailsActivity;
 import com.nonvoid.barcrawler.HomeActivity;
 import com.nonvoid.barcrawler.beer.BeerListFragment;
 import com.nonvoid.barcrawler.brewery.BreweryListFragment;
-import com.nonvoid.barcrawler.location.BreweryLocationFragment;
+import com.nonvoid.barcrawler.brewery.BreweryLocationFragment;
 
 import javax.inject.Singleton;
 

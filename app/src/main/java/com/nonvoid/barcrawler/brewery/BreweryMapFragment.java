@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.location;
+package com.nonvoid.barcrawler.brewery;
 
 import android.content.Intent;
 import android.net.Uri;
