@@ -13,10 +13,10 @@ I am using this project to teach myself Kotlin as well. So all new code will be 
 
 # Features
 --Search for brewery by name or by location  
---show breweries on a map  
---search for beer by name
+--Show breweries on a map  
+--Search for beer by name
+--Beer ratings  
+--Brewery favorites
 
 # Future features
--- Beer ratings  
---Brewery ratings  
 --Find beer using camera on the label  
