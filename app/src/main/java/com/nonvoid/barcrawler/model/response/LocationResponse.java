@@ -18,7 +18,7 @@ public class LocationResponse {
     @SerializedName("totalResults")
     int results;
     @SerializedName("data")
-    ArrayList<BreweryLocation> locations;
+    List<BreweryLocation> locations;
 
     public int getCurrentPage() {
         return currentPage;
@@ -37,5 +37,9 @@ public class LocationResponse {
             locations = new ArrayList<>();
         }
         return locations;
+    }
+
+    public void setLocations(List<BreweryLocation> locations) {
+        this.locations = locations;
     }
 }

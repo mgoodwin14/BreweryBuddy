@@ -12,12 +12,16 @@ import java.util.List;
 
 public class BreweryResponse {
     @SerializedName("data")
-    ArrayList<Brewery> breweries;
+    List<Brewery> breweries;
 
     public List<Brewery> getBreweries() {
         if(breweries == null){
             breweries = new ArrayList<>();
         }
         return breweries;
+    }
+
+    public void setBreweries(List<Brewery> breweries) {
+        this.breweries = breweries;
     }
 }

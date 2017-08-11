@@ -13,12 +13,16 @@ import java.util.List;
 public class BeerResponse extends BaseResponse{
 
     @SerializedName("data")
-    ArrayList<Beer> beers;
+    List<Beer> beers;
 
     public List<Beer> getBeers() {
         if(beers == null){
             beers = new ArrayList<>();
         }
         return beers;
+    }
+
+    public void setBeers(List<Beer> beers) {
+        this.beers = beers;
     }
 }
