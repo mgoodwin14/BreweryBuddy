@@ -16,7 +16,7 @@ import retrofit2.http.Query;
  * Created by Matt on 5/5/2017.
  */
 
-public interface BeerService {
+public interface BreweryDataBaseService {
 
     @GET("locations?key=98d5ee318c335e35af66cc5f952fd412&format=json&isPrimary=y&openToPublic=y")
     Observable<LocationResponse> searchCityForBreweries(@Query("locality") String city);

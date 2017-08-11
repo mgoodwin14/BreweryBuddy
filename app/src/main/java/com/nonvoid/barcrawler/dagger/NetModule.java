@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI;
 import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseClient;
-import com.nonvoid.barcrawler.datalayer.io.BeerService;
+import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseService;
 
 import javax.inject.Singleton;
 
@@ -88,13 +88,13 @@ public class NetModule {
 
     @Provides
     @Singleton
-    BeerService provideBeerService(Retrofit retrofit){
-        return retrofit.create(BeerService.class);
+    BreweryDataBaseService provideBeerService(Retrofit retrofit){
+        return retrofit.create(BreweryDataBaseService.class);
     }
 
     @Provides
     @Singleton
-    BreweryDataBaseAPI provideBreweryClient(BeerService service){
+    BreweryDataBaseAPI provideBreweryClient(BreweryDataBaseService service){
         return new BreweryDataBaseClient(service);
     }
 }

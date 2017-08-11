@@ -1,6 +1,6 @@
 package com.nonvoid.barcrawler
 
-import com.nonvoid.barcrawler.datalayer.io.BeerService
+import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseService
 import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseClient
 import com.nonvoid.barcrawler.model.Beer
@@ -29,8 +29,8 @@ import java.util.concurrent.TimeUnit
 class BreweryDatabaseClientTest{
 
 
-    val beerService :BeerService = Mockito.mock(BeerService::class.java)
-    val subject : BreweryDataBaseAPI = BreweryDataBaseClient(beerService)
+    val breweryDataBaseService: BreweryDataBaseService = Mockito.mock(BreweryDataBaseService::class.java)
+    val subject : BreweryDataBaseAPI = BreweryDataBaseClient(breweryDataBaseService)
 
     val mockBreweryResponse = BreweryResponse()
     val mockBrewery = Brewery()
@@ -71,7 +71,7 @@ class BreweryDatabaseClientTest{
 
     @Test
     fun searchForBrewery_success(){
-        Mockito.`when`(beerService.searchForBrewery(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.searchForBrewery(Mockito.anyString()))
                 .thenReturn( Observable.just(mockBreweryResponse))
 
         subject.searchForBrewery("").test()
@@ -82,7 +82,7 @@ class BreweryDatabaseClientTest{
 
     @Test
     fun getBreweryById_success(){
-        Mockito.`when`(beerService.getBreweryById(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.getBreweryById(Mockito.anyString()))
                 .thenReturn(Observable.just(mockBreweryResponse))
 
         subject.getBreweryById("").test()
@@ -94,7 +94,7 @@ class BreweryDatabaseClientTest{
     @Test
     fun getBreweryById_notFound(){
         mockBreweryResponse.breweries = listOf()
-        Mockito.`when`(beerService.getBreweryById(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.getBreweryById(Mockito.anyString()))
                 .thenReturn(Observable.just(mockBreweryResponse))
 
         subject.getBreweryById("").test()
@@ -104,7 +104,7 @@ class BreweryDatabaseClientTest{
     @Test
     fun searchForBreweriesInCity_success(){
 
-        Mockito.`when`(beerService.searchCityForBreweries(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.searchCityForBreweries(Mockito.anyString()))
                 .thenReturn(Observable.just(mockLocationResponse))
 
         subject.searchCityForBreweries("").test()
@@ -115,7 +115,7 @@ class BreweryDatabaseClientTest{
 
     @Test
     fun getBeerById_success(){
-        Mockito.`when`(beerService.getBeerById(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.getBeerById(Mockito.anyString()))
                 .thenReturn(Observable.just(mockBeerResponse))
 
         subject.getBeerById("").test()
@@ -127,7 +127,7 @@ class BreweryDatabaseClientTest{
     @Test
     fun getBeerById_notFound(){
         mockBeerResponse.beers = listOf()
-        Mockito.`when`(beerService.getBeerById(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.getBeerById(Mockito.anyString()))
                 .thenReturn(Observable.just(mockBeerResponse))
 
         subject.getBeerById("").test()
@@ -137,7 +137,7 @@ class BreweryDatabaseClientTest{
     @Test
     fun searchForBeer_success(){
 
-        Mockito.`when`(beerService.searchForBeer(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.searchForBeer(Mockito.anyString()))
                 .thenReturn(Observable.just(mockBeerResponse))
 
         subject.searchForBeer("").test()
@@ -148,7 +148,7 @@ class BreweryDatabaseClientTest{
 
     @Test
     fun getBeersForBrewery_success(){
-        Mockito.`when`(beerService.getBeersForBrewery(Mockito.anyString()))
+        Mockito.`when`(breweryDataBaseService.getBeersForBrewery(Mockito.anyString()))
                 .thenReturn(Observable.just(mockBeerResponse))
 
         subject.getBeersForBrewery("").test()

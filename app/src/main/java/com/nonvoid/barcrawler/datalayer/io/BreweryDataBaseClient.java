@@ -24,9 +24,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BreweryDataBaseClient implements BreweryDataBaseAPI {
 
-    private BeerService service;
+    private BreweryDataBaseService service;
 
-    public BreweryDataBaseClient(BeerService service) {
+    public BreweryDataBaseClient(BreweryDataBaseService service) {
         this.service = service;
     }
 
