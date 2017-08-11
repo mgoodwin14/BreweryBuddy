@@ -18,7 +18,7 @@ class BeerDetailsPresenterTest{
     @Before
     fun setUp(){
         Mockito.`when`(socialClient.getBeerRating(Mockito.any()))
-                .thenReturn(Maybe.just(1.0))
+                .thenReturn(Maybe.empty())
         Mockito.`when`(socialClient.isBeerLiked(Mockito.any()))
                 .thenReturn(Maybe.just(true))
         Mockito.doNothing().`when`(socialClient).likeBeer(beer)
