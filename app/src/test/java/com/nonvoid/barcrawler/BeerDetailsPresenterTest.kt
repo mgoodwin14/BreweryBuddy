@@ -18,7 +18,7 @@ class BeerDetailsPresenterTest{
     @Before
     fun setUp(){
         Mockito.`when`(socialClient.getBeerRating(Mockito.any()))
-                .thenReturn(Maybe.empty())
+                .thenReturn(Maybe.just(1.0))
         Mockito.`when`(socialClient.isBeerLiked(Mockito.any()))
                 .thenReturn(Maybe.just(true))
         Mockito.doNothing().`when`(socialClient).likeBeer(beer)
@@ -31,18 +31,22 @@ class BeerDetailsPresenterTest{
         Mockito.verify(view).displayBeer(beer)
         Mockito.verify(socialClient).getBeerRating(beer)
         Mockito.verify(socialClient).isBeerLiked(beer)
+        Mockito.verify(view).displayRating(100)
+        Mockito.verify(view).toggleLikeButtons(true)
     }
 
     @Test
     fun getRating_success(){
         subject.getRating()
         Mockito.verify(socialClient).getBeerRating(beer)
+        Mockito.verify(view).displayRating(100)
     }
 
     @Test
     fun getLiked_success(){
         subject.getLiked()
         Mockito.verify(socialClient).isBeerLiked(beer)
+        Mockito.verify(view).toggleLikeButtons(true)
     }
 
     @Test
@@ -51,5 +55,7 @@ class BeerDetailsPresenterTest{
         subject.likeButtonClicked(false)
         Mockito.verify(socialClient).likeBeer(beer)
         Mockito.verify(socialClient).dislikeBeer(beer)
+        Mockito.verify(view).toggleLikeButtons(true)
+        Mockito.verify(view).toggleLikeButtons(false)
     }
 }
