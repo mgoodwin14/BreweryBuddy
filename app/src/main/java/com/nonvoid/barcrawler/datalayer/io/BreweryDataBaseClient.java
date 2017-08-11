@@ -59,7 +59,7 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
     }
 
     @Override
-    public Observable<Brewery> getBrewery(String breweryId) {
+    public Observable<Brewery> getBreweryById(String breweryId) {
         return service.getBreweryById(breweryId)
                 .compose(applySchedulers())
                 .map(response ->{
@@ -71,7 +71,7 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
     }
 
     @Override
-    public Observable<Beer> getBeer(String beerId) {
+    public Observable<Beer> getBeerById(String beerId) {
         return service.getBeerById(beerId)
                 .compose(applySchedulers())
                 .map(response -> {

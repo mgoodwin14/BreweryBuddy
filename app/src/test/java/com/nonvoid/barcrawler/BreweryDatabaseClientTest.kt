@@ -11,17 +11,13 @@ import com.nonvoid.barcrawler.model.response.BreweryResponse
 import com.nonvoid.barcrawler.model.response.LocationResponse
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.subscribers.TestSubscriber
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito
-import retrofit2.Response
-import java.util.*
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.internal.schedulers.ExecutorScheduler
-import io.reactivex.Scheduler.Worker
 import io.reactivex.disposables.Disposable
+import org.junit.Before
 import org.junit.BeforeClass
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
@@ -40,6 +36,8 @@ class BreweryDatabaseClientTest{
     val mockBrewery = Brewery()
     val mockBeerResponse = BeerResponse()
     val mockBeer = Beer()
+    val mockLocationResponse = LocationResponse()
+    val mockLocation = BreweryLocation()
 
     companion object {
         @BeforeClass
@@ -64,10 +62,15 @@ class BreweryDatabaseClientTest{
         }
     }
 
-    @Test
-    fun searchForBrewery(){
+    @Before
+    fun setUp(){
         mockBreweryResponse.breweries = listOf(mockBrewery)
+        mockBeerResponse.beers = listOf(mockBeer)
+        mockLocationResponse.locations = listOf(mockLocation)
+    }
 
+    @Test
+    fun searchForBrewery_success(){
         Mockito.`when`(beerService.searchForBrewery(Mockito.anyString()))
                 .thenReturn( Observable.just(mockBreweryResponse))
 
@@ -78,8 +81,61 @@ class BreweryDatabaseClientTest{
     }
 
     @Test
-    fun searchForBeer(){
-        mockBeerResponse.beers = listOf(mockBeer)
+    fun getBreweryById_success(){
+        Mockito.`when`(beerService.getBreweryById(Mockito.anyString()))
+                .thenReturn(Observable.just(mockBreweryResponse))
+
+        subject.getBreweryById("").test()
+                .assertComplete()
+                .assertNoErrors()
+                .assertValue(mockBreweryResponse.breweries[0])
+    }
+
+    @Test
+    fun getBreweryById_notFound(){
+        mockBreweryResponse.breweries = listOf()
+        Mockito.`when`(beerService.getBreweryById(Mockito.anyString()))
+                .thenReturn(Observable.just(mockBreweryResponse))
+
+        subject.getBreweryById("").test()
+                .assertNotComplete()
+    }
+
+    @Test
+    fun searchForBreweriesInCity_success(){
+
+        Mockito.`when`(beerService.searchCityForBreweries(Mockito.anyString()))
+                .thenReturn(Observable.just(mockLocationResponse))
+
+        subject.searchCityForBreweries("").test()
+                .assertComplete()
+                .assertNoErrors()
+                .assertValue(mockLocationResponse.locations)
+    }
+
+    @Test
+    fun getBeerById_success(){
+        Mockito.`when`(beerService.getBeerById(Mockito.anyString()))
+                .thenReturn(Observable.just(mockBeerResponse))
+
+        subject.getBeerById("").test()
+                .assertComplete()
+                .assertNoErrors()
+                .assertValue(mockBeerResponse.beers[0])
+    }
+
+    @Test
+    fun getBeerById_notFound(){
+        mockBeerResponse.beers = listOf()
+        Mockito.`when`(beerService.getBeerById(Mockito.anyString()))
+                .thenReturn(Observable.just(mockBeerResponse))
+
+        subject.getBeerById("").test()
+                .assertNotComplete()
+    }
+
+    @Test
+    fun searchForBeer_success(){
 
         Mockito.`when`(beerService.searchForBeer(Mockito.anyString()))
                 .thenReturn(Observable.just(mockBeerResponse))
@@ -91,20 +147,13 @@ class BreweryDatabaseClientTest{
     }
 
     @Test
-    fun searchForBreweriesInCity(){
-        val mockLocationResponse = LocationResponse()
-        val mockLocation = BreweryLocation()
+    fun getBeersForBrewery_success(){
+        Mockito.`when`(beerService.getBeersForBrewery(Mockito.anyString()))
+                .thenReturn(Observable.just(mockBeerResponse))
 
-        mockLocationResponse.locations = listOf(mockLocation)
-
-        Mockito.`when`(beerService.searchCityForBreweries(Mockito.anyString()))
-                .thenReturn(Observable.just(mockLocationResponse))
-
-        subject.searchCityForBreweries("").test()
+        subject.getBeersForBrewery("").test()
                 .assertComplete()
                 .assertNoErrors()
-                .assertValue(mockLocationResponse.locations)
+                .assertValue(mockBeerResponse.beers)
     }
-
-
 }
