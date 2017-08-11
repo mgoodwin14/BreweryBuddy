@@ -14,7 +14,7 @@ I am using this project to teach myself Kotlin as well. So all new code will be 
 # Features
 --Search for brewery by name or by location  
 --Show breweries on a map  
---Search for beer by name
+--Search for beer by name  
 --Beer ratings  
 --Brewery favorites
 
