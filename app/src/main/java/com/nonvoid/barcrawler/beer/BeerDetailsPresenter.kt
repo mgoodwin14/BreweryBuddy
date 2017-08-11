@@ -8,14 +8,9 @@ import com.nonvoid.barcrawler.social.SocialRepoAPI
 /**
  * Created by Matt on 8/10/2017.
  */
-class BeerDetailsPresenter(private val view: BeerDetailsView, private val beer: Beer){
-    val socialClient: SocialRepoAPI = FireBaseSocialClient(FirebaseAuth.getInstance().currentUser!!)
+class BeerDetailsPresenter(private val view: BeerDetailsView, private val beer: Beer, private val socialClient: SocialRepoAPI = FireBaseSocialClient(FirebaseAuth.getInstance().currentUser!!)){
 
-    init {
-        onCreate()
-    }
-
-    private fun onCreate(){
+    fun onCreate(){
         view.displayBeer(beer)
         getRating()
         getLiked()

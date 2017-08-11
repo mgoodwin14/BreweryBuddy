@@ -30,6 +30,7 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
 
         val beer :Beer = intent.extras.getParcelable(INTENT_BEER)
         presenter = BeerDetailsPresenter(this, beer)
+        presenter.onCreate()
 
         like_button.setOnClickListener{ presenter.likeButtonClicked(true) }
         dislike_button.setOnClickListener{ presenter.likeButtonClicked(false) }
