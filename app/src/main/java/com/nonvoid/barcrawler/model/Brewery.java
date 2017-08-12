@@ -147,6 +147,8 @@ public class Brewery implements Parcelable
     }
 
     public Images getImages() {
+        if(images==null)
+            images= new Images();
         return images;
     }
 
