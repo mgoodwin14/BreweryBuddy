@@ -66,6 +66,8 @@ class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.C
                 .doOnSubscribe{showLoading(true)}
                 .doOnComplete({showLoading(false)})
                 .doOnError({x -> Log.d("MPG", x.message, x)})
+                 .filter{x -> x.brewery!=null}
+                 .toList()
                 .subscribe({list -> setList(list) })
     }
 

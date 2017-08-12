@@ -15,6 +15,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -31,10 +32,11 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
     }
 
     @Override
-    public Observable<List<BreweryLocation>> searchCityForBreweries(String city) {
+    public Observable<BreweryLocation> searchCityForBreweries(String city) {
         return service.searchCityForBreweries(city)
                 .compose(applySchedulers())
-                .map(LocationResponse::getLocations);
+                .map(LocationResponse::getLocations)
+                .flatMapIterable(v -> v);
     }
 
     @Override
