@@ -36,7 +36,11 @@ class BreweryDetailsPresenter(
     }
 
     private fun setBreweryAsFavorite(favorite: Boolean){
-        socialClient.setBreweryAsFavorite(brewery, favorite)
+        if(favorite){
+            socialClient.favoriteBrewery(brewery)
+        }else {
+            socialClient.unfavoriteBrewery(brewery)
+        }
         view.displayAsFavorite(favorite)
         socialClient.getNumberOfFavoritesForBrewery(brewery)
                 .subscribe({result -> view.displayFavoriteCount(result)})
