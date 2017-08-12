@@ -7,6 +7,7 @@ import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import io.reactivex.Maybe
+import io.reactivex.Single
 
 /**
  * Created by Matt on 8/8/2017.
@@ -27,21 +28,23 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
             }
     }
 
-    override fun getNumberOfFavoritesForBrewery(brewery: Brewery): Maybe<Int> {
+    override fun getNumberOfFavoritesForBrewery(brewery: Brewery): Single<Int> {
         return RxFirebaseDatabase.observeSingleValueEvent(getBreweryFavoriteReference(brewery)
                 .orderByValue()
                 .equalTo(true), {snapShot -> snapShot.childrenCount.toInt()}
-        )
+        ).toSingle()
     }
 
-    override fun isBeerLiked(beer: Beer): Maybe<Boolean> {
+    override fun isBeerLiked(beer: Beer): Single<Boolean> {
         return RxFirebaseDatabase.observeSingleValueEvent(
                 getBeerRatingReference(beer).child(user.uid).orderByValue())
                 .filter({data->data.exists()})
                 .map {snapShot -> (snapShot.value as Long).toInt() == 1 }
+                .toSingle()
     }
 
-    override fun getBeerRating(beer: Beer): Maybe<Double> {
+
+    override fun getBeerRating(beer: Beer): Single<Int> {
         return RxFirebaseDatabase.observeSingleValueEvent(
                 getBeerRatingReference(beer).orderByValue())
                 .map({snapshot ->
@@ -50,9 +53,9 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
                         if(snapshot.hasChildren()){
                             rating =(snapshot.value as Map<String, Double>).values.sum() / snapshot.childrenCount.toDouble()
                         }
-                        rating
+                        (rating*100).toInt()
                     }
-                })
+                }).toSingle()
     }
 
     override fun likeBeer(beer: Beer){
