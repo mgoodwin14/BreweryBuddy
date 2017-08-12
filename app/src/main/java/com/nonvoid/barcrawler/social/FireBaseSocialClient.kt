@@ -44,12 +44,11 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
         ).toSingle()
     }
 
-    override fun isBeerLiked(beer: Beer): Single<Boolean> {
+    override fun isBeerLiked(beer: Beer): Maybe<Boolean> {
         return RxFirebaseDatabase.observeSingleValueEvent(
                 getBeerRatingReference(beer).child(user.uid).orderByValue())
                 .filter({data->data.exists()})
                 .map {snapShot -> (snapShot.value as Long).toInt() == 1 }
-                .toSingle()
     }
 
 

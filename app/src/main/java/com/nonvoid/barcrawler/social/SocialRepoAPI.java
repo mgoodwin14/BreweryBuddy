@@ -13,7 +13,7 @@ import io.reactivex.Single;
 public interface SocialRepoAPI {
     Single<Boolean> isBreweryFavorited(Brewery brewery);
     Single<Integer> getNumberOfFavoritesForBrewery(Brewery brewery);
-    Single<Boolean> isBeerLiked(Beer beer);
+    Maybe<Boolean> isBeerLiked(Beer beer);
     Single<Integer> getBeerRating(Beer beer);
     void favoriteBrewery(Brewery brewery);
     void unfavoriteBrewery(Brewery brewery);
