@@ -18,21 +18,24 @@ import retrofit2.http.Query;
 
 public interface BreweryDataBaseService {
 
-    @GET("locations?key=98d5ee318c335e35af66cc5f952fd412&format=json&isPrimary=y&openToPublic=y")
+    String KEY = "key=98d5ee318c335e35af66cc5f952fd412";
+    String FORMAT = "&format=json";
+
+    @GET("locations?"+KEY+FORMAT+"&isPrimary=y&openToPublic=y")
     Observable<LocationResponse> searchCityForBreweries(@Query("locality") String city);
 
-    @GET("search?key=98d5ee318c335e35af66cc5f952fd412&format=json&type=brewery&withLocations=y")
+    @GET("search?"+KEY+FORMAT+"&type=brewery&withLocations=y")
     Observable<BreweryResponse> searchForBrewery(@Query("q") String query);
 
-    @GET("search?key=98d5ee318c335e35af66cc5f952fd412&format=json&type=beer&withBreweries=y")
+    @GET("search?"+KEY+FORMAT+"&type=beer&withBreweries=y")
     Observable<BeerResponse> searchForBeer(@Query("q") String query);
 
-    @GET("brewery/{id}?key=98d5ee318c335e35af66cc5f952fd412&format=json")
+    @GET("brewery/{id}?"+KEY+FORMAT)
     Observable<BreweryResponse> getBreweryById(@Path("id") String breweryId);
 
-    @GET("brewery/{id}/beers?key=98d5ee318c335e35af66cc5f952fd412&format=json")
+    @GET("brewery/{id}/beers?"+KEY+FORMAT)
     Observable<BeerResponse> getBeersForBrewery(@Path("id") String breweryId);
 
-    @GET("beer/{id}?key=98d5ee318c335e35af66cc5f952fd412&format=json")
+    @GET("beer/{id}?"+KEY+FORMAT)
     Observable<BeerResponse> getBeerById(@Path("id") String beerId);
 }
