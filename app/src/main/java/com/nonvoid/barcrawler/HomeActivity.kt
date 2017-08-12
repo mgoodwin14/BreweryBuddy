@@ -1,5 +1,6 @@
 package com.nonvoid.barcrawler
 
+import android.app.ProgressDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -17,6 +18,7 @@ import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.beer.BeerListFragment
 import com.nonvoid.barcrawler.brewery.BreweryListFragment
 import com.nonvoid.barcrawler.brewery.BreweryLocationFragment
+import durdinapps.rxfirebase2.RxFirebaseAuth
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
@@ -37,17 +39,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         firebaseAuth = FirebaseAuth.getInstance()
 
         if(firebaseAuth.currentUser!=null){
+            firebaseAuth.currentUser!!.reload()
             Log.d("MPG", "currentUser: ${firebaseAuth.currentUser}")
         }else {
-            firebaseAuth.signInAnonymously()
-                    .addOnCompleteListener(this, {result ->
-                        if(result.isSuccessful){
-                            Log.d("MPG", "signInAnonymously:success")
-                            val user = firebaseAuth.currentUser
-                            Log.d("MPG", "currentUser: ${user.toString()}")
+            val dialog = ProgressDialog.show(this, "Logging in", "Please wait.", true)
+            RxFirebaseAuth.signInAnonymously(firebaseAuth)
+                    .doFinally{dialog.dismiss()}
+                    .subscribe({result ->
+                        if(result.user!= null){
                             Toast.makeText(this, "Auth success!", Toast.LENGTH_LONG).show()
-                        } else {
-                            Log.d("MPG", "signInAnonymously:failure -> ${result.exception}")
+                        }else {
                             Toast.makeText(this, "Auth failed", Toast.LENGTH_LONG).show()
                         }
                     })
