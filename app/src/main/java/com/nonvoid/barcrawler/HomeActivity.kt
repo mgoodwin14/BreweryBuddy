@@ -85,8 +85,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun addSearchFragment() {
-        val searchFragment = SearchFragment()
-        searchFragment.setSearchable(this)
+        val searchFragment = SearchFragment.newInstance(this)
         val breweryFragment = BreweryListFragment()
         supportFragmentManager.beginTransaction()
                 .add(R.id.search_fragment_frame_layout, searchFragment, searchFragment.javaClass.simpleName)
