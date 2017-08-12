@@ -8,7 +8,10 @@ import com.nonvoid.barcrawler.social.SocialRepoAPI
 /**
  * Created by Matt on 8/10/2017.
  */
-class BeerDetailsPresenter(private val view: BeerDetailsView, private val beer: Beer, private val socialClient: SocialRepoAPI = FireBaseSocialClient(FirebaseAuth.getInstance().currentUser!!)){
+class BeerDetailsPresenter(
+        private val view: BeerDetailsView,
+        private val beer: Beer,
+        private val socialClient: SocialRepoAPI = FireBaseSocialClient(FirebaseAuth.getInstance().currentUser!!)){
 
     fun onCreate(){
         view.displayBeer(beer)
@@ -17,11 +20,13 @@ class BeerDetailsPresenter(private val view: BeerDetailsView, private val beer: 
     }
 
     fun getRating(){
-        socialClient.getBeerRating(beer).subscribe({ result -> view.displayRating((result*100).toInt())})
+        socialClient.getBeerRating(beer)
+                .subscribe({ result -> view.displayRating(result)})
     }
 
     fun getLiked(){
-        socialClient.isBeerLiked(beer).subscribe({ result -> view.toggleLikeButtons(result)})
+        socialClient.isBeerLiked(beer)
+                .subscribe({ result -> view.displayLikeButtons(result)})
     }
 
     fun likeButtonClicked(like: Boolean){
@@ -30,13 +35,13 @@ class BeerDetailsPresenter(private val view: BeerDetailsView, private val beer: 
         }else {
             socialClient.dislikeBeer(beer)
         }
-        view.toggleLikeButtons(like)
+        view.displayLikeButtons(like)
         getRating()
     }
 
     interface BeerDetailsView{
         fun displayBeer(beer: Beer)
-        fun toggleLikeButtons(like :Boolean)
+        fun displayLikeButtons(like :Boolean)
         fun displayRating(rating: Int)
     }
 }

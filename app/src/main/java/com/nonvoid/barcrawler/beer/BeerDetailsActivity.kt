@@ -74,7 +74,7 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         }
     }
 
-    override fun toggleLikeButtons(like: Boolean){
+    override fun displayLikeButtons(like: Boolean){
         if(like){
             like_button.setBackgroundColor(getColor(R.color.primary))
             dislike_button.setBackgroundColor(getColor(R.color.bright_foreground_disabled_material_dark))

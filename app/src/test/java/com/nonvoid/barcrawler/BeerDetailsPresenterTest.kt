@@ -4,6 +4,7 @@ import com.nonvoid.barcrawler.beer.BeerDetailsPresenter
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.social.SocialRepoAPI
 import io.reactivex.Maybe
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -18,9 +19,9 @@ class BeerDetailsPresenterTest{
     @Before
     fun setUp(){
         Mockito.`when`(socialClient.getBeerRating(Mockito.any()))
-                .thenReturn(Maybe.just(1.0))
+                .thenReturn(Single.just(100))
         Mockito.`when`(socialClient.isBeerLiked(Mockito.any()))
-                .thenReturn(Maybe.just(true))
+                .thenReturn(Single.just(true))
         Mockito.doNothing().`when`(socialClient).likeBeer(beer)
         Mockito.doNothing().`when`(socialClient).dislikeBeer(beer)
     }
@@ -32,7 +33,7 @@ class BeerDetailsPresenterTest{
         Mockito.verify(socialClient).getBeerRating(beer)
         Mockito.verify(socialClient).isBeerLiked(beer)
         Mockito.verify(view).displayRating(100)
-        Mockito.verify(view).toggleLikeButtons(true)
+        Mockito.verify(view).displayLikeButtons(true)
     }
 
     @Test
@@ -46,7 +47,7 @@ class BeerDetailsPresenterTest{
     fun getLiked_success(){
         subject.getLiked()
         Mockito.verify(socialClient).isBeerLiked(beer)
-        Mockito.verify(view).toggleLikeButtons(true)
+        Mockito.verify(view).displayLikeButtons(true)
     }
 
     @Test
@@ -55,7 +56,7 @@ class BeerDetailsPresenterTest{
         subject.likeButtonClicked(false)
         Mockito.verify(socialClient).likeBeer(beer)
         Mockito.verify(socialClient).dislikeBeer(beer)
-        Mockito.verify(view).toggleLikeButtons(true)
-        Mockito.verify(view).toggleLikeButtons(false)
+        Mockito.verify(view).displayLikeButtons(true)
+        Mockito.verify(view).displayLikeButtons(false)
     }
 }
