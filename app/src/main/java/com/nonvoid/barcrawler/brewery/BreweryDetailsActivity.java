@@ -61,8 +61,6 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
     @BindView(R.id.brewery_map_fragment_frame)
     FrameLayout mapFragmentFrame;
 
-
-
     private BreweryDetailsPresenter presenter;
     private MenuItem favoriteMenuItem;
 

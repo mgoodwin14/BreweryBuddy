@@ -54,11 +54,11 @@ class BreweryDatabaseClientTest{
                 }
             }
 
-            RxJavaPlugins.setInitIoSchedulerHandler { scheduler -> immediate }
-            RxJavaPlugins.setInitComputationSchedulerHandler { scheduler -> immediate }
-            RxJavaPlugins.setInitNewThreadSchedulerHandler { scheduler -> immediate }
-            RxJavaPlugins.setInitSingleSchedulerHandler { scheduler -> immediate }
-            RxAndroidPlugins.setInitMainThreadSchedulerHandler { scheduler -> immediate }
+            RxJavaPlugins.setInitIoSchedulerHandler { immediate }
+            RxJavaPlugins.setInitComputationSchedulerHandler { immediate }
+            RxJavaPlugins.setInitNewThreadSchedulerHandler { immediate }
+            RxJavaPlugins.setInitSingleSchedulerHandler { immediate }
+            RxAndroidPlugins.setInitMainThreadSchedulerHandler { immediate }
         }
     }
 

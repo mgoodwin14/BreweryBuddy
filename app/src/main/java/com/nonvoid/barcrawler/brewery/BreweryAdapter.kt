@@ -20,9 +20,7 @@ class BreweryAdapter(private val list: List<Brewery>, private val callback: Call
     override fun onBindViewHolder(holder: BreweryViewHolder, position: Int) {
         val brewery = list[position]
         holder.setView(brewery)
-        holder.itemView.setOnClickListener { v ->
-            callback.onBrewerySelected(list[position], holder.imageView)
-        }
+        holder.itemView.setOnClickListener { callback.onBrewerySelected(brewery, holder.imageView) }
         ViewCompat.setTransitionName(holder.imageView, brewery.id)
     }
 
