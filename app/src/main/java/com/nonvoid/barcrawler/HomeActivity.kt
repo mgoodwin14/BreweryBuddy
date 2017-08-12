@@ -1,6 +1,8 @@
 package com.nonvoid.barcrawler
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -22,12 +24,15 @@ import durdinapps.rxfirebase2.RxFirebaseAuth
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
+import android.net.NetworkInfo
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+
+
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val disposables : CompositeDisposable = CompositeDisposable()
-
-    lateinit var firebaseAuth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +41,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         (application as MyApp).netComponent.inject(this)
 
-        firebaseAuth = FirebaseAuth.getInstance()
+        val firebaseAuth = FirebaseAuth.getInstance()
 
         if(firebaseAuth.currentUser!=null){
             firebaseAuth.currentUser!!.reload()
@@ -44,12 +49,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }else {
             val dialog = ProgressDialog.show(this, "Logging in", "Please wait.", true)
             RxFirebaseAuth.signInAnonymously(firebaseAuth)
-                    .doFinally{dialog.dismiss()}
-                    .subscribe({result ->
-                        if(result.user!= null){
-                            Toast.makeText(this, "Auth success!", Toast.LENGTH_LONG).show()
-                        }else {
-                            Toast.makeText(this, "Auth failed", Toast.LENGTH_LONG).show()
+                    .doFinally { dialog.dismiss() }
+                    .subscribe({ result ->
+                        if (result.user != null) {
+                            Toast.makeText(this, "Signed in as anonymous user", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(this, "Sign in failed", Toast.LENGTH_LONG).show()
                         }
                     })
         }
@@ -120,5 +125,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun isNetworkVailable():Boolean{
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 }
