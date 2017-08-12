@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
+import com.nonvoid.barcrawler.model.Beer;
 import com.nonvoid.barcrawler.social.SocialRepoAPI;
 import com.nonvoid.barcrawler.social.FireBaseSocialClient;
 import com.nonvoid.barcrawler.beer.BeerListFragment;
@@ -29,12 +31,13 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created by Matt on 5/13/2017.
- */
 
 public class BreweryDetailsActivity extends AppCompatActivity implements BreweryDetailsPresenter.BreweryDetailsView {
 
@@ -60,6 +63,9 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
     FrameLayout beerListFragmentFrame;
     @BindView(R.id.brewery_map_fragment_frame)
     FrameLayout mapFragmentFrame;
+
+    @Inject
+    BreweryDataBaseAPI dbClient;
 
     private BreweryDetailsPresenter presenter;
     private MenuItem favoriteMenuItem;
@@ -109,7 +115,7 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
 
         SocialRepoAPI socialClient = new FireBaseSocialClient(FirebaseAuth.getInstance().getCurrentUser());
 
-        presenter = new BreweryDetailsPresenter(this, brewery, socialClient);
+        presenter = new BreweryDetailsPresenter(this, brewery, dbClient, socialClient);
         presenter.onCreate();
     }
 
@@ -185,9 +191,7 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
     public void displayBrewery(@NotNull Brewery brewery) {
         breweryNameTextView.setText(brewery.getName());
         breweryDescriptionTextView.setText(brewery.getDescription());
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(brewery.getId()))
-                .commit();
+        presenter.getBeerList();
         if(!brewery.getBreweryLocations().isEmpty()) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.brewery_map_fragment_frame, BreweryMapFragment.newInstance(brewery.getBreweryLocations().get(0)))
@@ -211,6 +215,13 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
                         supportStartPostponedEnterTransition();
                     }
                 });
+    }
+
+    @Override
+    public void displayBeerList(@NotNull List<? extends Beer> list) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(new ArrayList<>(list)))
+                .commit();
     }
 
     @Override

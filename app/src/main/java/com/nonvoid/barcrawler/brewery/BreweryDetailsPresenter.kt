@@ -4,18 +4,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.social.FireBaseSocialClient
 import com.nonvoid.barcrawler.social.SocialRepoAPI
-import android.R.id.edit
-import android.content.SharedPreferences
-import android.view.MenuItem
-import javax.inject.Inject
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
+import com.nonvoid.barcrawler.model.Beer
 
-
-/**
- * Created by Matt on 8/11/2017.
- */
 class BreweryDetailsPresenter(
         private val view: BreweryDetailsView,
         private val brewery: Brewery,
+        private val dbClient: BreweryDataBaseAPI,
         private val socialClient: SocialRepoAPI = FireBaseSocialClient(FirebaseAuth.getInstance().currentUser!!)
 ){
 
@@ -35,6 +30,11 @@ class BreweryDetailsPresenter(
                 .subscribe({result-> setBreweryAsFavorite(!result)})
     }
 
+    fun getBeerList(){
+        dbClient.getBeersForBrewery(brewery.id)
+                .subscribe{list -> view.displayBeerList(list)}
+    }
+
     private fun setBreweryAsFavorite(favorite: Boolean){
         if(favorite){
             socialClient.favoriteBrewery(brewery)
@@ -48,6 +48,7 @@ class BreweryDetailsPresenter(
 
     interface BreweryDetailsView{
         fun displayBrewery(brewery :Brewery)
+        fun displayBeerList(list: List<Beer>)
         fun displayAsFavorite(favorite :Boolean)
         fun displayFavoriteCount(count :Int)
     }
