@@ -1,5 +1,6 @@
 package com.nonvoid.barcrawler.brewery;
 
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,10 @@ public class BreweryLocationAdapter extends RecyclerView.Adapter<BreweryLocation
 
     @Override
     public void onBindViewHolder(BreweryLocationViewHolder holder, int position) {
-        holder.setView(breweryLocations.get(position));
+        BreweryLocation location = breweryLocations.get(position);
+        holder.setView(location);
+        holder.itemView.setOnClickListener(view -> callback.onBrewerySelected(location));
+        ViewCompat.setTransitionName(holder.imageView, location.getBrewery().getId());
     }
 
     @Override
@@ -76,7 +80,7 @@ public class BreweryLocationAdapter extends RecyclerView.Adapter<BreweryLocation
             }
 
             cityTextView.setText(String.format("%s, %s", breweryLocation.getLocality(), breweryLocation.getRegion()));
-            nameTextView.setText(breweryLocation.getName());
+            nameTextView.setText(breweryLocation.getBrewery().getName());
             descriptionTextView.setText(breweryLocation.getLocationTypeDisplay());
             if(breweryLocation.getBrewery().getImages() != null) {
                 Picasso.with(imageView.getContext())
