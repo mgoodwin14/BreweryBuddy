@@ -91,10 +91,10 @@ class BreweryLocationFragment : Fragment(), Searchable, BreweryLocationAdapter.C
 
         private val BREWERY_LOCATION_LIST_BUNDLE_KEY = "brewery_locations_key"
 
-        fun newInstance(locations: List<BreweryLocation>): BreweryListFragment {
+        fun newInstance(locations: ArrayList<BreweryLocation>): BreweryListFragment {
             val fragment = BreweryListFragment()
             val args = Bundle()
-            args.putParcelableArrayList(BREWERY_LOCATION_LIST_BUNDLE_KEY, locations as ArrayList<out Parcelable>)
+            args.putParcelableArrayList(BREWERY_LOCATION_LIST_BUNDLE_KEY, locations)
             fragment.arguments = args
             return fragment
         }
