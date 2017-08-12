@@ -20,11 +20,14 @@ public interface BreweryDataBaseService {
 
     String KEY = "key=98d5ee318c335e35af66cc5f952fd412";
     String FORMAT = "&format=json";
+    String NOT_PLANNING = "&inPlanning=n";
+    String NOT_CLOSED = "&isClosed=n";
+    String VERIFIED_STATUS = "&status=verified";
 
-    @GET("locations?"+KEY+FORMAT+"&isPrimary=y&openToPublic=y")
+    @GET("locations?"+KEY+FORMAT+NOT_PLANNING+NOT_CLOSED+"&isPrimary=y&openToPublic=y")
     Observable<LocationResponse> searchCityForBreweries(@Query("locality") String city);
 
-    @GET("search?"+KEY+FORMAT+"&type=brewery&withLocations=y")
+    @GET("search?"+KEY+FORMAT+VERIFIED_STATUS+"&type=brewery&withLocations=y")
     Observable<BreweryResponse> searchForBrewery(@Query("q") String query);
 
     @GET("search?"+KEY+FORMAT+"&type=beer&withBreweries=y")
