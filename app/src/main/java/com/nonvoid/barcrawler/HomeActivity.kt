@@ -120,6 +120,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun displayLocationFragment(locationList: List<BreweryLocation>) {
         val locationFragment = BreweryLocationFragment.newInstance(ArrayList(locationList))
+        replaceContent(locationFragment)
     }
 
     override fun displayBeerFragment(beerList: List<Beer>) {
