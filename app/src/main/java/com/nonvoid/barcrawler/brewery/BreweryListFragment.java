@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
@@ -14,21 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
+
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.SearchFragment;
 import com.nonvoid.barcrawler.model.Brewery;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +35,7 @@ import io.reactivex.disposables.CompositeDisposable;
  * Created by Matt on 5/11/2017.
  */
 
-public class BreweryListFragment extends Fragment implements BreweryAdapter.Callback, SearchFragment.Searchable {
+public class BreweryListFragment extends Fragment implements BreweryAdapter.Callback {
 
     private static final String TAG = BreweryListFragment.class.getSimpleName();
     private static final String BREWERY_LIST_BUNDLE_KEY = "brewery_key";
@@ -48,12 +45,15 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     @BindView(R.id.search_empty_state)
     TextView emptyStateTextView;
 
-    @Inject
-    BreweryDataBaseAPI client;
-
-    private ProgressDialog loadingDialog;
-
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    public static BreweryListFragment newInstance(ArrayList<Brewery> breweryList){
+        BreweryListFragment fragment = new BreweryListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(BREWERY_LIST_BUNDLE_KEY,breweryList);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,7 +69,13 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         ButterKnife.bind(this, view);
         breweryListRecyclerView.setHasFixedSize(true);
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        emptyStateTextView.setText("search for brewery");
+        Bundle bundle = getArguments();
+        if(bundle!=null){
+            ArrayList<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
+            displayList(breweryList);
+        }else {
+            emptyStateTextView.setText("search for brewery");
+        }
         return view;
     }
 
@@ -90,37 +96,15 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         startActivity(intent, options.toBundle());
     }
 
-    @Override
-    public void doOnSearch(@NotNull String query) {
-        Log.d("MPG", "Searching brewery list");
-        //hide keyboard
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-
-        compositeDisposable.add(client.searchForBrewery(query)
-                .doOnSubscribe( x ->showLoading(true))
-                .doOnComplete( () ->showLoading(false))
-                .doOnError(throwable -> Log.d("MPG", throwable.getMessage(), throwable))
-                .subscribe(this::setList));
-    }
-
-    private void setList(List<Brewery> list) {
-        if(list.isEmpty()){
-            emptyStateTextView.setVisibility(View.VISIBLE);
-            breweryListRecyclerView.setVisibility(View.GONE);
-        }else {
+    private void displayList(List<Brewery> list) {
+        if(list != null && !list.isEmpty()){
             BreweryAdapter adapter = new BreweryAdapter(list, this);
             breweryListRecyclerView.setAdapter(adapter);
             breweryListRecyclerView.setVisibility(View.VISIBLE);
             emptyStateTextView.setVisibility(View.GONE);
-        }
-    }
-
-    private void showLoading(boolean show){
-        if(show){
-            loadingDialog = ProgressDialog.show(getContext(), "", "Searching for Breweries", false, true);
-        }else {
-            loadingDialog.dismiss();
+        } else {
+            emptyStateTextView.setVisibility(View.VISIBLE);
+            breweryListRecyclerView.setVisibility(View.GONE);
         }
     }
 }
