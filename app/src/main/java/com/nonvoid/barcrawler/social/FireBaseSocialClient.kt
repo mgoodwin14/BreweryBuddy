@@ -13,19 +13,28 @@ import io.reactivex.Single
  * Created by Matt on 8/8/2017.
  */
 class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
+
     private val reference :DatabaseReference = FirebaseDatabase.getInstance().reference
 
     override fun setBreweryAsFavorite(brewery: Brewery, favorite: Boolean) {
-        getBreweryFavoriteReference(brewery)
-            .child(user.uid)
-            .setValue(favorite)
-            .addOnCompleteListener { result ->
-                if(result.isSuccessful){
-                    Log.d("MPG", "set favorite to $favorite")
-                }else {
-                    Log.d("MPG", "failed to set favorite to $favorite")
-                }
-            }
+        RxFirebaseDatabase.setValue(getBreweryFavoriteReference(brewery)
+                .child(user.uid), favorite)
+                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
+                .doOnComplete { Log.d("MPG","setBreweryAsFavorite: $favorite") }
+                .subscribe()
+    }
+
+    override fun isBreweryFavorited(brewery: Brewery): Single<Boolean> {
+        return RxFirebaseDatabase.observeSingleValueEvent(getBreweryFavoriteReference(brewery)
+                .child(user.uid))
+                .map { snapShot -> run{
+                    if(snapShot.exists()) {
+                        snapShot.value as Boolean
+                    }else {
+                        false
+                    }
+                } }
+                .toSingle()
     }
 
     override fun getNumberOfFavoritesForBrewery(brewery: Brewery): Single<Int> {
