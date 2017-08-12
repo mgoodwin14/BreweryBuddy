@@ -24,11 +24,6 @@ class SearchFragment : Fragment(){
         })
     }
 
-    fun setSearchable(searchable: Searchable){
-        callback = searchable
-        search_fragment_edit_text.setText("")
-    }
-
     companion object {
         fun newInstance(callback: Searchable): Fragment{
             val fragment = SearchFragment()
