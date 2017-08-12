@@ -2,12 +2,10 @@ package com.nonvoid.barcrawler.brewery;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.social.SocialRepoAPI;
@@ -30,7 +27,7 @@ import com.nonvoid.barcrawler.model.BreweryLocation;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import javax.inject.Inject;
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +36,7 @@ import butterknife.ButterKnife;
  * Created by Matt on 5/13/2017.
  */
 
-public class BreweryDetailsActivity extends AppCompatActivity {
+public class BreweryDetailsActivity extends AppCompatActivity implements BreweryDetailsPresenter.BreweryDetailsView {
 
     private static final String BREWERY_ITEM = "brewery_item";
     private static final String LOCATION_ITEM = "location_item";
@@ -65,15 +62,9 @@ public class BreweryDetailsActivity extends AppCompatActivity {
     FrameLayout mapFragmentFrame;
 
 
-//    private String breweryId;
-    private Brewery brewery;
 
-    @Inject
-    SharedPreferences sharedPref;
-
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    SocialRepoAPI ratingClient = new FireBaseSocialClient(user);
-
+    private BreweryDetailsPresenter presenter;
+    private MenuItem favoriteMenuItem;
 
     public static Intent newIntent(Context context, BreweryLocation location){
         Intent intent = new Intent(context, BreweryDetailsActivity.class);
@@ -90,6 +81,20 @@ public class BreweryDetailsActivity extends AppCompatActivity {
         return intent;
     }
 
+    public static Brewery getBreweryFromBundle(Bundle bundle){
+        if(bundle!=null){
+            Brewery brewery = bundle.getParcelable(BREWERY_ITEM);
+            if(brewery!= null){
+                return brewery;
+            }
+            BreweryLocation location = bundle.getParcelable(LOCATION_ITEM);
+            if (location != null) {
+                return location.getBrewery();
+            }
+        }
+        return null;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,70 +102,31 @@ public class BreweryDetailsActivity extends AppCompatActivity {
         ((MyApp) getApplication()).getNetComponent().inject(this);
         ButterKnife.bind(this);
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
-            BreweryLocation location = bundle.getParcelable(LOCATION_ITEM);
-
-            if (location != null) {
-                breweryNameTextView.setText(location.getName());
-                breweryDescriptionTextView.setText(location.getDescription());
-                breweryDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
-
-                BreweryMapFragment fragment = BreweryMapFragment.newInstance(location);
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.brewery_map_fragment_frame, fragment)
-                        .addToBackStack(null)
-                        .commit();
-
-//                breweryId = location.getBreweryId();
-                brewery = location.getBrewery();
-            } else {
-                brewery = bundle.getParcelable(BREWERY_ITEM);
-                if(brewery!= null){
-                    breweryNameTextView.setText(brewery.getName());
-                    breweryDescriptionTextView.setText(brewery.getDescription());
-//                    breweryId = brewery.getId();
-                    getSupportFragmentManager().beginTransaction()
-                            .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(brewery.getId()))
-                            .commit();
-
-                    if(!brewery.getBreweryLocations().isEmpty()) {
-                        getSupportFragmentManager().beginTransaction()
-                                .add(R.id.brewery_map_fragment_frame, BreweryMapFragment.newInstance(brewery.getBreweryLocations().get(0)))
-                                .commit();
-                    }
-
-//                    beerListButton.setVisibility(View.GONE);
-                    String trans = bundle.getString(TRANSITION_NAME);
-                    imageView.setTransitionName(trans);
-                    Picasso.with(this)
-                            .load(brewery.getImages().getLarge())
-                            .noFade()
-                            .into(imageView, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    supportStartPostponedEnterTransition();
-                                }
-
-                                @Override
-                                public void onError() {
-                                    supportStartPostponedEnterTransition();
-                                }
-                            });
-                }
-            }
+        Brewery brewery = getBreweryFromBundle(getIntent().getExtras());
+        if(brewery == null){
+            Log.d("MPG", "Brewery was NULL in BreweryDetailsActivity, finishing the activity instead of continuing");
+            finish();
+            return;
         }
-        setFravoriteCount();
+
+        SocialRepoAPI socialClient = new FireBaseSocialClient(FirebaseAuth.getInstance().getCurrentUser());
+
+        presenter = new BreweryDetailsPresenter(this, brewery, socialClient);
+        presenter.onCreate();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.brewery_details_menu, menu);
-        if(sharedPref.getBoolean(brewery.getId(), false)) {
-            menu.getItem(0).setIcon(R.drawable.ic_favorite_checked);
-        }
+        favoriteMenuItem = menu.getItem(0);
+        presenter.setFavoriteMenuItem();
         return true;
     }
 
@@ -168,7 +134,7 @@ public class BreweryDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.favorite_button:
-                toggleFavorite();
+                presenter.toggleFavorite();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -217,33 +183,57 @@ public class BreweryDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void toggleFavorite() {
+    @Override
+    public void displayBrewery(@NotNull Brewery brewery) {
+        breweryNameTextView.setText(brewery.getName());
+        breweryDescriptionTextView.setText(brewery.getDescription());
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(brewery.getId()))
+                .commit();
+        if(!brewery.getBreweryLocations().isEmpty()) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.brewery_map_fragment_frame, BreweryMapFragment.newInstance(brewery.getBreweryLocations().get(0)))
+                    .commit();
+        }
 
-        Boolean fav = !sharedPref.getBoolean(brewery.getId(), false);
-        sharedPref.edit()
-                .putBoolean(brewery.getId(), fav)
-                .apply();
+        Bundle bundle = getIntent().getExtras();
+        String trans = bundle.getString(TRANSITION_NAME);
+        imageView.setTransitionName(trans);
+        Picasso.with(this)
+                .load(brewery.getImages().getLarge())
+                .noFade()
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        supportStartPostponedEnterTransition();
+                    }
 
-        ratingClient.setBreweryAsFavorite(brewery, fav);
-        setFravoriteCount();
-
-        invalidateOptionsMenu();
+                    @Override
+                    public void onError() {
+                        supportStartPostponedEnterTransition();
+                    }
+                });
     }
 
-    private void setFravoriteCount() {
-        ratingClient.getNumberOfFavoritesForBrewery(brewery)
-                .subscribe(numberOfFavorites -> {
-                    Log.d("MPG", "got favorite is not null");
-                    if(numberOfFavorites==null || numberOfFavorites==0){
-                        numberOfFavoritesTextView.setText("Be the first to favorite this brewery!");
-                    }
-                    else if(numberOfFavorites==1){
-                        numberOfFavoritesTextView.setText("1 person has favorited this brewery");
-                    }
-                    else{
-                        numberOfFavoritesTextView.setText(numberOfFavorites + " people have favorited this brewery");
-                    }
-                }, throwable -> Log.d("MPG", throwable.getMessage(), throwable)
-            );
+    @Override
+    public void displayAsFavorite(boolean favorite) {
+        if(favorite) {
+            favoriteMenuItem.setIcon(R.drawable.ic_favorite_checked);
+        } else {
+            favoriteMenuItem.setIcon(R.drawable.ic_favorite_unchecked);
+        }
+    }
+
+    @Override
+    public void displayFavoriteCount(int count) {
+        if(count==0){
+            numberOfFavoritesTextView.setText("Be the first to favorite this brewery!");
+        }
+        else if(count==1){
+            numberOfFavoritesTextView.setText("1 person has favorited this brewery");
+        }
+        else{
+            numberOfFavoritesTextView.setText(count + " people have favorited this brewery");
+        }
     }
 }
