@@ -1,4 +1,4 @@
-package com.nonvoid.barcrawler.datalayer.io;
+package com.nonvoid.barcrawler.database;
 
 import android.util.Log;
 

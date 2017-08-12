@@ -13,7 +13,7 @@ import io.reactivex.Single
  * Created by Matt on 8/8/2017.
  */
 class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
-    
+
     private val reference :DatabaseReference = FirebaseDatabase.getInstance().reference
 
     override fun favoriteBrewery(brewery: Brewery) {

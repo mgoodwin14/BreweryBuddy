@@ -4,17 +4,23 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI;
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseClient;
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseService;
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
+import com.nonvoid.barcrawler.database.BreweryDataBaseClient;
+import com.nonvoid.barcrawler.database.BreweryDataBaseService;
+import com.nonvoid.barcrawler.social.FireBaseSocialClient;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import durdinapps.rxfirebase2.RxFirebaseAuth;
+import io.reactivex.Single;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -96,5 +102,25 @@ public class NetModule {
     @Singleton
     BreweryDataBaseAPI provideBreweryClient(BreweryDataBaseService service){
         return new BreweryDataBaseClient(service);
+    }
+
+    @Provides
+    @Singleton
+    FirebaseAuth provideFirebaseAuth(){
+        return FirebaseAuth.getInstance();
+    }
+
+    @Provides
+    @Singleton
+    Single<FirebaseUser> provideFirebaseUser(FirebaseAuth firebaseAuth){
+        return RxFirebaseAuth.signInAnonymously(firebaseAuth).toSingle()
+                .map(AuthResult::getUser)
+                .cache();
+    }
+
+    @Provides
+    @Singleton
+    Single<FireBaseSocialClient> provideFirebaseSocialClient(Single<FirebaseUser> user){
+        return user.map(FireBaseSocialClient::new).cache();
     }
 }

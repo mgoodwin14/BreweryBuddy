@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI;
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
 import com.nonvoid.barcrawler.SearchFragment;
 import com.nonvoid.barcrawler.model.Beer;
 

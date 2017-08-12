@@ -1,8 +1,8 @@
 package com.nonvoid.barcrawler
 
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseService
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseClient
+import com.nonvoid.barcrawler.database.BreweryDataBaseService
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
+import com.nonvoid.barcrawler.database.BreweryDataBaseClient
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.model.BreweryLocation

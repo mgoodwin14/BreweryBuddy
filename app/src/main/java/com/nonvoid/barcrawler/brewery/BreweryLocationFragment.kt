@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
-import com.nonvoid.barcrawler.datalayer.io.BreweryDataBaseAPI
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.SearchFragment.Searchable
 import com.nonvoid.barcrawler.model.BreweryLocation
 import io.reactivex.disposables.CompositeDisposable
