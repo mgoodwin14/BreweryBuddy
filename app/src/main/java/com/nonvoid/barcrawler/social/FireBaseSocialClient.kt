@@ -14,14 +14,15 @@ import io.reactivex.Single
  */
 class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
 
+
     private val reference :DatabaseReference = FirebaseDatabase.getInstance().reference
 
-    override fun setBreweryAsFavorite(brewery: Brewery, favorite: Boolean) {
-        RxFirebaseDatabase.setValue(getBreweryFavoriteReference(brewery)
-                .child(user.uid), favorite)
-                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
-                .doOnComplete { Log.d("MPG","setBreweryAsFavorite: $favorite") }
-                .subscribe()
+    override fun favoriteBrewery(brewery: Brewery) {
+        setBreweryAsFavorite(brewery, true)
+    }
+
+    override fun unfavoriteBrewery(brewery: Brewery) {
+        setBreweryAsFavorite(brewery,false)
     }
 
     override fun isBreweryFavorited(brewery: Brewery): Single<Boolean> {
@@ -73,6 +74,14 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
 
     override fun dislikeBeer(beer: Beer){
         rateBeer(beer, 0)
+    }
+
+    private fun setBreweryAsFavorite(brewery: Brewery, favorite: Boolean) {
+        RxFirebaseDatabase.setValue(getBreweryFavoriteReference(brewery)
+                .child(user.uid), favorite)
+                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
+                .doOnComplete { Log.d("MPG","setBreweryAsFavorite: $favorite") }
+                .subscribe()
     }
 
     private fun rateBeer(beer: Beer, rating: Int){
