@@ -49,7 +49,9 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         beer_details_style_text_view.text = beer.style.shortName
         beer_details_abv.text = "${beer.abv}% ABV"
 
-        val picUrl = beer.labels.large?:beer.labels.icon?: beer.breweries[0]?.images?.large
+        val picUrl = beer.labels.large?:beer.labels.icon?:
+                run{if(!beer.breweries.isEmpty()) beer.breweries[0]?.images?.large
+                    else ""}
 
         beer_details_image_view.transitionName = intent.extras.getString(TRANSITION_NAME)
         Picasso.with(this)
