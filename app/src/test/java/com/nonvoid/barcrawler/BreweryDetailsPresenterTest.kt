@@ -1,6 +1,7 @@
 package com.nonvoid.barcrawler
 
 import com.nonvoid.barcrawler.brewery.BreweryDetailsPresenter
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.social.SocialRepoAPI
 import io.reactivex.Single
@@ -14,8 +15,9 @@ import org.mockito.Mockito
 class BreweryDetailsPresenterTest {
     val view = Mockito.mock(BreweryDetailsPresenter.BreweryDetailsView::class.java)
     val brewery = Mockito.mock(Brewery::class.java)
+    val breweryDBAPI = Mockito.mock(BreweryDataBaseAPI::class.java)
     val socialClient = Mockito.mock(SocialRepoAPI::class.java)
-    val subject = BreweryDetailsPresenter(view, brewery, socialClient)
+    val subject = BreweryDetailsPresenter(view, brewery,breweryDBAPI,  socialClient)
 
     @Before
     fun setUp(){

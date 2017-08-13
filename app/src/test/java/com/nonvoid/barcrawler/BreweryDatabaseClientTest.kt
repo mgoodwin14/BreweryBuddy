@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit
  */
 class BreweryDatabaseClientTest{
 
-
     val breweryDataBaseService: BreweryDataBaseService = Mockito.mock(BreweryDataBaseService::class.java)
     val subject : BreweryDataBaseAPI = BreweryDataBaseClient(breweryDataBaseService)
 
@@ -107,7 +106,9 @@ class BreweryDatabaseClientTest{
         Mockito.`when`(breweryDataBaseService.searchCityForBreweries(Mockito.anyString()))
                 .thenReturn(Observable.just(mockLocationResponse))
 
-        subject.searchCityForBreweries("").test()
+        subject.searchCityForBreweries("")
+                .toList()
+                .test()
                 .assertComplete()
                 .assertNoErrors()
                 .assertValue(mockLocationResponse.locations)

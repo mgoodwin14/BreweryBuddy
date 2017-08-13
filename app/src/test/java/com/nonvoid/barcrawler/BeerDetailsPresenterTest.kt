@@ -12,8 +12,9 @@ import org.mockito.Mockito
 class BeerDetailsPresenterTest{
 
     val view = Mockito.mock(BeerDetailsPresenter.BeerDetailsView::class.java)
-    val beer = Mockito.mock(Beer::class.java)
+    val beer = Beer()
     val socialClient = Mockito.mock(SocialRepoAPI::class.java)
+
     val subject = BeerDetailsPresenter(view, beer, socialClient)
 
     @Before
@@ -21,7 +22,7 @@ class BeerDetailsPresenterTest{
         Mockito.`when`(socialClient.getBeerRating(beer))
                 .thenReturn(Single.just(100))
         Mockito.`when`(socialClient.isBeerLiked(beer))
-                .thenReturn(Single.just(true))
+                .thenReturn(Maybe.just(true))
         Mockito.doNothing().`when`(socialClient).likeBeer(beer)
         Mockito.doNothing().`when`(socialClient).dislikeBeer(beer)
     }
