@@ -9,9 +9,6 @@ import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.model.BreweryLocation
 import durdinapps.rxfirebase2.RxFirebaseAuth
 
-/**
- * Created by Matt on 8/12/2017.
- */
 class HomePresenter(private val view: HomeView, private val dbClient: BreweryDataBaseAPI){
 
     fun onCreate(){

@@ -18,11 +18,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-
-/**
- * Created by Matt on 5/5/2017.
- */
-
 public class BreweryDataBaseClient implements BreweryDataBaseAPI {
 
     private BreweryDataBaseService service;

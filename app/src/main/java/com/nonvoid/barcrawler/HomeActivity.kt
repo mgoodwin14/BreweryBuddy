@@ -28,7 +28,8 @@ import com.nonvoid.barcrawler.model.BreweryLocation
 import javax.inject.Inject
 
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, HomePresenter.HomeView, SearchFragment.Searchable {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+        HomePresenter.HomeView, SearchFragment.Searchable {
 
     @Inject
     lateinit var client: BreweryDataBaseAPI
