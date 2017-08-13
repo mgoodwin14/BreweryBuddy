@@ -55,13 +55,6 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         return fragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "MPG onCreate");
-        ((MyApp) getActivity().getApplication()).getNetComponent().inject(this);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

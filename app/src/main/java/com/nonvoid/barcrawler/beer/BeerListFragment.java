@@ -47,7 +47,6 @@ import io.reactivex.disposables.Disposable;
 public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
 
     private static final String BEER_LIST_BUNDLE_KEY = "beer_list_key";
-    private static final String BREWERY_ID_BUNDLE_KEY = "brewery_id_key";
 
     @BindView(R.id.brewery_list_recyclerview)
     RecyclerView recyclerView;
@@ -62,19 +61,26 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
         return fragment;
     }
 
-    public static BeerListFragment newInstance(String breweryId) {
-        BeerListFragment fragment = new BeerListFragment();
-        Bundle args = new Bundle();
-        args.putString(BREWERY_ID_BUNDLE_KEY, breweryId);
-        fragment.setArguments(args);
-        return fragment;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.brewery_list_fragment, container, false);
+        ButterKnife.bind(this, view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setNestedScrollingEnabled(false);
+        emptyStateTextView.setText("search for beers");
+        return view;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        ((MyApp) getActivity(). getApplication()).getNetComponent().inject(this);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            ArrayList<Beer> beerList = bundle.getParcelableArrayList(BEER_LIST_BUNDLE_KEY);
+            displayList(beerList);
+        }
     }
 
     @Override
@@ -100,27 +106,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
 
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.brewery_list_fragment, container, false);
-        ButterKnife.bind(this, view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setNestedScrollingEnabled(false);
-        emptyStateTextView.setText("search for beers");
-        return view;
-    }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            ArrayList<Beer> beerList = bundle.getParcelableArrayList(BEER_LIST_BUNDLE_KEY);
-            displayList(beerList);
-        }
-    }
 
     @Override
     public void onBeerSelected(Beer beer, ImageView imageView) {
