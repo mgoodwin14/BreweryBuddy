@@ -45,8 +45,6 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     @BindView(R.id.search_empty_state)
     TextView emptyStateTextView;
 
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-
     public static BreweryListFragment newInstance(ArrayList<Brewery> breweryList){
         BreweryListFragment fragment = new BreweryListFragment();
         Bundle bundle = new Bundle();
@@ -64,18 +62,12 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         Bundle bundle = getArguments();
         if(bundle!=null){
-            ArrayList<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
+            List<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
             displayList(breweryList);
         }else {
             emptyStateTextView.setText("search for brewery");
         }
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        compositeDisposable.clear();
     }
 
     @Override
