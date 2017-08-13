@@ -150,7 +150,7 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
             case R.id.beer_list_button:
                 beerListButton.setVisibility(View.GONE);
                 descriptionButton.setVisibility(View.VISIBLE);
-                mapButton.setVisibility(View.VISIBLE);
+//                mapButton.setVisibility(View.VISIBLE);
 
                 beerListFragmentFrame.setVisibility(View.VISIBLE);
                 breweryDescriptionTextView.setVisibility(View.GONE);
@@ -168,7 +168,7 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
                 break;
             case R.id.brewery_description_button:
                 descriptionButton.setVisibility(View.GONE);
-                mapButton.setVisibility(View.VISIBLE);
+//                mapButton.setVisibility(View.VISIBLE);
                 beerListButton.setVisibility(View.VISIBLE);
 
                 breweryDescriptionTextView.setVisibility(View.VISIBLE);
@@ -196,6 +196,8 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.brewery_map_fragment_frame, BreweryMapFragment.newInstance(brewery.getBreweryLocations().get(0)))
                     .commit();
+        }else{
+            mapButton.setVisibility(View.GONE);
         }
 
         Bundle bundle = getIntent().getExtras();
