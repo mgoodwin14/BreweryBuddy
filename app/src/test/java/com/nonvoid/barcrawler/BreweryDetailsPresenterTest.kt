@@ -11,9 +11,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 
-/**
- * Created by Matt on 8/12/2017.
- */
 class BreweryDetailsPresenterTest {
     val mockBrewery = Brewery()
     val mockBeerList = listOf(Beer())
