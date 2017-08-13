@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+
+    <RelativeLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     >
 
     <ImageView
@@ -13,8 +19,6 @@
         android:layout_height="200dp"
         android:scaleType="centerCrop"
         android:layout_gravity="center_horizontal|top"/>
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -82,8 +86,6 @@
 
     </RelativeLayout>
 
-
-
     <TextView
         android:id="@+id/beer_details_description_textview"
         android:layout_width="match_parent"
@@ -95,4 +97,42 @@
         tools:text="description"
         />
 
+    <android.support.v7.widget.CardView
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        >
+
+        <RelativeLayout
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/review_label"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Leave a review"/>
+
+            <EditText
+                android:id="@+id/review_message_edit_text"
+                android:layout_below="@id/review_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/submit_review_message_button"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@id/review_message_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu_send"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>
+
+</ScrollView>

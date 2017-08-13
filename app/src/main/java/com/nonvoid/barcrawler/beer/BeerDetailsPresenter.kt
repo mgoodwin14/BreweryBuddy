@@ -39,6 +39,10 @@ class BeerDetailsPresenter(
         getRating()
     }
 
+    fun submitReview(message: String){
+        socialClient.submitReview(beer, message)
+    }
+
     interface BeerDetailsView{
         fun displayBeer(beer: Beer)
         fun displayLikeButtons(like :Boolean)

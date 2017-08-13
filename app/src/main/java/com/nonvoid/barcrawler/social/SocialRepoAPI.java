@@ -19,4 +19,5 @@ public interface SocialRepoAPI {
     void unfavoriteBrewery(Brewery brewery);
     void likeBeer(Beer beer);
     void dislikeBeer(Beer beer);
+    void submitReview(Beer beer, String message);
 }

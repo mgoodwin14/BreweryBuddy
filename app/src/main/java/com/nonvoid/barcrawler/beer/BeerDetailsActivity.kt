@@ -34,6 +34,7 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
 
         like_button.setOnClickListener{ presenter.likeButtonClicked(true) }
         dislike_button.setOnClickListener{ presenter.likeButtonClicked(false) }
+        submit_review_message_button.setOnClickListener{ presenter.submitReview(review_message_edit_text.text.toString())}
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
