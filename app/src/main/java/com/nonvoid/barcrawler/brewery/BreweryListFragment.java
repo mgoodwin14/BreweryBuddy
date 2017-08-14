@@ -1,17 +1,13 @@
 package com.nonvoid.barcrawler.brewery;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +17,6 @@ import android.widget.TextView;
 
 
 import com.nonvoid.barcrawler.R;
-import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.model.Brewery;
 
 import java.util.ArrayList;
@@ -29,7 +24,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by Matt on 5/11/2017.
@@ -44,8 +38,6 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     RecyclerView breweryListRecyclerView;
     @BindView(R.id.search_empty_state)
     TextView emptyStateTextView;
-
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public static BreweryListFragment newInstance(ArrayList<Brewery> breweryList){
         BreweryListFragment fragment = new BreweryListFragment();
@@ -70,12 +62,6 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
             emptyStateTextView.setText("search for brewery");
         }
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        compositeDisposable.clear();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.nonvoid.barcrawler.brewery
 
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -8,12 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nonvoid.barcrawler.R
-import com.nonvoid.barcrawler.dagger.MyApp
-import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.model.BreweryLocation
-import io.reactivex.disposables.CompositeDisposable
 import java.util.ArrayList
-import javax.inject.Inject
 import kotlinx.android.synthetic.main.brewery_list_fragment.*
 
 /**
