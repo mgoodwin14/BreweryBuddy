@@ -1,6 +1,5 @@
 package com.nonvoid.barcrawler
 
-import android.app.ProgressDialog
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
@@ -22,9 +21,9 @@ class HomePresenter(private val view: HomeView, private val dbClient: BreweryDat
             firebaseAuth.currentUser!!.reload()
             Log.d("MPG", "currentUser: ${firebaseAuth.currentUser}")
         }else {
-            val dialog = view.showDialog("Please wait", "Attempting to log in")
+            view.showDialog("Please wait", "Attempting to log in")
             RxFirebaseAuth.signInAnonymously(firebaseAuth)
-                    .doFinally { dialog.dismiss() }
+                    .doFinally { view.dismissDialog() }
                     .subscribe({ result ->
                         if (result.user != null) view.makeToast("Signed in anonymously")
                         else view.makeToast("Sign in failed")
@@ -33,29 +32,30 @@ class HomePresenter(private val view: HomeView, private val dbClient: BreweryDat
     }
 
     fun  brewerySearch(query: String) {
-        val dialog = view.showDialog("Searching for breweries", "please wait")
+        view.showDialog("Searching for breweries", "please wait")
         dbClient.searchForBrewery(query)
-                .doFinally{dialog.dismiss()}
+                .doFinally{view.dismissDialog()}
                 .subscribe{result -> view.displayBreweryList(result)}
     }
 
     fun beerSearch(query: String){
-        val dialog = view.showDialog("Searching for beers", "please wait")
+        view.showDialog("Searching for beers", "please wait")
         dbClient.searchForBeer(query)
-                .doFinally{dialog.dismiss()}
+                .doFinally{view.dismissDialog()}
                 .subscribe{result -> view.displayBeerFragment(result)}
     }
 
     fun locationSearch(query: String){
-        val dialog = view.showDialog("Searching by location", "please wait")
+        view.showDialog("Searching by location", "please wait")
         dbClient.searchCityForBreweries(query)
-                .doFinally{dialog.dismiss()}
+                .doFinally{view.dismissDialog()}
                 .toList()
                 .subscribe{result -> view.displayLocationFragment(result)}
     }
 
     interface HomeView{
-        fun showDialog(title: String, message: String) : ProgressDialog
+        fun showDialog(title: String, message: String)
+        fun dismissDialog()
         fun makeToast(message: String)
         fun addSearchFragment()
         fun displayBreweryList(breweryList: List<Brewery>)

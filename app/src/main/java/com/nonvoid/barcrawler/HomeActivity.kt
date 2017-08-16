@@ -36,6 +36,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     lateinit var presenter : HomePresenter
 
+    var dialog: ProgressDialog? =null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -128,8 +130,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         replaceContent(beerFragment)
     }
 
-    override fun showDialog(title: String, message: String): ProgressDialog {
-        return ProgressDialog.show(this, title, message, true)
+    override fun showDialog(title: String, message: String){
+        dialog = ProgressDialog.show(this, title, message, true)
+    }
+
+    override fun dismissDialog() {
+        if(dialog!=null && dialog!!.isShowing){
+            dialog!!.dismiss()
+        }
     }
 
     override fun makeToast(message: String) {
