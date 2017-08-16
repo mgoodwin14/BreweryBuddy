@@ -93,8 +93,6 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
 
     }
 
-
-
     @Override
     public void onBeerSelected(Beer beer, ImageView imageView) {
         Intent intent = BeerDetailsActivity.Companion.newIntent(getContext(), beer, imageView);

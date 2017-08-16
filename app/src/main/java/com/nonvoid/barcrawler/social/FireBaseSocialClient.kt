@@ -7,7 +7,6 @@ import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.Single
 import java.util.*
 
