@@ -53,8 +53,8 @@ class BeerDetailsPresenterTest{
 
     @Test
     fun likeButtonClicked_success(){
-        subject.likeButtonClicked(true)
-        subject.likeButtonClicked(false)
+        subject.likeButtonPressed()
+        subject.dislikeButtonPressed()
         Mockito.verify(socialClient).likeBeer(beer)
         Mockito.verify(socialClient).dislikeBeer(beer)
         Mockito.verify(view).displayLikeButtons(true)
