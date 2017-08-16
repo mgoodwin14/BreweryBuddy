@@ -17,7 +17,7 @@ public interface SocialRepoAPI {
     Single<Boolean> isBreweryFavorited(Brewery brewery);
     Single<Integer> getNumberOfFavoritesForBrewery(Brewery brewery);
     Maybe<Boolean> isBeerLiked(Beer beer);
-    Single<Integer> getBeerRating(Beer beer);
+    Single<Double> getBeerRating(Beer beer);
     Maybe<List<String>> getReviews(Beer beer);
     void favoriteBrewery(Brewery brewery);
     void unfavoriteBrewery(Brewery brewery);

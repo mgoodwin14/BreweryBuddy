@@ -57,7 +57,7 @@ class BeerDetailsPresenter(
     interface BeerDetailsView{
         fun displayBeer(beer: Beer)
         fun displayLikeButtons(like :Boolean)
-        fun displayRating(rating: Int)
+        fun displayRating(rating: Double)
         fun displayBeerReviews(reviews: List<String>)
     }
 }

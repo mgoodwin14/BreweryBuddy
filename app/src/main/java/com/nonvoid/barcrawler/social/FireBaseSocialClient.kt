@@ -54,16 +54,16 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
     }
 
 
-    override fun getBeerRating(beer: Beer): Single<Int> {
+    override fun getBeerRating(beer: Beer): Single<Double> {
         return RxFirebaseDatabase.observeSingleValueEvent(
                 getBeerRatingReference(beer).orderByValue())
                 .map({snapshot ->
                     run{
-                        var rating :Double = 0.0
+                        var rating = 0.0
                         if(snapshot.hasChildren()){
                             rating =(snapshot.value as Map<String, Double>).values.sum() / snapshot.childrenCount.toDouble()
                         }
-                        (rating*100).toInt()
+                        (rating)
                     }
                 }).toSingle()
     }
