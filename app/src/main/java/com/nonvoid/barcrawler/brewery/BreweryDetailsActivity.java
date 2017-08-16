@@ -120,12 +120,6 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.brewery_details_menu, menu);
