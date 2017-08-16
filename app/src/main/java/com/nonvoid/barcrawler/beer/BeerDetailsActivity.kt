@@ -7,12 +7,14 @@ import android.support.annotation.Nullable
 import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
 import com.nonvoid.barcrawler.model.Beer
+import com.nonvoid.barcrawler.social.BeerReviewAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.beer_details_activity.*
@@ -52,23 +54,26 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         beer_details_style_text_view.text = beer.style.shortName
         beer_details_abv.text = "${beer.abv}% ABV"
 
-        val picUrl = beer.labels.large?:beer.labels.icon?:
+        val picUrl :String?= beer.labels.large?:beer.labels.icon?:
                 run{if(!beer.breweries.isEmpty()) beer.breweries[0]?.images?.large
                     else ""}
 
         beer_details_image_view.transitionName = intent.extras.getString(TRANSITION_NAME)
-        Picasso.with(this)
-                .load(picUrl)
-                .noFade()
-                .into(beer_details_image_view, object : Callback {
-                    override fun onSuccess() {
-                        supportStartPostponedEnterTransition()
-                    }
 
-                    override fun onError() {
-                        supportStartPostponedEnterTransition()
-                    }
-                })
+        if(picUrl != null && picUrl.isNotEmpty()) {
+            Picasso.with(this)
+                    .load(picUrl)
+                    .noFade()
+                    .into(beer_details_image_view, object : Callback {
+                        override fun onSuccess() {
+                            supportStartPostponedEnterTransition()
+                        }
+
+                        override fun onError() {
+                            supportStartPostponedEnterTransition()
+                        }
+                    })
+        }
     }
 
     override fun displayRating(rating: Int) {
@@ -90,9 +95,15 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         }
     }
 
+    override fun displayBeerReviews(reviews: List<String>) {
+        val adapter = BeerReviewAdapter(reviews)
+        beer_reviews_recycler_view.layoutManager = LinearLayoutManager(this)
+        beer_reviews_recycler_view.adapter = adapter
+    }
+
     companion object {
-        private val INTENT_BEER = "beer"
-        private val TRANSITION_NAME = "beer_transition"
+        private const val INTENT_BEER = "beer"
+        private const val TRANSITION_NAME = "beer_transition"
 
         fun newIntent(context: Context, beer: Beer): Intent {
             val intent = Intent(context, BeerDetailsActivity::class.java)

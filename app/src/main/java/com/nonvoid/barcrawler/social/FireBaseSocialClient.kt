@@ -7,7 +7,9 @@ import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import io.reactivex.Maybe
+import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.*
 
 /**
  * Created by Matt on 8/8/2017.
@@ -66,6 +68,20 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
                 }).toSingle()
     }
 
+    override fun getReviews(beer: Beer): Maybe<List<String>> {
+        return RxFirebaseDatabase.observeSingleValueEvent(
+                getBeerReviewReference(beer))
+                .map ({ dataSnapshot -> run{
+                    if(dataSnapshot.hasChildren()){
+                        val reviews = (dataSnapshot.value as Map<String, String>).values.toList()
+                        reviews
+                    }else{
+                        Collections.emptyList<String>()
+                    }
+                }
+                })
+    }
+
     override fun likeBeer(beer: Beer){
         rateBeer(beer, 1)
     }
@@ -96,7 +112,7 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
     }
 
     override fun submitReview(beer: Beer, message: String) {
-        RxFirebaseDatabase.setValue(getBeerReviewReference(beer), message)
+        RxFirebaseDatabase.setValue(getBeerReviewReference(beer).child(user.uid), message)
                 .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
                 .doOnComplete { Log.d("MPG","submitted review: $message") }
                 .subscribe()
@@ -118,7 +134,6 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
         return reference.child(BEER)
                 .child(beer.id)
                 .child(REVIEW)
-                .child(user.uid)
     }
 
     companion object {

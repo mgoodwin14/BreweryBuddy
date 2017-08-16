@@ -1,107 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
-
-    <RelativeLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-    <ImageView
-        android:id="@+id/beer_details_image_view"
+    android:layout_height="match_parent">
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center_horizontal|top"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/beer_details_image_view"
-        android:background="@android:drawable/screen_background_dark_transparent"
-        android:padding="5dp"
+        android:layout_height="match_parent"
+        android:fillViewport="false"
         >
-
-        <TextView
-            android:id="@+id/beer_details_style_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="#fff"
-            tools:text="Style"
-            />
-
-        <TextView
-            android:id="@+id/beer_details_abv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/beer_details_style_text_view"
-            android:layout_marginLeft="5dp"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:textColor="#fff"
-            tools:text="4.7%"
-            />
-        <TextView
-            android:id="@+id/beer_details_name_textview"
-            android:layout_below="@id/beer_details_style_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/PrimaryText"
-            android:textColor="#fff"
-            tools:text="Beer Name"
-            />
-
-        <ImageButton
-            android:id="@+id/like_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_thumbs_up"
-            android:layout_toLeftOf="@id/dislike_button"
-            />
-
-        <ImageButton
-            android:id="@+id/dislike_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_thumbs_down"
-            android:layout_alignParentRight="true"
-            />
-
-        <TextView
-            android:id="@+id/beer_rating_text_view"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/like_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="#f00"
-            tools:text="10%"
-            />
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/beer_details_description_textview"
+        <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/primary_text_size"
-        android:maxLines="10"
-        android:scrollbars="vertical"
-        android:layout_below="@id/beer_details_image_view"
-        tools:text="description"
-        />
+        android:layout_height="match_parent"
+        >
+            <ImageView
+                android:id="@+id/beer_details_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center_horizontal|top"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/beer_details_image_view"
+                android:background="@android:drawable/screen_background_dark_transparent"
+                android:padding="5dp"
+                >
+                <TextView
+                    android:id="@+id/beer_details_style_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="#fff"
+                    tools:text="Style"
+                    />
+                <TextView
+                    android:id="@+id/beer_details_abv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/beer_details_style_text_view"
+                    android:layout_marginLeft="5dp"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="#fff"
+                    tools:text="4.7%"
+                    />
+                <TextView
+                    android:id="@+id/beer_details_name_textview"
+                    android:layout_below="@id/beer_details_style_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/PrimaryText"
+                    android:textColor="#fff"
+                    tools:text="Beer Name"
+                    />
+                <ImageButton
+                    android:id="@+id/like_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_thumbs_up"
+                    android:layout_toLeftOf="@id/dislike_button"
+                    />
+                <ImageButton
+                    android:id="@+id/dislike_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_thumbs_down"
+                    android:layout_alignParentRight="true"
+                    />
+                <TextView
+                    android:id="@+id/beer_rating_text_view"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/like_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    android:textColor="#f00"
+                    tools:text="10%"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/beer_details_description_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="@dimen/primary_text_size"
+                android:maxLines="10"
+                android:scrollbars="vertical"
+                android:layout_below="@id/beer_details_image_view"
+                tools:text="description"
+                />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/beer_reviews_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/beer_details_description_textview"/>
+        </RelativeLayout>
+    </ScrollView>
     <android.support.v7.widget.CardView
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+
         >
 
         <RelativeLayout
@@ -121,7 +124,8 @@
                 android:id="@+id/review_message_edit_text"
                 android:layout_below="@id/review_label"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/submit_review_message_button"/>
 
             <ImageButton
                 android:id="@+id/submit_review_message_button"
@@ -132,7 +136,4 @@
                 android:src="@drawable/ic_menu_send"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
 </RelativeLayout>
-
-</ScrollView>

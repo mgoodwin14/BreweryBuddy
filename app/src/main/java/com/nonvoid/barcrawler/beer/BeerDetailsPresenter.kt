@@ -14,6 +14,7 @@ class BeerDetailsPresenter(
         view.displayBeer(beer)
         getRating()
         getLiked()
+        getReviews()
     }
 
     fun getRating(){
@@ -24,6 +25,11 @@ class BeerDetailsPresenter(
     fun getLiked(){
         socialClient.isBeerLiked(beer)
                 .subscribe({ result -> view.displayLikeButtons(result)})
+    }
+
+    fun getReviews(){
+        socialClient.getReviews(beer)
+                .subscribe({ result -> view.displayBeerReviews(result)})
     }
 
     fun likeButtonPressed(){
@@ -52,5 +58,6 @@ class BeerDetailsPresenter(
         fun displayBeer(beer: Beer)
         fun displayLikeButtons(like :Boolean)
         fun displayRating(rating: Int)
+        fun displayBeerReviews(reviews: List<String>)
     }
 }
