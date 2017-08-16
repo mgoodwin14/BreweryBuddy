@@ -5,9 +5,6 @@ import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.social.FireBaseSocialClient
 import com.nonvoid.barcrawler.social.SocialRepoAPI
 
-/**
- * Created by Matt on 8/10/2017.
- */
 class BeerDetailsPresenter(
         private val view: BeerDetailsView,
         private val beer: Beer,
@@ -29,7 +26,15 @@ class BeerDetailsPresenter(
                 .subscribe({ result -> view.displayLikeButtons(result)})
     }
 
-    fun likeButtonClicked(like: Boolean){
+    fun likeButtonPressed(){
+        likeBeer(true)
+    }
+
+    fun dislikeButtonPressed(){
+        likeBeer(false)
+    }
+
+    private fun likeBeer(like: Boolean){
         if(like){
             socialClient.likeBeer(beer)
         }else {

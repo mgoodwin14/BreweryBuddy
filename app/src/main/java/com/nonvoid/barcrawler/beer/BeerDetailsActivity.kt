@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.Nullable
+import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
@@ -15,9 +17,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.beer_details_activity.*
 
-/**
- * Created by Matt on 6/30/2017.
- */
 class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetailsView {
 
     lateinit var presenter: BeerDetailsPresenter
@@ -32,8 +31,8 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         presenter = BeerDetailsPresenter(this, beer)
         presenter.onCreate()
 
-        like_button.setOnClickListener{ presenter.likeButtonClicked(true) }
-        dislike_button.setOnClickListener{ presenter.likeButtonClicked(false) }
+        like_button.setOnClickListener{ presenter.likeButtonPressed() }
+        dislike_button.setOnClickListener{ presenter.dislikeButtonPressed() }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -72,7 +71,8 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         if(rating > 0){
             beer_rating_text_view.text = "${rating}%"
         }else {
-            beer_rating_text_view.text = "Be the first to like this beer"
+            Snackbar.make(beer_details_image_view, "Be the first to rate this beer", Snackbar.LENGTH_LONG).show()
+            beer_rating_text_view.visibility = View.GONE
         }
     }
 
