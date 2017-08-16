@@ -43,7 +43,7 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.home -> onBackPressed()
+            android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -53,6 +53,10 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         beer_details_description_textview.text = beer.description
         beer_details_style_text_view.text = beer.style.shortName
         beer_details_abv.text = "${beer.abv}% ABV"
+
+        if(!beer.breweries.isEmpty()){
+            beer_details_brewery_name.text = beer.breweries[0].nameShortDisplay
+        }
 
         val picUrl :String?= beer.labels.large?:beer.labels.icon?:
                 run{if(!beer.breweries.isEmpty()) beer.breweries[0]?.images?.large
@@ -78,10 +82,10 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
 
     override fun displayRating(rating: Int) {
         if(rating > 0){
-            beer_rating_text_view.text = "${rating}%"
+            beer_rating_bar.rating = rating.toFloat()/100*5
         }else {
             Snackbar.make(beer_details_image_view, "Be the first to rate this beer", Snackbar.LENGTH_LONG).show()
-            beer_rating_text_view.visibility = View.GONE
+            beer_rating_bar.visibility = View.GONE
         }
     }
 
