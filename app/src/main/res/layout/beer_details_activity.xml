@@ -113,16 +113,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/review_label"
-                android:gravity="center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Leave a review"/>
-
             <EditText
                 android:id="@+id/review_message_edit_text"
-                android:layout_below="@id/review_label"
+                android:hint="Write a review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/submit_review_message_button"/>
