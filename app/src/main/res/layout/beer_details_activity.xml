@@ -14,7 +14,7 @@
         <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         >
             <ImageView
                 android:id="@+id/beer_details_image_view"
@@ -122,7 +122,7 @@
                 android:id="@+id/review_list_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/primary_margin"
                 android:text="User Reviews"
                 android:layout_below="@id/beer_details_description_textview"
                 />
@@ -131,7 +131,7 @@
                 android:id="@+id/beer_reviews_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/primary_margin"
                 android:layout_below="@id/review_list_label"
                 />
         </RelativeLayout>

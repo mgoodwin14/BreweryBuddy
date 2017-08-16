@@ -4,17 +4,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="@dimen/primary_margin"
+    android:layout_marginRight="@dimen/primary_margin"
+    android:layout_marginTop="@dimen/secondary_margin"
+    android:layout_marginBottom="@dimen/secondary_margin"
     >
 
     <TextView
         android:id="@+id/beer_review_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/secondary_margin"
         tools:text="This is a review of a beer"
         />
 

@@ -4,7 +4,7 @@
     android:id="@+id/brewery_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="@dimen/primary_margin"
     android:padding="5dp"
     card_view:cardElevation = "5dp"
     card_view:cardCornerRadius="4dp"
