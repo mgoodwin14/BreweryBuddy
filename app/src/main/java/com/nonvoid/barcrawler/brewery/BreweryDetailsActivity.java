@@ -102,14 +102,27 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
 
         Brewery brewery = getBreweryFromBundle(getIntent().getExtras());
         if(brewery == null){
-            Log.d("MPG", "Brewery was NULL in BreweryDetailsActivity, finishing the activity instead of continuing");
+            Log.e("MPG", "Brewery was NULL in BreweryDetailsActivity, finishing the activity instead of continuing");
             finish();
             return;
         }
 
         SocialRepoAPI socialClient = new FireBaseSocialClient(FirebaseAuth.getInstance().getCurrentUser());
 
-        presenter = new BreweryDetailsPresenter(this, brewery, dbClient, socialClient);
+        BeerListFragment fragment = new BeerListFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.brewery_beer_list_fragment_frame, fragment)
+                .commit();
+
+        presenter = new BreweryDetailsPresenter.Builder()
+                .brewery(brewery)
+                .detailsView(this)
+                .listView(fragment)
+                .dbClient(dbClient)
+                .socielClient(socialClient)
+                .build();
+
         presenter.onCreate();
     }
 
