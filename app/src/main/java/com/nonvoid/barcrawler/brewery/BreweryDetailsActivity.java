@@ -120,7 +120,7 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
                 .detailsView(this)
                 .listView(fragment)
                 .dbClient(dbClient)
-                .socielClient(socialClient)
+                .sociallClient(socialClient)
                 .build();
 
         presenter.onCreate();

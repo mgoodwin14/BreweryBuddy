@@ -86,7 +86,7 @@ class BreweryDetailsPresenter(
             return this
         }
 
-        fun socielClient(socialClient: SocialRepoAPI) :Builder{
+        fun sociallClient(socialClient: SocialRepoAPI) :Builder{
             this.socialClient = socialClient
             return this
         }
