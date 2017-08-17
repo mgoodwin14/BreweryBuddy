@@ -32,7 +32,6 @@
                 />
 
             <TextView
-
                 android:id="@+id/brewery_details_name_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,39 +44,6 @@
                 tools:text="Brewery Name"
                 />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-                <Button
-                    android:id="@+id/beer_list_button"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:onClick="onClick"
-                    android:text="Beer List"/>
-
-                <Button
-                    android:id="@+id/map_button"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:onClick="onClick"
-                    android:text="map"/>
-
-                <Button
-                    android:id="@+id/brewery_description_button"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:onClick="onClick"
-                    android:text="description"
-                    android:visibility="gone"/>
-
-            </LinearLayout>
-
-
             <TextView
                 android:id="@+id/brewery_details_description_textview"
                 android:layout_width="wrap_content"
@@ -86,7 +52,6 @@
                 />
 
             <FrameLayout
-                android:visibility="gone"
                 android:id="@+id/brewery_beer_list_fragment_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,9 +69,5 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
-
-
-
-
 
 </RelativeLayout>
