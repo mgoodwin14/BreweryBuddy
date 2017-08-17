@@ -82,12 +82,10 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
 
     override fun displayRating(rating: Double) {
         //rating is between 0 and 1
-        if(rating > 0){
-            beer_rating_bar.rating = rating.toFloat() * beer_rating_bar.numStars
-        }else {
+        if(rating == 0.0){
             Snackbar.make(beer_details_image_view, "Be the first to rate this beer", Snackbar.LENGTH_LONG).show()
-            beer_rating_bar.visibility = View.GONE
         }
+        beer_rating_bar.rating = rating.toFloat() * beer_rating_bar.numStars
     }
 
     override fun displayLikeButtons(like: Boolean){
