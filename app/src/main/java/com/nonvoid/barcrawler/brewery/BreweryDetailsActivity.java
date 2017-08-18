@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +58,10 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
     FrameLayout beerListFragmentFrame;
     @BindView(R.id.brewery_map_fragment_frame)
     FrameLayout mapFragmentFrame;
+    @BindView(R.id.comment_message_edit_text)
+    EditText commentEditText;
+    @BindView(R.id.submit_comment_message_button)
+    View submitCommentButton;
 
     @Inject
     BreweryDataBaseAPI dbClient;
@@ -124,6 +129,8 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
                 .build();
 
         presenter.onCreate();
+
+        submitCommentButton.setOnClickListener(v -> presenter.submitComment(commentEditText.getText().toString()));
     }
 
     @Override

@@ -117,10 +117,24 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
                 .subscribe()
     }
 
+    override fun submitComment(brewery: Brewery, message: String) {
+        val ref = getBreweryCommentReference(brewery).push()
+        RxFirebaseDatabase.setValue(ref, Pair(user.uid, message))
+                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
+                .doOnComplete { Log.d("MPG","submitted comment: $message") }
+                .subscribe()
+    }
+
     private fun getBreweryFavoriteReference(brewery: Brewery): DatabaseReference{
         return reference.child(BREWERY)
                 .child(brewery.id)
                 .child(FAVORITE)
+    }
+
+    private fun getBreweryCommentReference(brewery: Brewery): DatabaseReference{
+        return reference.child(BREWERY)
+                .child(brewery.id)
+                .child(COMMENT)
     }
 
     private fun getBeerRatingReference(beer: Beer): DatabaseReference{
@@ -138,6 +152,7 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
     companion object {
         const val BREWERY = "brewery"
         const val FAVORITE = "favorite"
+        const val COMMENT = "comment"
         const val BEER = "beer"
         const val RATING = "rating"
         const val REVIEW = "review"

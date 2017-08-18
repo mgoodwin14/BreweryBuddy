@@ -38,6 +38,10 @@ class BreweryDetailsPresenter(
                 .subscribe{list -> listView.displayBeerList(list)}
     }
 
+    fun submitComment(message: String){
+        socialClient.submitComment(brewery, message)
+    }
+
     private fun setBreweryAsFavorite(favorite: Boolean){
         if(favorite){
             socialClient.favoriteBrewery(brewery)

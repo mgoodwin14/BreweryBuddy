@@ -21,6 +21,7 @@ public interface SocialRepoAPI {
     Maybe<List<String>> getReviews(Beer beer);
     void favoriteBrewery(Brewery brewery);
     void unfavoriteBrewery(Brewery brewery);
+    void submitComment(Brewery brewery, String message);
     void likeBeer(Beer beer);
     void dislikeBeer(Beer beer);
     void submitReview(Beer beer, String message);
