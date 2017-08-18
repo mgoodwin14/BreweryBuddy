@@ -64,6 +64,19 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            ArrayList<Beer> beerList = bundle.getParcelableArrayList(BEER_LIST_BUNDLE_KEY);
+            if(beerList!=null) {
+                displayBeerList(beerList);
+            }
+        }
+    }
+
+    @Override
+
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 //        Menu sub = menu.addSubMenu("Sort");
