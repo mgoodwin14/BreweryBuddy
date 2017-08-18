@@ -4,7 +4,7 @@ This is an Android app I created that consumes a Brewery API (http://www.brewery
 # Java
 Libraries I am using  
 --Dagger2  
---RxJava2
+--RxJava2  
 --RxAndroid  
 --Retrofit2  
 --Butterknife  
@@ -17,9 +17,9 @@ I am using this project to teach myself Kotlin as well. So all new code will be 
 --Show breweries on a map  
 --Search for beer by name  
 --Beer ratings  
---Brewery favorites
---Beer reviews
+--Brewery favorites  
+--Beer reviews  
 
 # Future features
---Brewery comments
+--Brewery comments  
 --Find beer using camera on the label  
