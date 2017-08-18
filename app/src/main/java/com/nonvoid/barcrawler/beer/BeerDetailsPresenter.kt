@@ -27,11 +27,6 @@ class BeerDetailsPresenter(
                 .subscribe({ result -> view.displayLikeButtons(result)})
     }
 
-    fun getReviews(){
-        socialClient.getReviews(beer)
-                .subscribe({ result -> view.displayBeerReviews(result)})
-    }
-
     fun likeButtonPressed(){
         likeBeer(true)
     }
@@ -50,8 +45,14 @@ class BeerDetailsPresenter(
         getRating()
     }
 
+    fun getReviews(){
+        socialClient.getReviews(beer)
+                .subscribe({ result -> view.displayBeerReviews(result)})
+    }
+
     fun submitReview(message: String){
         socialClient.submitReview(beer, message)
+        getReviews()
     }
 
     interface BeerDetailsView{

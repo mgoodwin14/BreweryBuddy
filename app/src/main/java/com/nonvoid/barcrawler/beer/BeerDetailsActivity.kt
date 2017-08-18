@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.dagger.MyApp
@@ -36,7 +37,12 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
         presenter = BeerDetailsPresenter(this, beer)
         presenter.onCreate()
 
-        submit_review_message_button.setOnClickListener{ presenter.submitReview(review_message_edit_text.text.toString())}
+        submit_review_message_button.setOnClickListener{
+            presenter.submitReview(review_message_edit_text.text.toString())
+            review_message_edit_text.setText("")
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(review_message_edit_text.windowToken, 0)
+        }
         like_button.setOnClickListener{ presenter.likeButtonPressed() }
         dislike_button.setOnClickListener{ presenter.dislikeButtonPressed() }
     }
