@@ -39,6 +39,8 @@ class BreweryAdapter(private val list: List<Brewery>, private val callback: Call
 
         fun setView(brewery: Brewery){
 
+            descriptionTextView.visibility = View.GONE
+
             if(brewery.established != null && brewery.established.isNotEmpty()){
                 nameTextView.text = "${brewery.nameShortDisplay} est. ${brewery.established}"
             } else {
