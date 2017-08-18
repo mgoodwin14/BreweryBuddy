@@ -1,6 +1,5 @@
 package com.nonvoid.barcrawler.database;
 
-import com.nonvoid.barcrawler.model.Brewery;
 import com.nonvoid.barcrawler.model.response.BeerResponse;
 import com.nonvoid.barcrawler.model.response.BreweryResponse;
 import com.nonvoid.barcrawler.model.response.LocationResponse;
@@ -10,11 +9,6 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-
-
-/**
- * Created by Matt on 5/5/2017.
- */
 
 public interface BreweryDataBaseService {
 
