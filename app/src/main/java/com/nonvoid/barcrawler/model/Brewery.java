@@ -21,6 +21,9 @@ public class Brewery implements Parcelable
     @SerializedName("nameShortDisplay")
     @Expose
     private String nameShortDisplay;
+    @SerializedName("type")
+    @Expose
+    private String type;
     @SerializedName("description")
     @Expose
     private String description;
@@ -112,6 +115,10 @@ public class Brewery implements Parcelable
 
     public void setNameShortDisplay(String nameShortDisplay) {
         this.nameShortDisplay = nameShortDisplay;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getDescription() {
