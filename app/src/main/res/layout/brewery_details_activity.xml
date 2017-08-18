@@ -48,14 +48,23 @@
                 android:id="@+id/brewery_details_description_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/primary_margin"
+                android:layout_marginRight="@dimen/primary_margin"
                 android:textSize="@dimen/primary_text_size"
                 />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Beer list"
+                android:layout_gravity="center_horizontal"
+                style="@style/PrimaryText"
+                />
             <FrameLayout
                 android:id="@+id/brewery_beer_list_fragment_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/primary_margin"
+
                 />
 
             <FrameLayout

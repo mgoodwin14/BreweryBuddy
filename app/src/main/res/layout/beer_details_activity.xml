@@ -139,9 +139,7 @@
     <android.support.v7.widget.CardView
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        >
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_marginLeft="10dp"
@@ -156,13 +154,13 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/submit_review_message_button"/>
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/submit_review_message_button"
                 android:layout_alignParentRight="true"
-                android:layout_alignBottom="@id/review_message_edit_text"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_send"/>
+                android:src="@drawable/ic_menu_send" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>
