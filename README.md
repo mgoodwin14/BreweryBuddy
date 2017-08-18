@@ -13,9 +13,9 @@ Libraries I am using
 I am using this project to teach myself Kotlin as well. So all new code will be written in Kotlin.  I will leave the working Java for now
 
 # Features
---Search for brewery by name or by location  
---Show breweries on a map  
+--Search for brewery by name  
 --Search for beer by name  
+--Search by location  
 --Beer ratings  
 --Brewery favorites  
 --Beer reviews  
