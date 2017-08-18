@@ -66,36 +66,46 @@ public class BeerAdapter extends RecyclerView.Adapter<BeerAdapter.BeerListViewHo
 
         public void setView(Beer beer) {
 
-            if(beer.getLabels() != null && beer.getLabels().getIcon()!=null){
-                Picasso.with(imageView.getContext())
-                        .load(beer.getLabels().getLarge())
-                        .into(imageView);
-            } else {
-                if(!beer.getBreweries().isEmpty()
-                        && beer.getBreweries().get(0).getImages() != null
-                        && beer.getBreweries().get(0).getImages().getIcon() != null){
-                    Picasso.with(imageView.getContext())
-                            .load(beer.getBreweries().get(0).getImages().getLarge())
-                            .into(imageView);
-                }
-            }
             nameTextView.setText(beer.getName());
 
-            if(!beer.getBreweries().isEmpty()) {
-                String  line2 = beer.getBreweries().get(0).getNameShortDisplay();
-                if (!beer.getBreweries().get(0).getBreweryLocations().isEmpty()
-                        && beer.getBreweries().get(0).getBreweryLocations().get(0).getLocality() != null) {
-                    line2 += " - " + beer.getBreweries().get(0).getBreweryLocations().get(0).getLocality();
-                    breweryNameTextView.setText(line2);
-                } else {
-                    breweryNameTextView.setVisibility(View.GONE);
-                }
+            String label = getLabel(beer);
+            if(label !=null){
+                Picasso.with(imageView.getContext())
+                        .load(label)
+                        .into(imageView);
             }
+
+            String breweryName = getBreweryName(beer);
+            if(breweryName != null && !breweryName.isEmpty()){
+                breweryNameTextView.setText(breweryName);
+            } else {
+                breweryNameTextView.setVisibility(View.GONE);
+            }
+
             if(beer.getStyle()!=null) {
                 descriptionTextView.setText(beer.getStyle().getShortName());
             } else {
                 descriptionTextView.setVisibility(View.GONE);
             }
+        }
+
+        private String getLabel(Beer beer){
+            if(beer.getLabels() != null && beer.getLabels().getLarge()!=null){
+                return beer.getLabels().getLarge();
+            }
+            if(!beer.getBreweries().isEmpty()
+                    && beer.getBreweries().get(0).getImages() != null
+                    && beer.getBreweries().get(0).getImages().getIcon() != null){
+                return beer.getBreweries().get(0).getImages().getIcon();
+            }
+            return null;
+        }
+
+        private String getBreweryName(Beer beer){
+            if(!beer.getBreweries().isEmpty()) {
+                return beer.getBreweries().get(0).getNameShortDisplay();
+            }
+            return null;
         }
     }
 
