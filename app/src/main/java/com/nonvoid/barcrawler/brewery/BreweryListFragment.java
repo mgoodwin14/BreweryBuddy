@@ -56,7 +56,7 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
         breweryListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         Bundle bundle = getArguments();
         if(bundle!=null){
-            ArrayList<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
+            List<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
             displayList(breweryList);
         }else {
             emptyStateTextView.setText("search for brewery");

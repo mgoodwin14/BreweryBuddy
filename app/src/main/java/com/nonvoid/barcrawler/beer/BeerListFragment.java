@@ -18,7 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nonvoid.barcrawler.R;
+import com.nonvoid.barcrawler.brewery.BreweryDetailsPresenter;
 import com.nonvoid.barcrawler.model.Beer;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,7 @@ import butterknife.ButterKnife;
  * Created by Matt on 5/30/2017.
  */
 
-public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
+public class BeerListFragment extends Fragment implements BeerAdapter.Callback, BreweryDetailsPresenter.BeerListView {
 
     private static final String BEER_LIST_BUNDLE_KEY = "beer_list_key";
 
@@ -61,16 +64,6 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Bundle bundle = getArguments();
-        if(bundle != null) {
-            ArrayList<Beer> beerList = bundle.getParcelableArrayList(BEER_LIST_BUNDLE_KEY);
-            displayList(beerList);
-        }
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 //        Menu sub = menu.addSubMenu("Sort");
@@ -93,8 +86,6 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
 
     }
 
-
-
     @Override
     public void onBeerSelected(Beer beer, ImageView imageView) {
         Intent intent = BeerDetailsActivity.Companion.newIntent(getContext(), beer, imageView);
@@ -106,8 +97,9 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback {
         startActivity( intent, options.toBundle());
     }
 
-    private void displayList(List<Beer> beerList) {
-        if(beerList!=null && !beerList.isEmpty()){
+    @Override
+    public void displayBeerList(@NotNull List<Beer> beerList) {
+        if(!beerList.isEmpty()){
             recyclerView.setAdapter(new BeerAdapter(beerList, this));
             recyclerView.setVisibility(View.VISIBLE);
             emptyStateTextView.setVisibility(View.GONE);

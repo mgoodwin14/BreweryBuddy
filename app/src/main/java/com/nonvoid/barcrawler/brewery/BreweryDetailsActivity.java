@@ -53,12 +53,6 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
     TextView breweryNameTextView;
     @BindView(R.id.brewery_details_description_textview)
     TextView breweryDescriptionTextView;
-    @BindView(R.id.beer_list_button)
-    Button beerListButton;
-    @BindView(R.id.map_button)
-    Button mapButton;
-    @BindView(R.id.brewery_description_button)
-    Button descriptionButton;
     @BindView(R.id.brewery_beer_list_fragment_frame)
     FrameLayout beerListFragmentFrame;
     @BindView(R.id.brewery_map_fragment_frame)
@@ -108,14 +102,27 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
 
         Brewery brewery = getBreweryFromBundle(getIntent().getExtras());
         if(brewery == null){
-            Log.d("MPG", "Brewery was NULL in BreweryDetailsActivity, finishing the activity instead of continuing");
+            Log.e("MPG", "Brewery was NULL in BreweryDetailsActivity, finishing the activity instead of continuing");
             finish();
             return;
         }
 
         SocialRepoAPI socialClient = new FireBaseSocialClient(FirebaseAuth.getInstance().getCurrentUser());
 
-        presenter = new BreweryDetailsPresenter(this, brewery, dbClient, socialClient);
+        BeerListFragment fragment = new BeerListFragment();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.brewery_beer_list_fragment_frame, fragment)
+                .commit();
+
+        presenter = new BreweryDetailsPresenter.Builder()
+                .brewery(brewery)
+                .detailsView(this)
+                .listView(fragment)
+                .dbClient(dbClient)
+                .sociallClient(socialClient)
+                .build();
+
         presenter.onCreate();
     }
 
@@ -138,40 +145,6 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.beer_list_button:
-                beerListButton.setVisibility(View.GONE);
-                descriptionButton.setVisibility(View.VISIBLE);
-//                mapButton.setVisibility(View.VISIBLE);
-
-                beerListFragmentFrame.setVisibility(View.VISIBLE);
-                breweryDescriptionTextView.setVisibility(View.GONE);
-                mapFragmentFrame.setVisibility(View.GONE);
-                break;
-
-            case R.id.map_button:
-                mapButton.setVisibility(View.GONE);
-                beerListButton.setVisibility(View.VISIBLE);
-                descriptionButton.setVisibility(View.VISIBLE);
-
-                mapFragmentFrame.setVisibility(View.VISIBLE);
-                beerListFragmentFrame.setVisibility(View.GONE);
-                breweryDescriptionTextView.setVisibility(View.GONE);
-                break;
-            case R.id.brewery_description_button:
-                descriptionButton.setVisibility(View.GONE);
-//                mapButton.setVisibility(View.VISIBLE);
-                beerListButton.setVisibility(View.VISIBLE);
-
-                breweryDescriptionTextView.setVisibility(View.VISIBLE);
-                mapFragmentFrame.setVisibility(View.GONE);
-                beerListFragmentFrame.setVisibility(View.GONE);
-                break;
-        }
-    }
-
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
@@ -185,13 +158,10 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
     public void displayBrewery(@NotNull Brewery brewery) {
         breweryNameTextView.setText(brewery.getName());
         breweryDescriptionTextView.setText(brewery.getDescription());
-        presenter.getBeerList();
         if(!brewery.getBreweryLocations().isEmpty()) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.brewery_map_fragment_frame, BreweryMapFragment.newInstance(brewery.getBreweryLocations().get(0)))
                     .commit();
-        }else{
-            mapButton.setVisibility(View.GONE);
         }
 
         Bundle bundle = getIntent().getExtras();
@@ -211,13 +181,6 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
                         supportStartPostponedEnterTransition();
                     }
                 });
-    }
-
-    @Override
-    public void displayBeerList(@NotNull List<? extends Beer> list) {
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.brewery_beer_list_fragment_frame, BeerListFragment.newInstance(new ArrayList<>(list)))
-                .commit();
     }
 
     @Override

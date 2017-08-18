@@ -8,6 +8,7 @@ import com.nonvoid.barcrawler.model.Brewery
 import durdinapps.rxfirebase2.RxFirebaseDatabase
 import io.reactivex.Maybe
 import io.reactivex.Single
+import java.util.*
 
 /**
  * Created by Matt on 8/8/2017.
@@ -52,18 +53,32 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
     }
 
 
-    override fun getBeerRating(beer: Beer): Single<Int> {
+    override fun getBeerRating(beer: Beer): Single<Double> {
         return RxFirebaseDatabase.observeSingleValueEvent(
                 getBeerRatingReference(beer).orderByValue())
                 .map({snapshot ->
                     run{
-                        var rating :Double = 0.0
+                        var rating = 0.0
                         if(snapshot.hasChildren()){
                             rating =(snapshot.value as Map<String, Double>).values.sum() / snapshot.childrenCount.toDouble()
                         }
-                        (rating*100).toInt()
+                        (rating)
                     }
                 }).toSingle()
+    }
+
+    override fun getReviews(beer: Beer): Maybe<List<String>> {
+        return RxFirebaseDatabase.observeSingleValueEvent(
+                getBeerReviewReference(beer))
+                .map ({ dataSnapshot -> run{
+                    if(dataSnapshot.hasChildren()){
+                        val reviews = (dataSnapshot.value as Map<String, String>).values.toList()
+                        reviews
+                    }else{
+                        Collections.emptyList<String>()
+                    }
+                }
+                })
     }
 
     override fun likeBeer(beer: Beer){
@@ -95,6 +110,13 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
                 }
     }
 
+    override fun submitReview(beer: Beer, message: String) {
+        RxFirebaseDatabase.setValue(getBeerReviewReference(beer).child(user.uid), message)
+                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
+                .doOnComplete { Log.d("MPG","submitted review: $message") }
+                .subscribe()
+    }
+
     private fun getBreweryFavoriteReference(brewery: Brewery): DatabaseReference{
         return reference.child(BREWERY)
                 .child(brewery.id)
@@ -107,10 +129,17 @@ class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
                 .child(RATING)
     }
 
+    private fun getBeerReviewReference(beer: Beer): DatabaseReference {
+        return reference.child(BEER)
+                .child(beer.id)
+                .child(REVIEW)
+    }
+
     companion object {
         const val BREWERY = "brewery"
         const val FAVORITE = "favorite"
         const val BEER = "beer"
         const val RATING = "rating"
+        const val REVIEW = "review"
     }
 }

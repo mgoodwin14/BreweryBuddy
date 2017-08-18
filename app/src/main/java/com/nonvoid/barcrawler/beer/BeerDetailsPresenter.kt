@@ -14,6 +14,7 @@ class BeerDetailsPresenter(
         view.displayBeer(beer)
         getRating()
         getLiked()
+        getReviews()
     }
 
     fun getRating(){
@@ -24,6 +25,11 @@ class BeerDetailsPresenter(
     fun getLiked(){
         socialClient.isBeerLiked(beer)
                 .subscribe({ result -> view.displayLikeButtons(result)})
+    }
+
+    fun getReviews(){
+        socialClient.getReviews(beer)
+                .subscribe({ result -> view.displayBeerReviews(result)})
     }
 
     fun likeButtonPressed(){
@@ -44,9 +50,14 @@ class BeerDetailsPresenter(
         getRating()
     }
 
+    fun submitReview(message: String){
+        socialClient.submitReview(beer, message)
+    }
+
     interface BeerDetailsView{
         fun displayBeer(beer: Beer)
         fun displayLikeButtons(like :Boolean)
-        fun displayRating(rating: Int)
+        fun displayRating(rating: Double)
+        fun displayBeerReviews(reviews: List<String>)
     }
 }
