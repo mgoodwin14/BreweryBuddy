@@ -103,24 +103,4 @@ public class NetModule {
     BreweryDataBaseAPI provideBreweryClient(BreweryDataBaseService service){
         return new BreweryDataBaseClient(service);
     }
-
-    @Provides
-    @Singleton
-    FirebaseAuth provideFirebaseAuth(){
-        return FirebaseAuth.getInstance();
-    }
-
-    @Provides
-    @Singleton
-    Single<FirebaseUser> provideFirebaseUser(FirebaseAuth firebaseAuth){
-        return RxFirebaseAuth.signInAnonymously(firebaseAuth).toSingle()
-                .map(AuthResult::getUser)
-                .cache();
-    }
-
-    @Provides
-    @Singleton
-    Single<FireBaseSocialClient> provideFirebaseSocialClient(Single<FirebaseUser> user){
-        return user.map(FireBaseSocialClient::new).cache();
-    }
 }
