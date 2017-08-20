@@ -103,17 +103,11 @@ class FireBaseSocialClient(private val user: FirebaseUser,
     }
 
     private fun rateBeer(beer: Beer, rating: Int){
-        getBeerRatingReference(beer)
-                .child(user.uid)
-                .setValue(rating)
-                .addOnCompleteListener { result ->
-                    if(result.isSuccessful){
-                        Log.d("MPG", "set rating to $rating")
-                    }else {
-                        Log.d("MPG", "failed to set rating to $rating")
-                    }
-                }
-
+        RxFirebaseDatabase.setValue(getBeerRatingReference(beer).child(user.uid), rating)
+                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
+                .doOnComplete { Log.d("MPG", "set rating to $rating") }
+                .subscribe()
+        
         RxFirebaseDatabase.setValue(reference.child(USER).child(user.uid).child(RATING).child(beer.id), rating)
                 .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
                 .doOnComplete { Log.d("MPG", "added beer to user ratings") }
