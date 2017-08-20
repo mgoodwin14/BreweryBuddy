@@ -45,6 +45,13 @@
                 />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Description"
+                style="@style/PrimaryText"
+                />
+            <TextView
                 android:id="@+id/brewery_details_description_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +71,6 @@
                 android:id="@+id/brewery_beer_list_fragment_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 />
 
             <FrameLayout
@@ -74,7 +80,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/primary_margin"
                 />
-
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
@@ -93,7 +98,7 @@
 
             <EditText
                 android:id="@+id/comment_message_edit_text"
-                android:hint="Write a review"
+                android:hint="Leave a comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/submit_review_message_button"/>
