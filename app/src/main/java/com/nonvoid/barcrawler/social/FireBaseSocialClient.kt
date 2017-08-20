@@ -95,6 +95,11 @@ class FireBaseSocialClient(private val user: FirebaseUser,
                 .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
                 .doOnComplete { Log.d("MPG","setBreweryAsFavorite: $favorite") }
                 .subscribe()
+
+        RxFirebaseDatabase.setValue(reference.child(USER).child(user.uid).child(FAVORITE).child(brewery.id), favorite)
+                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
+                .doOnComplete { Log.d("MPG", "added brewery to user favorrites") }
+                .subscribe()
     }
 
     private fun rateBeer(beer: Beer, rating: Int){
@@ -108,6 +113,11 @@ class FireBaseSocialClient(private val user: FirebaseUser,
                         Log.d("MPG", "failed to set rating to $rating")
                     }
                 }
+
+        RxFirebaseDatabase.setValue(reference.child(USER).child(user.uid).child(RATING).child(beer.id), rating)
+                .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
+                .doOnComplete { Log.d("MPG", "added beer to user ratings") }
+                .subscribe()
     }
 
     override fun submitReview(beer: Beer, message: String) {
@@ -150,6 +160,7 @@ class FireBaseSocialClient(private val user: FirebaseUser,
     }
 
     companion object {
+        const val USER = "user"
         const val BREWERY = "brewery"
         const val FAVORITE = "favorite"
         const val COMMENT = "comment"
