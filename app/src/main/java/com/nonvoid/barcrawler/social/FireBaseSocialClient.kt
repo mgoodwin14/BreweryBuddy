@@ -13,9 +13,9 @@ import java.util.*
 /**
  * Created by Matt on 8/8/2017.
  */
-class FireBaseSocialClient(private val user: FirebaseUser) : SocialRepoAPI {
-
-    private val reference :DatabaseReference = FirebaseDatabase.getInstance().reference
+class FireBaseSocialClient(private val user: FirebaseUser,
+                           private val reference :DatabaseReference = FirebaseDatabase.getInstance().reference)
+    : SocialRepoAPI {
 
     override fun favoriteBrewery(brewery: Brewery) {
         setBreweryAsFavorite(brewery, true)

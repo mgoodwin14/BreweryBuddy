@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nonvoid.barcrawler.R;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
@@ -112,7 +113,9 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
             return;
         }
 
-        SocialRepoAPI socialClient = new FireBaseSocialClient(FirebaseAuth.getInstance().getCurrentUser());
+        SocialRepoAPI socialClient = new FireBaseSocialClient(
+                FirebaseAuth.getInstance().getCurrentUser(),
+                FirebaseDatabase.getInstance().getReference());
 
         BeerListFragment fragment = new BeerListFragment();
 
