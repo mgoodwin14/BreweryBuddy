@@ -20,9 +20,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.beer_details_activity.*
 
-/**
- * Created by Matt on 6/30/2017.
- */
 class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetailsView {
 
     lateinit var presenter: BeerDetailsPresenter
