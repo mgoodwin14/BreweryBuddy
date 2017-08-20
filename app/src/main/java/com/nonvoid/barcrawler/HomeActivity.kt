@@ -25,6 +25,7 @@ import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.model.BreweryLocation
+import com.nonvoid.barcrawler.social.ProfileFragment
 import javax.inject.Inject
 
 
@@ -37,6 +38,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var presenter : HomePresenter
 
     var dialog: ProgressDialog? =null
+
+    val profileFragment: ProfileFragment by lazy {ProfileFragment()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +75,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_beer -> {
                 supportFragmentManager.findFragmentByTag(BeerListFragment::class.java.simpleName)?:
                         replaceContent(BeerListFragment())
+                return true
+            }
+            R.id.nav_profile -> {
+                displayProfileFragment()
                 return true
             }
         }
@@ -130,6 +137,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         replaceContent(beerFragment)
     }
 
+    fun displayProfileFragment(){
+        val searchFrag = supportFragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
+        supportFragmentManager.beginTransaction().remove(searchFrag).commit()
+        replaceContent(profileFragment)
+    }
+
     override fun showDialog(title: String, message: String){
         dialog = ProgressDialog.show(this, title, message, true)
     }
@@ -145,6 +158,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun replaceContent(fragment: Fragment){
+        if(profileFragment.isVisible){
+            addSearchFragment()
+        }
         supportFragmentManager.beginTransaction()
                 .replace(R.id.content_frame_layout, fragment, fragment::class.java.simpleName)
                 .commit()
