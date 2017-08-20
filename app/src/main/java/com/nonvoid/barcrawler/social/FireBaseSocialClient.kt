@@ -28,13 +28,13 @@ class FireBaseSocialClient(private val user: FirebaseUser,
     override fun isBreweryFavorited(brewery: Brewery): Single<Boolean> {
         return RxFirebaseDatabase.observeSingleValueEvent(getBreweryFavoriteReference(brewery)
                 .child(user.uid))
-                .map { snapShot -> run{
+                .map { snapShot ->
                     if(snapShot.exists()) {
                         snapShot.value as Boolean
                     }else {
                         false
                     }
-                } }
+                }
                 .toSingle()
     }
 
@@ -57,20 +57,18 @@ class FireBaseSocialClient(private val user: FirebaseUser,
         return RxFirebaseDatabase.observeSingleValueEvent(
                 getBeerRatingReference(beer).orderByValue())
                 .map({snapshot ->
-                    run{
                         var rating = 0.0
                         if(snapshot.hasChildren()){
                             rating =(snapshot.value as Map<String, Double>).values.sum() / snapshot.childrenCount.toDouble()
                         }
                         (rating)
-                    }
                 }).toSingle()
     }
 
     override fun getReviews(beer: Beer): Maybe<List<String>> {
         return RxFirebaseDatabase.observeSingleValueEvent(
                 getBeerReviewReference(beer))
-                .map ({ dataSnapshot -> run{
+                .map { dataSnapshot ->
                     if(dataSnapshot.hasChildren()){
                         val reviews = (dataSnapshot.value as Map<String, String>).values.toList()
                         reviews
@@ -78,7 +76,6 @@ class FireBaseSocialClient(private val user: FirebaseUser,
                         Collections.emptyList<String>()
                     }
                 }
-                })
     }
 
     override fun likeBeer(beer: Beer){
@@ -107,7 +104,7 @@ class FireBaseSocialClient(private val user: FirebaseUser,
                 .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
                 .doOnComplete { Log.d("MPG", "set rating to $rating") }
                 .subscribe()
-        
+
         RxFirebaseDatabase.setValue(reference.child(USER).child(user.uid).child(RATING).child(beer.id), rating)
                 .doOnError({throwable -> Log.d("MPG",throwable.message, throwable)} )
                 .doOnComplete { Log.d("MPG", "added beer to user ratings") }
