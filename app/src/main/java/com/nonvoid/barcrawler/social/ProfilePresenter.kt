@@ -1,5 +1,7 @@
 package com.nonvoid.barcrawler.social
 
+import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
@@ -9,10 +11,12 @@ import com.nonvoid.barcrawler.model.Brewery
  */
 class ProfilePresenter(private val view: ProfileView,
                        private val dbClient: BreweryDataBaseAPI,
-                       private val socialRepoAPI: SocialRepoAPI){
+                       private val socialRepoAPI: SocialRepoAPI = FireBaseSocialClient(FirebaseAuth.getInstance().currentUser!!)){
 
     fun getFavoriteBreweries(){
-//        socialRepoAPI.getFavoriteBreweries()
+        socialRepoAPI.getFavoriteBreweries()
+                .flatMapObservable { list -> dbClient.getBreweriesById(list) }
+                .subscribe{list -> view.displayFavoriteBreweries(list) }
     }
 
     interface ProfileView{

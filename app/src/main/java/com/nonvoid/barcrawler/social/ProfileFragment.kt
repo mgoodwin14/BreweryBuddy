@@ -6,13 +6,46 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nonvoid.barcrawler.R
+import com.nonvoid.barcrawler.brewery.BreweryListFragment
+import com.nonvoid.barcrawler.dagger.MyApp
+import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
+import com.nonvoid.barcrawler.model.Beer
+import com.nonvoid.barcrawler.model.Brewery
+import kotlinx.android.synthetic.main.profile_fragment.*
+import javax.inject.Inject
 
 /**
  * Created by Matt on 8/20/2017.
  */
-class ProfileFragment: Fragment() {
+class ProfileFragment: Fragment(), ProfilePresenter.ProfileView {
+
+    @Inject
+    lateinit var client: BreweryDataBaseAPI
+
+    lateinit var presenter: ProfilePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.profile_fragment, container, false)
+    }
+
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity.application as MyApp).netComponent.inject(this)
+        presenter = ProfilePresenter(this, client)
+        presenter.getFavoriteBreweries()
+    }
+
+    override fun displayFavoriteBreweries(breweryList: List<Brewery>) {
+        val fragment = BreweryListFragment.newInstance( ArrayList(breweryList) )
+        if(!breweryList.isEmpty()) {
+            no_breweries_text_view.visibility = View.GONE
+            activity.supportFragmentManager.beginTransaction()
+                    .add(R.id.favorite_breweries_frame_layout, fragment)
+                    .commit()
+        }
+    }
+
+    override fun displayLikedBeers(beerList: List<Beer>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

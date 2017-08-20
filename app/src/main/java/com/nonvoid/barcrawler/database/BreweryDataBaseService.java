@@ -30,6 +30,9 @@ public interface BreweryDataBaseService {
     @GET("brewery/{id}?"+KEY+FORMAT)
     Observable<BreweryResponse> getBreweryById(@Path("id") String breweryId);
 
+    @GET("breweries?"+KEY+FORMAT)
+    Observable<BreweryResponse> getBreweriesById(@Query("ids") String ids);
+
     @GET("brewery/{id}/beers?"+KEY+FORMAT)
     Observable<BeerResponse> getBeersForBrewery(@Path("id") String breweryId);
 

@@ -19,6 +19,7 @@ public interface SocialRepoAPI {
     Maybe<Boolean> isBeerLiked(Beer beer);
     Single<Double> getBeerRating(Beer beer);
     Maybe<List<String>> getReviews(Beer beer);
+    Maybe<List<String>> getFavoriteBreweries();
     void favoriteBrewery(Brewery brewery);
     void unfavoriteBrewery(Brewery brewery);
     void submitComment(Brewery brewery, String message);

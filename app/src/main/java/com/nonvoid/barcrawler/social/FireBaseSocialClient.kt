@@ -126,6 +126,18 @@ class FireBaseSocialClient(private val user: FirebaseUser,
                 .subscribe()
     }
 
+    override fun getFavoriteBreweries(): Maybe<List<String>>? {
+        return RxFirebaseDatabase.observeSingleValueEvent(reference.child(USER).child(user.uid).child(FAVORITE).orderByValue().equalTo(true))
+                .map { snapshot ->
+                    if(snapshot.hasChildren()){
+                        val favorites = (snapshot.value as Map<String, String>).keys.toList()
+                        favorites
+                    }else{
+                        Collections.emptyList<String>()
+                    }
+                }
+    }
+
     private fun getBreweryFavoriteReference(brewery: Brewery): DatabaseReference{
         return reference.child(BREWERY)
                 .child(brewery.id)
