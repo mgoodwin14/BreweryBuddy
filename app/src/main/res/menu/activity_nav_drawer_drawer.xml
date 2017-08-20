@@ -5,11 +5,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_brewery"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_hops"
             android:title="Breweries" />
         <item
             android:id="@+id/nav_beer"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@mipmap/ic_beer"
             android:title="Beers" />
         <item
             android:id="@+id/nav_location"
