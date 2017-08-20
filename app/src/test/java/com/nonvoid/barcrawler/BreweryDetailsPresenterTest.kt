@@ -5,6 +5,7 @@ import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.social.SocialRepoAPI
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import org.junit.Before
@@ -13,12 +14,13 @@ import org.mockito.Mockito
 
 class BreweryDetailsPresenterTest {
     val mockBrewery = Brewery()
-    val mockBeerList = listOf(Beer())
-    val view = Mockito.mock(BreweryDetailsPresenter.BreweryDetailsView::class.java)!!
+    val mockBeerList = mutableListOf(Beer())
+    val detailsView = Mockito.mock(BreweryDetailsPresenter.BreweryDetailsView::class.java)!!
+    val listView = Mockito.mock(BreweryDetailsPresenter.BeerListView::class.java)
     val dbClient = Mockito.mock(BreweryDataBaseAPI::class.java)!!
     val socialClient = Mockito.mock(SocialRepoAPI::class.java)!!
 
-    val subject = BreweryDetailsPresenter(view, mockBrewery, dbClient,  socialClient)
+    val subject = BreweryDetailsPresenter(detailsView, listView, mockBrewery, dbClient,  socialClient)
 
     @Before
     fun setUp(){
@@ -36,7 +38,7 @@ class BreweryDetailsPresenterTest {
     @Test
     fun onCreate_success(){
         subject.onCreate()
-        Mockito.verify(view).displayBrewery(mockBrewery)
+        Mockito.verify(detailsView).displayBrewery(mockBrewery)
         Mockito.verify(socialClient).getNumberOfFavoritesForBrewery(mockBrewery)
     }
 
@@ -44,16 +46,16 @@ class BreweryDetailsPresenterTest {
     fun setFavoriteMenuItem_success(){
         subject.setFavoriteMenuItem()
         Mockito.verify(socialClient).isBreweryFavorited(mockBrewery)
-        Mockito.verify(view).displayAsFavorite(true)
+        Mockito.verify(detailsView).displayAsFavorite(true)
     }
 
     @Test
     fun toggleFavorite_success(){
         subject.toggleFavorite()
         Mockito.verify(socialClient).isBreweryFavorited(mockBrewery)
-        Mockito.verify(view).displayAsFavorite(false)
+        Mockito.verify(detailsView).displayAsFavorite(false)
         Mockito.verify(socialClient).getNumberOfFavoritesForBrewery(mockBrewery)
-        Mockito.verify(view).displayFavoriteCount(1)
+        Mockito.verify(detailsView).displayFavoriteCount(1)
 
     }
 
@@ -61,6 +63,6 @@ class BreweryDetailsPresenterTest {
     fun getBeerList_success(){
         subject.getBeerList()
         Mockito.verify(dbClient).getBeersForBrewery(mockBrewery.id)
-        Mockito.verify(view).displayBeerList(mockBeerList)
+        Mockito.verify(listView).displayBeerList(mockBeerList)
     }
 }

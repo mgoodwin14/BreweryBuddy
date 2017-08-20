@@ -14,15 +14,16 @@ class BeerDetailsPresenterTest{
     val view = Mockito.mock(BeerDetailsPresenter.BeerDetailsView::class.java)
     val beer = Beer()
     val socialClient = Mockito.mock(SocialRepoAPI::class.java)
-
     val subject = BeerDetailsPresenter(view, beer, socialClient)
 
     @Before
     fun setUp(){
         Mockito.`when`(socialClient.getBeerRating(beer))
-                .thenReturn(Single.just(100))
+                .thenReturn(Single.just(1.0))
         Mockito.`when`(socialClient.isBeerLiked(beer))
                 .thenReturn(Maybe.just(true))
+        Mockito.`when`(socialClient.getReviews(beer))
+                .thenReturn(Maybe.just(mutableListOf("mock review")))
         Mockito.doNothing().`when`(socialClient).likeBeer(beer)
         Mockito.doNothing().`when`(socialClient).dislikeBeer(beer)
     }
@@ -33,7 +34,7 @@ class BeerDetailsPresenterTest{
         Mockito.verify(view).displayBeer(beer)
         Mockito.verify(socialClient).getBeerRating(beer)
         Mockito.verify(socialClient).isBeerLiked(beer)
-        Mockito.verify(view).displayRating(100)
+        Mockito.verify(view).displayRating(1.0)
         Mockito.verify(view).displayLikeButtons(true)
     }
 
@@ -41,7 +42,7 @@ class BeerDetailsPresenterTest{
     fun getRating_success(){
         subject.getRating()
         Mockito.verify(socialClient).getBeerRating(beer)
-        Mockito.verify(view).displayRating(100)
+        Mockito.verify(view).displayRating(1.0)
     }
 
     @Test
