@@ -23,6 +23,10 @@ class BreweryDetailsPresenter(
                 .subscribe({result -> detailsView.displayFavoriteCount(result)})
     }
 
+    fun getBrewery(): Brewery{
+        return brewery
+    }
+
     fun setFavoriteMenuItem(){
         socialClient.isBreweryFavorited(brewery)
                 .subscribe({result -> detailsView.displayAsFavorite(result)})

@@ -43,11 +43,19 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
     @BindView(R.id.search_empty_state)
     TextView emptyStateTextView;
 
+    private BeerAdapter.Callback callback;
+
     public static BeerListFragment newInstance(ArrayList<Beer> list) {
         BeerListFragment fragment = new BeerListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(BEER_LIST_BUNDLE_KEY, list);
         fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static BeerListFragment newInstance(BeerAdapter.Callback callback){
+        BeerListFragment fragment = new BeerListFragment();
+        fragment.callback = callback;
         return fragment;
     }
 
@@ -101,13 +109,17 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
 
     @Override
     public void onBeerSelected(Beer beer, ImageView imageView) {
-        Intent intent = BeerDetailsActivity.Companion.newIntent(getContext(), beer, imageView);
+        if(callback!=null){
+            callback.onBeerSelected(beer, imageView);
+        }else {
+            Intent intent = BeerDetailsActivity.Companion.newIntent(getContext(), beer, imageView);
 
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                getActivity(),
-                imageView,
-                ViewCompat.getTransitionName(imageView));
-        startActivity( intent, options.toBundle());
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(),
+                    imageView,
+                    ViewCompat.getTransitionName(imageView));
+            startActivity(intent, options.toBundle());
+        }
     }
 
     @Override

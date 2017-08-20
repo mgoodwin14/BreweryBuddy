@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nonvoid.barcrawler.R;
+import com.nonvoid.barcrawler.beer.BeerAdapter;
+import com.nonvoid.barcrawler.beer.BeerDetailsActivity;
 import com.nonvoid.barcrawler.dagger.MyApp;
 import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
 import com.nonvoid.barcrawler.model.Beer;
@@ -41,7 +44,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BreweryDetailsActivity extends AppCompatActivity implements BreweryDetailsPresenter.BreweryDetailsView {
+public class BreweryDetailsActivity extends AppCompatActivity implements BreweryDetailsPresenter.BreweryDetailsView, BeerAdapter.Callback {
 
     private static final String BREWERY_ITEM = "brewery_item";
     private static final String LOCATION_ITEM = "location_item";
@@ -117,7 +120,7 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
                 FirebaseAuth.getInstance().getCurrentUser(),
                 FirebaseDatabase.getInstance().getReference());
 
-        BeerListFragment fragment = new BeerListFragment();
+        BeerListFragment fragment = BeerListFragment.newInstance(this);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.brewery_beer_list_fragment_frame, fragment)
@@ -213,5 +216,18 @@ public class BreweryDetailsActivity extends AppCompatActivity implements Brewery
         else{
             numberOfFavoritesTextView.setText(count + " people have favorited this brewery");
         }
+    }
+
+    @Override
+    public void onBeerSelected(Beer beer, ImageView imageView) {
+        beer.getBreweries().add(presenter.getBrewery());
+
+        Intent intent = BeerDetailsActivity.Companion.newIntent(this, beer, imageView);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                imageView,
+                ViewCompat.getTransitionName(imageView));
+        startActivity(intent, options.toBundle());
     }
 }
