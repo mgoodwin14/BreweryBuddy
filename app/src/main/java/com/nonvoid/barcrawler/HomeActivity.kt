@@ -150,12 +150,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .commit()
     }
 
-    private fun isNetworkVailable():Boolean{
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected
-    }
-
     private fun setUpDrawerNav() {
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
