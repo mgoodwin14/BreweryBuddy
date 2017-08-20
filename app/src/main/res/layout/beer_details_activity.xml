@@ -124,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/primary_margin"
                 android:text="User Reviews"
+                style="@style/PrimaryText"
                 android:layout_below="@id/beer_details_description_textview"
                 />
 

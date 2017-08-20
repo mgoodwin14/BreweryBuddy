@@ -56,7 +56,11 @@ class BeerDetailsActivity : AppCompatActivity(), BeerDetailsPresenter.BeerDetail
 
     override fun displayBeer(beer: Beer) {
         beer_details_name_textview.text = beer.name
-        beer_details_description_textview.text = beer.description
+        if(beer.description != null && beer.description.isNotEmpty()) {
+            beer_details_description_textview.text = beer.description
+        } else {
+            beer_details_description_textview.visibility = View.GONE
+        }
         beer_details_style_text_view.text = beer.style.shortName
         beer_details_abv.text = "${beer.abv}% ABV"
 
