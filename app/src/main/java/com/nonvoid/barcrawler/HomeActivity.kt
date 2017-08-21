@@ -20,12 +20,15 @@ import com.nonvoid.barcrawler.brewery.BreweryLocationFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
 import android.net.ConnectivityManager
+import android.view.View
+import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.model.BreweryLocation
 import com.nonvoid.barcrawler.social.ProfileFragment
+import kotlinx.android.synthetic.main.beer_details_activity.*
 import javax.inject.Inject
 
 
@@ -167,8 +170,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setUpDrawerNav() {
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val toggle = object : ActionBarDrawerToggle(
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            override fun onDrawerOpened(drawerView: View?) {
+                super.onDrawerOpened(drawerView)
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(review_message_edit_text.windowToken, 0)
+            }
+        }
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
