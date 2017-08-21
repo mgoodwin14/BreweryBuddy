@@ -13,7 +13,7 @@
             android:title="Beers" />
         <item
             android:id="@+id/nav_location"
-            android:icon="@drawable/ic_favorite_checked"
+            android:icon="@mipmap/ic_city"
             android:title="Location" />
         <item
             android:id="@+id/nav_profile"
