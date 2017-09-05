@@ -22,4 +22,5 @@ public interface BreweryDataBaseAPI {
     Observable<List<Brewery>> getBreweriesById(List<String> breweryId);
     Observable<List<Beer>> getBeersForBrewery(String breweryId);
     Observable<Beer> getBeerById(String beerId);
+    Observable<List<Beer>> getBeersById(List<String> beerID);
 }

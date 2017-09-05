@@ -67,6 +67,7 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
                 });
     }
 
+    @Override
     public Observable<List<Brewery>> getBreweriesById(List<String> idList){
         StringBuilder param = new StringBuilder();
         param.append(idList.get(0));
@@ -77,6 +78,19 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
         return service.getBreweriesById(param.toString())
                 .compose(applySchedulers())
                 .map(BreweryResponse::getBreweries);
+    }
+
+    @Override
+    public Observable<List<Beer>> getBeersById(List<String> idList) {
+        StringBuilder param = new StringBuilder();
+        param.append(idList.get(0));
+        for(int i=1; i<10 && i<idList.size(); i++){
+            param.append(",").append(idList.get(i));
+        }
+
+        return service.getBeersById(param.toString())
+                .compose(applySchedulers())
+                .map(BeerResponse::getBeers);
     }
 
     @Override

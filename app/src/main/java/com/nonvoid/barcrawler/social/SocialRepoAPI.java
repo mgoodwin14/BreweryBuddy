@@ -20,6 +20,7 @@ public interface SocialRepoAPI {
     Single<Double> getBeerRating(Beer beer);
     Maybe<List<String>> getReviews(Beer beer);
     Maybe<List<String>> getFavoriteBreweries();
+    Maybe<List<String>> getLikedBeers();
     void favoriteBrewery(Brewery brewery);
     void unfavoriteBrewery(Brewery brewery);
     void submitComment(Brewery brewery, String message);
