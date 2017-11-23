@@ -20,8 +20,8 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.View{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
+//        val toolbar = findViewById(R.id.toolbar) as Toolbar
+//        setSupportActionBar(toolbar)
         (application as MyApp).netComponent.inject(this)
 
         presenter.onViewCreated(this)
@@ -38,11 +38,11 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.View{
     }
 
     private fun hideLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun showLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     fun goToHome() {

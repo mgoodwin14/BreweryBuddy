@@ -23,12 +23,13 @@ class SearchFragment : Fragment(){
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        disposables.add( RxView.clicks(search_fragment_button)
-                .map { search_fragment_edit_text.text.toString() }
-                .filter{ it.isBlank() && it.length > 3}
-                .map { presenter.doOnSearch(it) }
-                .subscribe()
-        )
+
+//        disposables.add( RxView.clicks(search_fragment_button)
+//                .map { search_fragment_edit_text.text.toString() }
+//                .filter{ it.isBlank() && it.length > 3}
+//                .map { presenter.doOnSearch(it) }
+//                .subscribe()
+//        )
     }
 
     companion object {

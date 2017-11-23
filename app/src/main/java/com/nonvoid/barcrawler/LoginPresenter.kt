@@ -1,6 +1,5 @@
 package com.nonvoid.barcrawler
 
-import android.support.design.widget.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import durdinapps.rxfirebase2.RxFirebaseAuth
@@ -21,20 +20,20 @@ class LoginPresenter {
         view = null
     }
 
+    fun login(): Observable<FirebaseUser> {
+        return Observable.just(FirebaseAuth.getInstance())
+                .flatMap { loginAnonymously(it) }
+    }
+
     private fun loginAnonymously(auth: FirebaseAuth): Observable<FirebaseUser>{
         return if(auth.currentUser!= null){
-            Observable.just(auth .currentUser)
+            Observable.just(auth.currentUser)
         }
         else{
             RxFirebaseAuth.signInAnonymously(auth)
                     .map { response -> response.user }
                     .toObservable()
         }
-    }
-
-    fun login(): Observable<FirebaseUser> {
-        return Observable.just(FirebaseAuth.getInstance())
-                .flatMap { loginAnonymously(it) }
     }
 
     interface View
