@@ -19,11 +19,8 @@ import com.nonvoid.barcrawler.brewery.BreweryListFragment
 import com.nonvoid.barcrawler.brewery.BreweryLocationFragment
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_nav_drawer.*
-import android.net.ConnectivityManager
 import android.view.View
-import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
-import com.nonvoid.barcrawler.database.BreweryDataBaseAPI
 import com.nonvoid.barcrawler.model.Beer
 import com.nonvoid.barcrawler.model.Brewery
 import com.nonvoid.barcrawler.model.BreweryLocation
@@ -36,13 +33,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         HomePresenter.HomeView, SearchFragment.Searchable {
 
     @Inject
-    lateinit var client: BreweryDataBaseAPI
+    lateinit var presenter: HomePresenter
 
-    lateinit var presenter : HomePresenter
+    private var currentContent: String = BreweryListFragment::class.java.simpleName
 
-    var dialog: ProgressDialog? =null
-
-    val profileFragment: ProfileFragment by lazy {ProfileFragment()}
+    private var dialog: ProgressDialog? = null
+    private val profileFragment: ProfileFragment by lazy { ProfileFragment() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +47,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         (application as MyApp).netComponent.inject(this)
 
-        presenter = HomePresenter(this, client)
-        presenter.onCreate()
-
         setUpDrawerNav()
+
+//        presenter = HomePresenter( client)
+        presenter.onViewCreated(this)
+        addSearchFragment()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,21 +60,22 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
         drawer_layout.closeDrawer(GravityCompat.START)
-        when (item.itemId){
+        when (item.itemId) {
             R.id.nav_brewery -> {
-                supportFragmentManager.findFragmentByTag(BreweryListFragment::class.java.simpleName)?:
-                        replaceContent(BreweryListFragment())
+                supportFragmentManager.findFragmentByTag(BreweryListFragment::class.java.simpleName) ?:
+                        displayContent(BreweryListFragment())
                 return true
             }
             R.id.nav_location -> {
-                supportFragmentManager.findFragmentByTag(BreweryLocationFragment::class.java.simpleName)?:
-                        replaceContent(BreweryLocationFragment())
+                supportFragmentManager.findFragmentByTag(BreweryLocationFragment::class.java.simpleName) ?:
+                        displayContent(BreweryLocationFragment())
                 return true
             }
             R.id.nav_beer -> {
-                supportFragmentManager.findFragmentByTag(BeerListFragment::class.java.simpleName)?:
-                        replaceContent(BeerListFragment())
+                supportFragmentManager.findFragmentByTag(BeerListFragment::class.java.simpleName) ?:
+                        displayContent(BeerListFragment())
                 return true
             }
             R.id.nav_profile -> {
@@ -89,15 +87,38 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if(drawer_layout.isDrawerOpen(GravityCompat.START))
+        if (drawer_layout.isDrawerOpen(GravityCompat.START))
             drawer_layout.closeDrawer(GravityCompat.START)
-        else if(supportFragmentManager.backStackEntryCount>1)
+        else if (supportFragmentManager.backStackEntryCount > 1)
             supportFragmentManager.popBackStack()
         else
             super.onBackPressed()
     }
 
-    override fun addSearchFragment() {
+    override fun doOnSearch(query: String) {
+
+        val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
+
+        when (currentContent) {
+            BreweryListFragment::class.java.simpleName -> presenter.brewerySearch(query)
+                    .doOnSubscribe { showDialog("Searching for breweries", "please wait") }
+                    .doOnDispose { dismissDialog() }
+                    .subscribe(this::displayBreweryList)
+
+            BeerListFragment::class.java.simpleName -> presenter.beerSearch(query)
+                    .doOnSubscribe { showDialog("Searching for beers", "please wait") }
+                    .doFinally { dismissDialog() }
+                    .subscribe(this::displayBeerFragment)
+
+            BreweryLocationFragment::class.java.simpleName -> presenter.locationSearch(query)
+                    .doOnSubscribe { showDialog("Searching by location", "please wait") }
+                    .doOnDispose { dismissDialog() }
+                    .subscribe(this::displayLocationFragment)
+        }
+    }
+
+    private fun addSearchFragment() {
         val searchFragment = SearchFragment.newInstance(this)
         val breweryFragment = BreweryListFragment()
         supportFragmentManager.beginTransaction()
@@ -106,62 +127,41 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .commit()
     }
 
-    override fun doOnSearch(query: String) {
-
-        val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(window.decorView.windowToken, 0)
-
-        supportFragmentManager.findFragmentByTag(BreweryListFragment::class.java.simpleName)?.let {
-            presenter.brewerySearch(query)
-            return
-        }
-        supportFragmentManager.findFragmentByTag(BeerListFragment::class.java.simpleName)?.let {
-            presenter.beerSearch(query)
-            return
-        }
-        supportFragmentManager.findFragmentByTag(BreweryLocationFragment::class.java.simpleName)?.let {
-            presenter.locationSearch(query)
-            return
-        }
-    }
-
-    override fun displayBreweryList(breweryList: List<Brewery>) {
+    private fun displayBreweryList(breweryList: List<Brewery>) {
         val breweryFragment = BreweryListFragment.newInstance(ArrayList(breweryList))
-        replaceContent(breweryFragment)
+        displayContent(breweryFragment)
     }
 
-    override fun displayLocationFragment(locationList: List<BreweryLocation>) {
+    private fun displayLocationFragment(locationList: List<BreweryLocation>) {
         val locationFragment = BreweryLocationFragment.newInstance(ArrayList(locationList))
-        replaceContent(locationFragment)
+        displayContent(locationFragment)
     }
 
-    override fun displayBeerFragment(beerList: List<Beer>) {
+    private fun displayBeerFragment(beerList: List<Beer>) {
         val beerFragment = BeerListFragment.newInstance(ArrayList(beerList))
-        replaceContent(beerFragment)
+        displayContent(beerFragment)
     }
 
-    fun displayProfileFragment(){
+    private fun displayProfileFragment() {
         val searchFrag = supportFragmentManager.findFragmentByTag(SearchFragment::class.java.simpleName)
         supportFragmentManager.beginTransaction().remove(searchFrag).commit()
-        replaceContent(profileFragment)
+        displayContent(profileFragment)
     }
 
-    override fun showDialog(title: String, message: String){
+    private fun showDialog(title: String, message: String) {
         dialog = ProgressDialog.show(this, title, message, true)
     }
 
-    override fun dismissDialog() {
-        if(dialog!=null && dialog!!.isShowing){
+    private fun dismissDialog() {
+        if (dialog != null && dialog!!.isShowing) {
             dialog!!.dismiss()
         }
     }
 
-    override fun makeToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
+    private fun displayContent(fragment: Fragment) {
+        currentContent = fragment::class.java.simpleName
 
-    private fun replaceContent(fragment: Fragment){
-        if(profileFragment.isVisible){
+        if (profileFragment.isVisible) {
             addSearchFragment()
         }
         supportFragmentManager.beginTransaction()
@@ -171,7 +171,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setUpDrawerNav() {
         val toggle = object : ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             override fun onDrawerOpened(drawerView: View?) {
                 super.onDrawerOpened(drawerView)
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

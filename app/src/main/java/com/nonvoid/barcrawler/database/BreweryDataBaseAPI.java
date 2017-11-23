@@ -15,7 +15,7 @@ import io.reactivex.Observable;
  */
 
 public interface BreweryDataBaseAPI {
-    Observable<BreweryLocation> searchCityForBreweries(String city);
+    Observable<List<BreweryLocation>> searchCityForBreweries(String city);
     Observable<List<Brewery>> searchForBrewery(String query);
     Observable<List<Beer>> searchForBeer(String query);
     Observable<Brewery> getBreweryById(String breweryId);

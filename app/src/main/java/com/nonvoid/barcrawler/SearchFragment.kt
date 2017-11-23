@@ -5,11 +5,15 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.search_fragment.*
 
 class SearchFragment : Fragment(){
 
-    private lateinit var callback : Searchable
+    private lateinit var presenter: Searchable
+
+    private val disposables: CompositeDisposable = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.search_fragment, container, false)
@@ -18,16 +22,19 @@ class SearchFragment : Fragment(){
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        search_fragment_button.setOnClickListener({
-            if(!search_fragment_edit_text.text.toString().isNullOrBlank())
-                callback.doOnSearch(search_fragment_edit_text.text.toString())
-        })
+
+        disposables.add( RxView.clicks(search_fragment_button)
+                .map { search_fragment_edit_text.text.toString() }
+                .filter{ it.isBlank() && it.length > 3}
+                .map { presenter.doOnSearch(it) }
+                .subscribe()
+        )
     }
 
     companion object {
         fun newInstance(callback: Searchable): Fragment{
             val fragment = SearchFragment()
-            fragment.callback = callback
+            fragment.presenter = callback
             return fragment
         }
     }

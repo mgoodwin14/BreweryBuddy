@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nonvoid.barcrawler.HomePresenter;
 import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
 import com.nonvoid.barcrawler.database.BreweryDataBaseClient;
 import com.nonvoid.barcrawler.database.BreweryDataBaseService;
@@ -102,5 +103,11 @@ public class NetModule {
     @Singleton
     BreweryDataBaseAPI provideBreweryClient(BreweryDataBaseService service){
         return new BreweryDataBaseClient(service);
+    }
+
+    @Provides
+    @Singleton
+    HomePresenter provideHomePresenter(BreweryDataBaseAPI client){
+        return new HomePresenter(client);
     }
 }

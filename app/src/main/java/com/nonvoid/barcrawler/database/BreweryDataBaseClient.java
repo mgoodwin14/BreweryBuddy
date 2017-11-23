@@ -27,11 +27,10 @@ public class BreweryDataBaseClient implements BreweryDataBaseAPI {
     }
 
     @Override
-    public Observable<BreweryLocation> searchCityForBreweries(String city) {
+    public Observable<List<BreweryLocation>> searchCityForBreweries(String city) {
         return service.searchCityForBreweries(city)
                 .compose(applySchedulers())
-                .map(LocationResponse::getLocations)
-                .flatMapIterable(v -> v);
+                .map(LocationResponse::getLocations);
     }
 
     @Override

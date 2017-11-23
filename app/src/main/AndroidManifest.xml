@@ -46,6 +46,7 @@
             android:name=".beer.BeerDetailsActivity"
             android:label="Beer Details"
             android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".LoginActivity" />
     </application>
 
 </manifest>
