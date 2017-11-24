@@ -3,11 +3,13 @@ package com.nonvoid.barcrawler.brewery
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.model.BreweryLocation
+import io.reactivex.Observable
 import java.util.ArrayList
 import kotlinx.android.synthetic.main.brewery_list_fragment.*
 
@@ -59,5 +61,11 @@ class BreweryLocationFragment : Fragment(), BreweryLocationAdapter.Callback {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    fun display(locationSearch: Observable<List<BreweryLocation>>) {
+        locationSearch
+                .doOnError { Log.d("MPG", "BreweryLocationFragment.display error: ", it) }
+                .subscribe{displayList(it)}
     }
 }

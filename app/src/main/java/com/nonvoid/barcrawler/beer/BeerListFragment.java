@@ -146,17 +146,18 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
         beerSearch.subscribe(new DisposableObserver<List<Beer>>() {
             @Override
             public void onNext(List<Beer> beers) {
+                Log.d("MPG", "BeerListFragment.disply onNext: " + beers.size());
                 displayBeerList(beers);
             }
 
             @Override
             public void onError(Throwable e) {
-
+                Log.d("MPG", "BeerListFragment.disply error: ", e);
             }
 
             @Override
             public void onComplete() {
-
+                Log.d("MPG", "BeerListFragment.disply complete: ");
             }
         });
     }

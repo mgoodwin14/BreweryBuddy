@@ -13,11 +13,7 @@ import com.nonvoid.barcrawler.beer.BeerListFragment
 import com.nonvoid.barcrawler.brewery.BreweryListFragment
 import com.nonvoid.barcrawler.brewery.BreweryLocationFragment
 import com.nonvoid.barcrawler.dagger.MyApp
-import com.nonvoid.barcrawler.model.Beer
-import com.nonvoid.barcrawler.model.Brewery
-import com.nonvoid.barcrawler.model.BreweryLocation
 import kotlinx.android.synthetic.main.activity_home_redesign.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -49,25 +45,23 @@ class SearchActivity : AppCompatActivity() {
 
         val textChange = RxSearchView.queryTextChanges(home_search_view)
                 .filter { it.isNotBlank()  && it.length > 3 }
-                .debounce(375, TimeUnit.MILLISECONDS)
+                //.debounce(375, TimeUnit.MILLISECONDS)
                 .map { it.toString() }
                 .doOnNext { Log.d("MPG", "queryTextChanges: $it") }
 
         val brewerySearch = textChange
                 .flatMap { presenter.searchBrewery(it) }
-                .doOnNext{ displayBreweryList(it) }
+                .doOnNext{ Log.d("MPG", "brewery search: $it" ) }
 
         breweryFragment.display(brewerySearch)
 
         val beerSearch = textChange
                 .flatMap { presenter.searchBeer(it) }
-                .doOnNext{ displayBeerList(it) }
-
-        beerFragment.display(beerSearch)
+                .doOnNext{ Log.d("MPG", "beer search: $it" ) }
 
         val locationSearch = textChange
                 .flatMap { presenter.searchLocation(it) }
-                .doOnNext{displayLocationList(it)}
+                .doOnNext{ Log.d("MPG", "location search: $it") }
 
 
         home_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
@@ -85,22 +79,10 @@ class SearchActivity : AppCompatActivity() {
                 when(home_tab_layout.selectedTabPosition){
                     0 -> breweryFragment.display(brewerySearch)
                     1 -> beerFragment.display(beerSearch)
-                    2 -> locationSearch.subscribe()
+                    2 -> locationFragment.display(locationSearch)
                 }
             }
         })
-    }
-
-    private fun displayLocationList(locationList: List<BreweryLocation>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun displayBeerList(beerList: List<Beer>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun displayBreweryList(breweryList: List<Brewery>) {
-        Log.d("MPG", "displayBreweryList: $breweryList" )
     }
 
     class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
