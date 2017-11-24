@@ -49,7 +49,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setUpDrawerNav()
 
-//        presenter = HomePresenter( client)
+//        presenter = SearchPresenter( client)
         presenter.onViewCreated(this)
         addSearchFragment()
     }

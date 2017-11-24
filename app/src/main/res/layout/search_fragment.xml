@@ -10,10 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:iconifiedByDefault="true"/>
-
-    <Spinner
-        android:layout_width=""
-        android:layout_height=""></Spinner>
     
     <Button
         android:id="@+id/search_fragment_button"

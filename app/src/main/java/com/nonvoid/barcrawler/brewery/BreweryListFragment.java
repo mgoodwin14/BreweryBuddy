@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * Created by Matt on 5/11/2017.
@@ -37,7 +40,7 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     @BindView(R.id.brewery_list_recyclerview)
     RecyclerView breweryListRecyclerView;
     @BindView(R.id.search_empty_state)
-    TextView emptyStateTextView;
+    ImageView emptyStateTextView;
 
     public static BreweryListFragment newInstance(ArrayList<Brewery> breweryList){
         BreweryListFragment fragment = new BreweryListFragment();
@@ -59,7 +62,7 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
             List<Brewery> breweryList = bundle.getParcelableArrayList(BREWERY_LIST_BUNDLE_KEY);
             displayList(breweryList);
         }else {
-            emptyStateTextView.setText("search for brewery");
+//            emptyStateTextView.setText("search for brewery");
         }
         return view;
     }
@@ -76,6 +79,8 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     }
 
     private void displayList(List<Brewery> list) {
+        Log.d("MPG", "displayList: Brewery");
+
         if(list != null && !list.isEmpty()){
             BreweryAdapter adapter = new BreweryAdapter(list, this);
             breweryListRecyclerView.setAdapter(adapter);
@@ -85,5 +90,24 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
             emptyStateTextView.setVisibility(View.VISIBLE);
             breweryListRecyclerView.setVisibility(View.GONE);
         }
+    }
+
+    public void display( Observable<List<Brewery>> brewerySearch) {
+        brewerySearch.subscribe(new DisposableObserver<List<Brewery>>() {
+            @Override
+            public void onNext(List<Brewery> breweries) {
+                displayList(breweries);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("MPG", "BreweryListFragment.onError: "+ e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 }

@@ -1,9 +1,11 @@
 package com.nonvoid.barcrawler
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import durdinapps.rxfirebase2.RxFirebaseAuth
 import io.reactivex.Observable
+
 
 /**
  * Created by Matt on 11/22/2017.
@@ -21,6 +23,8 @@ class LoginPresenter {
     }
 
     fun login(): Observable<FirebaseUser> {
+        Log.d("MPG","LoginPresenter.login()")
+
         return Observable.just(FirebaseAuth.getInstance())
                 .flatMap { loginAnonymously(it) }
     }

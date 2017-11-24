@@ -28,4 +28,6 @@ public interface NetComponent {
     void inject(ProfileFragment fragment);
 
     void inject(@NotNull LoginActivity loginActivity);
+
+    void inject(@NotNull com.nonvoid.barcrawler.redesign.SearchActivity searchActivity);
 }

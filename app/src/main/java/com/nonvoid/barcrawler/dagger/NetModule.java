@@ -14,6 +14,7 @@ import com.nonvoid.barcrawler.HomePresenter;
 import com.nonvoid.barcrawler.database.BreweryDataBaseAPI;
 import com.nonvoid.barcrawler.database.BreweryDataBaseClient;
 import com.nonvoid.barcrawler.database.BreweryDataBaseService;
+import com.nonvoid.barcrawler.redesign.SearchPresenter;
 import com.nonvoid.barcrawler.social.FireBaseSocialClient;
 
 import javax.inject.Singleton;
@@ -109,5 +110,11 @@ public class NetModule {
     @Singleton
     HomePresenter provideHomePresenter(BreweryDataBaseAPI client){
         return new HomePresenter(client);
+    }
+
+    @Provides
+    @Singleton
+    SearchPresenter provideSearchPresenter(BreweryDataBaseAPI client){
+        return new SearchPresenter(client);
     }
 }

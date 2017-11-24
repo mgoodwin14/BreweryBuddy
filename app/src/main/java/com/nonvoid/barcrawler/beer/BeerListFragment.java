@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +30,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * Created by Matt on 5/30/2017.
@@ -41,7 +44,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
     @BindView(R.id.brewery_list_recyclerview)
     RecyclerView recyclerView;
     @BindView(R.id.search_empty_state)
-    TextView emptyStateTextView;
+    ImageView emptyStateTextView;
 
     private BeerAdapter.Callback callback;
 
@@ -67,7 +70,7 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setNestedScrollingEnabled(false);
-        emptyStateTextView.setText("search for beers");
+//        emptyStateTextView.setText("search for beers");
         return view;
     }
 
@@ -124,6 +127,8 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
 
     @Override
     public void displayBeerList(@NotNull List<Beer> beerList) {
+        Log.d("MPG", "displayBeerList");
+
         if(!beerList.isEmpty()){
             recyclerView.setAdapter(new BeerAdapter(beerList, this));
             recyclerView.setVisibility(View.VISIBLE);
@@ -132,5 +137,27 @@ public class BeerListFragment extends Fragment implements BeerAdapter.Callback, 
             emptyStateTextView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         }
+    }
+
+    public void display(Observable<List<Beer>> beerSearch) {
+
+        Log.d("MPG", "display: BeerList");
+
+        beerSearch.subscribe(new DisposableObserver<List<Beer>>() {
+            @Override
+            public void onNext(List<Beer> beers) {
+                displayBeerList(beers);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 }

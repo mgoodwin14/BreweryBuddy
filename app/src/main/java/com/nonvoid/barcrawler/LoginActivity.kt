@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.util.Log.*
 import com.nonvoid.barcrawler.dagger.MyApp
+import com.nonvoid.barcrawler.redesign.SearchActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 
@@ -29,10 +30,11 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.View{
 
     override fun onResume() {
         super.onResume()
+        Log.d("MPG","LoginActivity.onResume()")
          presenter.login()
                  .doOnSubscribe{ showLoading()}
                  .doOnDispose{ hideLoading()}
-                 .doOnError { Log.e("MPG", "error logging in", it) }
+                 .doOnError { e("MPG", "error logging in", it) }
                  .doOnNext { user -> user.reload() }
                  .subscribe{ goToHome()}
     }
@@ -46,7 +48,10 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.View{
     }
 
     fun goToHome() {
+        Log.d("MPG","LoginActivity.goToHome()")
         Snackbar.make(nav_view, "Welcome back", Snackbar.LENGTH_SHORT).show()
-        startActivity(Intent(this, HomeActivity::class.java))
+//        startActivity(Intent(this, SearchActivity::class.java))
+        startActivity(Intent(this, SearchActivity::class.java))
+        finish()
     }
 }
