@@ -7,11 +7,10 @@ import com.nonvoid.barcrawler.model.BreweryLocation
 import io.reactivex.Observable
 
 
-class SearchPresenter(private val dbClient: BreweryDataBaseAPI){
+class SearchPresenter(private val dbClient: BreweryDataBaseAPI) {
 
 
-
-    fun searchBrewery(query: String): Observable<List<Brewery>>{
+    fun searchBrewery(query: String): Observable<List<Brewery>> {
         setViewState(query, "brewery")
         return filter(query)
                 .flatMap { dbClient.searchForBrewery(it) }
@@ -20,13 +19,14 @@ class SearchPresenter(private val dbClient: BreweryDataBaseAPI){
     fun searchBeer(query: String): Observable<List<Beer>> {
         setViewState(query, "beer")
         return filter(query)
-                .flatMap { dbClient.searchForBeer(query)}
+                .flatMap { dbClient.searchForBeer(query) }
     }
 
 
     fun searchLocation(query: String): Observable<List<BreweryLocation>> {
-        filter(query).doOnNext { setViewState(it, "location") }
-        return dbClient.searchCityForBreweries(query)
+//        filter(query).doOnNext { setViewState(it, "location") }
+        return filter(query)
+                .flatMap { dbClient.searchCityForBreweries(query) }
     }
 
     private fun filter(query: String) = Observable.just(query).filter { it.length > 2 }
@@ -36,7 +36,7 @@ class SearchPresenter(private val dbClient: BreweryDataBaseAPI){
         var currentFilter = "brewery"
         var currentQuery = ""
 
-        fun setViewState(query: String, filter: String){
+        fun setViewState(query: String, filter: String) {
             currentFilter = filter
             currentQuery = query
         }

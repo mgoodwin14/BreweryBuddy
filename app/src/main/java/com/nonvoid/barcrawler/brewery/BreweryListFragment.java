@@ -93,9 +93,11 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
     }
 
     public void display( Observable<List<Brewery>> brewerySearch) {
+        Log.d("MPG", "display: brewerylist");
         brewerySearch.subscribe(new DisposableObserver<List<Brewery>>() {
             @Override
             public void onNext(List<Brewery> breweries) {
+                Log.d("MPG", "onNext: brewerylist.size: " +breweries.size());
                 displayList(breweries);
             }
 
@@ -106,7 +108,7 @@ public class BreweryListFragment extends Fragment implements BreweryAdapter.Call
 
             @Override
             public void onComplete() {
-
+                Log.d("MPG", "onComplete: brewerylist");
             }
         });
     }

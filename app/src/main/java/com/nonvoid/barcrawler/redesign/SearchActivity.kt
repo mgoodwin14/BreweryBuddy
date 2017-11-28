@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import com.jakewharton.rxbinding2.widget.RxSearchView
 import com.nonvoid.barcrawler.R
 import com.nonvoid.barcrawler.beer.BeerListFragment
@@ -38,33 +39,34 @@ class SearchActivity : AppCompatActivity() {
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPagerAdapter.addFragment(breweryFragment, "Brewery")
         viewPagerAdapter.addFragment(beerFragment, "Beer")
-        viewPagerAdapter.addFragment(locationFragment, "Locations")
+        viewPagerAdapter.addFragment(locationFragment, "Location")
 
-        home_view_pager.adapter = viewPagerAdapter
-        home_tab_layout.setupWithViewPager(home_view_pager)
+        search_view_pager.adapter = viewPagerAdapter
+        home_tab_layout.setupWithViewPager(search_view_pager)
 
         val textChange = RxSearchView.queryTextChanges(home_search_view)
-                .filter { it.isNotBlank()  && it.length > 3 }
-                //.debounce(375, TimeUnit.MILLISECONDS)
                 .map { it.toString() }
                 .doOnNext { Log.d("MPG", "queryTextChanges: $it") }
 
         val brewerySearch = textChange
                 .flatMap { presenter.searchBrewery(it) }
-                .doOnNext{ Log.d("MPG", "brewery search: $it" ) }
+                .doOnNext { Log.d("MPG", "brewery search: $it") }
+//                .doOnSubscribe { search_progress_bar.visibility = View.VISIBLE }
+//                .doOnTerminate { search_progress_bar.visibility = View.GONE }
+//                .doOnNext { search_progress_bar.visibility = View.GONE }
 
         breweryFragment.display(brewerySearch)
 
         val beerSearch = textChange
                 .flatMap { presenter.searchBeer(it) }
-                .doOnNext{ Log.d("MPG", "beer search: $it" ) }
+                .doOnNext { Log.d("MPG", "beer search: $it") }
 
         val locationSearch = textChange
                 .flatMap { presenter.searchLocation(it) }
-                .doOnNext{ Log.d("MPG", "location search: $it") }
+                .doOnNext { Log.d("MPG", "location search: $it") }
 
 
-        home_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+        home_tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab) {
 
             }
@@ -76,7 +78,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 Log.d("MPG", "tabselected: ${home_tab_layout.selectedTabPosition} : ${tab.text}")
 
-                when(home_tab_layout.selectedTabPosition){
+                when (home_tab_layout.selectedTabPosition) {
                     0 -> breweryFragment.display(brewerySearch)
                     1 -> beerFragment.display(beerSearch)
                     2 -> locationFragment.display(locationSearch)
@@ -94,7 +96,7 @@ class SearchActivity : AppCompatActivity() {
         override fun getCount(): Int = fragmentList.size
         override fun getPageTitle(position: Int): CharSequence = titleList[position]
 
-        fun addFragment(fragment: Fragment, title:String){
+        fun addFragment(fragment: Fragment, title: String) {
             Log.d("MPG", "addedFragmnet: $title")
             fragmentList.add(fragment)
             titleList.add(title)

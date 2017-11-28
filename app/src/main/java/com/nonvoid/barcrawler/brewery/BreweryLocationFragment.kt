@@ -35,15 +35,24 @@ class BreweryLocationFragment : Fragment(), BreweryLocationAdapter.Callback {
         }
     }
 
-    fun displayList(list: List<BreweryLocation>){
+    private fun displayList(list: List<BreweryLocation>){
+        Log.d("MPG", "displayList: locationList.size: " + list.size)
         if(!list.isEmpty()){
             search_empty_state.visibility = View.GONE
+            brewery_list_recyclerview.visibility = View.VISIBLE
             brewery_list_recyclerview.adapter = BreweryLocationAdapter(list, this)
             brewery_list_recyclerview.adapter.notifyDataSetChanged()
         }else {
             search_empty_state.visibility = View.VISIBLE
             brewery_list_recyclerview.visibility = View.GONE
         }
+    }
+
+    fun display(locationSearch: Observable<List<BreweryLocation>>) {
+        Log.d("MPG", "display: locationSearch")
+        locationSearch
+                .doOnError { Log.d("MPG", "BreweryLocationFragment.display error: ", it) }
+                .subscribe{displayList(it)}
     }
 
     override fun onBrewerySelected(location: BreweryLocation?) {
@@ -53,7 +62,6 @@ class BreweryLocationFragment : Fragment(), BreweryLocationAdapter.Callback {
     companion object {
 
         private val BREWERY_LOCATION_LIST_BUNDLE_KEY = "brewery_locations_key"
-
         fun newInstance(locations: ArrayList<BreweryLocation>): BreweryLocationFragment {
             val fragment = BreweryLocationFragment()
             val args = Bundle()
@@ -61,11 +69,6 @@ class BreweryLocationFragment : Fragment(), BreweryLocationAdapter.Callback {
             fragment.arguments = args
             return fragment
         }
-    }
 
-    fun display(locationSearch: Observable<List<BreweryLocation>>) {
-        locationSearch
-                .doOnError { Log.d("MPG", "BreweryLocationFragment.display error: ", it) }
-                .subscribe{displayList(it)}
     }
 }
